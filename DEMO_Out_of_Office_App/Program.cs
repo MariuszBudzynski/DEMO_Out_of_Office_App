@@ -1,7 +1,8 @@
+using DEMOOutOfOfficeApp;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+ServicesRegistration.RegisterServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
