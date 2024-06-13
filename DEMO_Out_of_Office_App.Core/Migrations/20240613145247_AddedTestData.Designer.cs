@@ -4,6 +4,7 @@ using DEMOOutOfOfficeApp.Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240613145247_AddedTestData")]
+    partial class AddedTestData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,7 +212,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Name")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -220,17 +223,17 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         new
                         {
                             ID = 1,
-                            StatusId = 0
+                            Name = 0
                         },
                         new
                         {
                             ID = 2,
-                            StatusId = 1
+                            Name = 1
                         },
                         new
                         {
                             ID = 3,
-                            StatusId = 2
+                            Name = 2
                         });
                 });
 
