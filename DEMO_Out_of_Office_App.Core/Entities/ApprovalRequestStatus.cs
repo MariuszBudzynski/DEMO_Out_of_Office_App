@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DEMOOutOfOfficeApp.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-	public class ApprovalRequestStatus
+	public class ApprovalRequestStatus : IEntityId
 	{
 		[Key]
 		public int ID { get; set; }

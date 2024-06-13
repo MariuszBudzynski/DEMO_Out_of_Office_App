@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DEMOOutOfOfficeApp.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-	public class ProjectType
+	public class ProjectType : IEntityId
 	{
 		[Key]
 		public int ID { get; set; }

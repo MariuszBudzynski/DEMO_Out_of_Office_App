@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DEMOOutOfOfficeApp.Common;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-	public class Employee
+	public class Employee : IEntityId
 	{
 		[Key]
 		public int ID { get; set; }
