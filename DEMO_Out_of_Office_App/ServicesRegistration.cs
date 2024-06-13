@@ -1,4 +1,7 @@
 ﻿using Azure;
+using System;
+using DEMOOutOfOfficeApp.Core.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DEMOOutOfOfficeApp
 {
@@ -8,7 +11,10 @@ namespace DEMOOutOfOfficeApp
 		{
 
 			services.AddRazorPages();
-
+			services.AddDbContext<AppDbContext>(options => 
+			
+				options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection"))
+			);
 		}
 	}
 }
