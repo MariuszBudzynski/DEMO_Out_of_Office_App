@@ -62,16 +62,8 @@ namespace DEMOOutOfOfficeApp.Core.Context
 				new Role { ID = 3,UserRole = UserRole.ProjectManager, DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests" },
 				new Role { ID = 4,UserRole = UserRole.Administrator, DescriptionOfMainTasks = "Grants access rights\n Manages all data" }		
 			);
+
 		}
-
-
-
-
-
-
-
-
-
 
 	}
 }

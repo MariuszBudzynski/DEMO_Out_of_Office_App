@@ -36,7 +36,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("AbsenceReasons");
+                    b.ToTable("AbsenceReasons", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
@@ -68,7 +68,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("StatusID");
 
-                    b.ToTable("ApprovalRequests");
+                    b.ToTable("ApprovalRequests", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestStatus", b =>
@@ -86,7 +86,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("StatusTypeID");
 
-                    b.ToTable("ApprovalRequestStatuses");
+                    b.ToTable("ApprovalRequestStatuses", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Employee", b =>
@@ -130,7 +130,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("SubdivisionID");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.EmployeeStatus", b =>
@@ -147,7 +147,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Statuses");
+                    b.ToTable("Statuses", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.LeaveRequest", b =>
@@ -185,7 +185,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("StatusID");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("LeaveRequests", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.LeaveRequestsStatus", b =>
@@ -203,7 +203,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("StatusTypeID");
 
-                    b.ToTable("LeaveRequestsStatuses");
+                    b.ToTable("LeaveRequestsStatuses", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Position", b =>
@@ -220,7 +220,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Positions");
+                    b.ToTable("Positions", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Project", b =>
@@ -258,7 +258,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("StatusID");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ProjectStatus", b =>
@@ -276,7 +276,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("StatusTypeID");
 
-                    b.ToTable("ProjectStatuses");
+                    b.ToTable("ProjectStatuses", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ProjectType", b =>
@@ -293,7 +293,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("ProjectTypes");
+                    b.ToTable("ProjectTypes", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Role", b =>
@@ -313,7 +313,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -356,7 +356,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Subdivisions");
+                    b.ToTable("Subdivisions", (string)null);
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
