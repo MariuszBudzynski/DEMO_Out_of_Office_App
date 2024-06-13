@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DEMOOutOfOfficeApp", "DEMO_Out_of_Office_App\DEMOOutOfOfficeApp.csproj", "{9CF44D7C-D293-4C8F-9772-1F1CCC56267B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEMOOutOfOfficeApp", "DEMO_Out_of_Office_App\DEMOOutOfOfficeApp.csproj", "{9CF44D7C-D293-4C8F-9772-1F1CCC56267B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DEMOOutOfOfficeApp.Core", "DEMO_Out_of_Office_App.Core\DEMOOutOfOfficeApp.Core.csproj", "{77B8874D-AF57-4D2D-8CE9-58065A3EE72A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEMOOutOfOfficeApp.Core", "DEMO_Out_of_Office_App.Core\DEMOOutOfOfficeApp.Core.csproj", "{77B8874D-AF57-4D2D-8CE9-58065A3EE72A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DEMOOutOfOfficeApp.Common", "DEMO_Out_of_Office_App.Common\DEMOOutOfOfficeApp.Common.csproj", "{CC93F39A-3CEA-4C91-A3E8-758A0AF97E21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEMOOutOfOfficeApp.Common", "DEMO_Out_of_Office_App.Common\DEMOOutOfOfficeApp.Common.csproj", "{CC93F39A-3CEA-4C91-A3E8-758A0AF97E21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DEMOOutOfOfficeApp.Tests", "DEMO_Out_of_Office_App.Tests\DEMOOutOfOfficeApp.Tests.csproj", "{DB87B4EF-A9D2-4465-A7D1-8A627F9CEF22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEMOOutOfOfficeApp.Tests", "DEMO_Out_of_Office_App.Tests\DEMOOutOfOfficeApp.Tests.csproj", "{DB87B4EF-A9D2-4465-A7D1-8A627F9CEF22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
