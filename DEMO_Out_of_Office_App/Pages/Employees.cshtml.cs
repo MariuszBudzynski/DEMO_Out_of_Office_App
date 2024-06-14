@@ -1,3 +1,4 @@
+using DEMOOutOfOfficeApp.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -13,6 +14,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public void OnGet()
         {
+            LoadEmployees();
         }
 
         public IActionResult OnPost()
@@ -41,9 +43,9 @@ namespace DEMOOutOfOfficeApp.Pages
             // Przyk³adowe dane, docelowo pobierane z bazy danych
             Employees = new List<EmployeeViewModel>
             {
-                new EmployeeViewModel { ID = 1, FullName = "John Doe", Position = "Software Engineer", Status = "Active" },
-                new EmployeeViewModel { ID = 2, FullName = "Jane Smith", Position = "HR Specialist", Status = "Active" },
-                new EmployeeViewModel { ID = 3, FullName = "Alice Johnson", Position = "Project Manager", Status = "Inactive" }
+                new EmployeeViewModel { ID = 1,Subdivision = "One", FullName = "John Doe", Position = "Software Engineer", Status = "Active",PeoplePartner = "Employee",OutOfOfficeBalance= 23 ,Photo = "placeholder.jpg" },
+                new EmployeeViewModel { ID = 2,Subdivision = "Two", FullName = "Jane Smith", Position = "HR Specialist", Status = "Active",PeoplePartner="HR Manager ", OutOfOfficeBalance = 34,Photo = "placeholder.jpg" },
+                new EmployeeViewModel { ID = 3,Subdivision = "Four" ,FullName = "Alice Johnson", Position = "Project Manager", Status = "Inactive",PeoplePartner="Project Manager ",OutOfOfficeBalance = 32, Photo = "placeholder.jpg" }
             };
 
             if (!string.IsNullOrEmpty(SearchTerm))
@@ -75,9 +77,14 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             public int ID { get; set; }
             public string FullName { get; set; }
+            public string Subdivision { get; set; }
             public string Position { get; set; }
             public string Status { get; set; }
+            public string PeoplePartner { get; set; }
+
+            public int OutOfOfficeBalance { get; set; }
+            public string Photo { get; set; }
         }
+
     }
 }
-

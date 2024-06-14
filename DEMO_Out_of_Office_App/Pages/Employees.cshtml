@@ -16,26 +16,36 @@
         <thead>
             <tr>
                 <th>
-                    <a asp-page="./Employees" asp-route-sortOrder="@Model.NameSort">Name</a>
+                    <a asp-page="./Employees" asp-route-sortOrder="@Model.NameSort">Full name</a>
                 </th>
+                <th>Subdivision</th>
                 <th>Position</th>
                 <th>Status</th>
+                <th>People Partner</th>
+                <th>OutOfOfficeBalance</th>
+                <th>Photo</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-          @*   @foreach (var employee in Model.Employees)
+            @foreach (var employee in Model.Employees)
             {
                 <tr>
                     <td>@employee.FullName</td>
+                    <td>@employee.Subdivision</td>
                     <td>@employee.Position</td>
                     <td>@employee.Status</td>
+                    <td>@employee.PeoplePartner</td>
+                    <td>@employee.OutOfOfficeBalance</td>
+                    <td>
+                        <img src="~/images/@employee.Photo" alt="Photo of @employee.FullName" width="50" height="50" />
+                    </td>
                     <td>
                         <button type="submit" name="edit" value="@employee.ID" class="btn btn-primary btn-sm">Edit</button>
                         <button type="submit" name="deactivate" value="@employee.ID" class="btn btn-danger btn-sm">Deactivate</button>
                     </td>
                 </tr>
-            } *@
+            }
         </tbody>
     </table>
 </form>
