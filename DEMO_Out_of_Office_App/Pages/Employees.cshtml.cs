@@ -34,7 +34,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
             await LoadEmployees();
 
-            SortEmployees();
+            //SortEmployees();
         }
 
         private void SortEmployees()

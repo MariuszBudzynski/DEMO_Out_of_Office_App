@@ -4,6 +4,8 @@
     ViewData["Title"] = "Employees";
 }
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+
 <h1>Employees</h1>
 
 <form method="get">
@@ -11,97 +13,49 @@
     <button type="submit">Search</button>
 </form>
 
-<form method="post">
-    <table class="table">
-        <thead>
+<table id="employeesTable" class="display">
+    <thead>
+        <tr>
+            <th>Full name</th>
+            <th>Subdivision</th>
+            <th>Position</th>
+            <th>Status</th>
+            <th>People Partner</th>
+            <th>OutOfOfficeBalance</th>
+            <th>Photo</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model.Employees)
+        {
             <tr>
-                <th>
-                    <a asp-page="./Employees"
-                       asp-route-SortBy="FullName"
-                       asp-route-SortDirection="@(Model.SortBy == "FullName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
-                        Full name @if (Model.SortBy == "FullName")
-                        {
-                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
-                        }
-                    </a>
-                </th>
-                <th>
-                    <a asp-page="./Employees"
-                       asp-route-SortBy="SubdivisionName"
-                       asp-route-SortDirection="@(Model.SortBy == "SubdivisionName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
-                        Subdivision @if (Model.SortBy == "SubdivisionName")
-                        {
-                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
-                        }
-                    </a>
-                </th>
-                <th>
-                    <a asp-page="./Employees"
-                       asp-route-SortBy="PositionName"
-                       asp-route-SortDirection="@(Model.SortBy == "PositionName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
-                        Position @if (Model.SortBy == "PositionName")
-                        {
-                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
-                        }
-                    </a>
-                </th>
-                <th>
-                    <a asp-page="./Employees"
-                       asp-route-SortBy="StatusName"
-                       asp-route-SortDirection="@(Model.SortBy == "StatusName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
-                        Status @if (Model.SortBy == "StatusName")
-                        {
-                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
-                        }
-                    </a>
-                </th>
-                <th>
-                    <a asp-page="./Employees"
-                       asp-route-SortBy="PeoplePartnerName"
-                       asp-route-SortDirection="@(Model.SortBy == "PeoplePartnerName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
-                        People Partner @if (Model.SortBy == "PeoplePartnerName")
-                        {
-                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
-                        }
-                    </a>
-                </th>
-                <th>
-                    <a asp-page="./Employees"
-                       asp-route-SortBy="OutOfOfficeBalance"
-                       asp-route-SortDirection="@(Model.SortBy == "OutOfOfficeBalance" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
-                        OutOfOfficeBalance @if (Model.SortBy == "OutOfOfficeBalance")
-                        {
-                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
-                        }
-                    </a>
-                </th>
-                <th>Photo</th>
-                <th>Actions</th>
+                <td>@employee.FullName</td>
+                <td>@employee.SubdivisionName</td>
+                <td>@employee.PositionName</td>
+                <td>@employee.StatusName</td>
+                <td>@employee.PeoplePartnerName</td>
+                <td>@employee.OutOfOfficeBalance</td>
+                <td>
+                    <img src="~/images/@employee.Photo" alt="Photo of @employee.FullName" width="50" height="50" />
+                </td>
+                <td>
+                    <button type="submit" name="edit" value="@employee.ID" class="btn btn-primary btn-sm">Edit</button>
+                    <button type="submit" name="deactivate" value="@employee.ID" class="btn btn-danger btn-sm">Deactivate</button>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var employee in Model.Employees)
-            {
-                <tr>
-                    <td>@employee.FullName</td>
-                    <td>@employee.SubdivisionName</td>
-                    <td>@employee.PositionName</td>
-                    <td>@employee.StatusName</td>
-                    <td>@employee.PeoplePartnerName</td>
-                    <td>@employee.OutOfOfficeBalance</td>
-                    <td>
-                        <img src="~/images/@employee.Photo" alt="Photo of @employee.FullName" width="50" height="50" />
-                    </td>
-                    <td>
-                        <button type="submit" name="edit" value="@employee.ID" class="btn btn-primary btn-sm">Edit</button>
-                        <button type="submit" name="deactivate" value="@employee.ID" class="btn btn-danger btn-sm">Deactivate</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</form>
+        }
+    </tbody>
+</table>
 
 <form method="post">
     <button type="submit" name="add" value="new" class="btn btn-success">Add Employee</button>
 </form>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+        $('#employeesTable').DataTable();
+    });
+    </script>
+}
