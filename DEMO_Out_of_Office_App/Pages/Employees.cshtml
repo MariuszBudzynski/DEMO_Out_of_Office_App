@@ -15,13 +15,66 @@
     <table class="table">
         <thead>
             <tr>
-                @* <th>Full name</th> *@
-                <th><a asp-page="./Employees" asp-route-NameSort="@(Model.NameSort == "name_desc" ? "" : "name_desc")">Full name</a></th>
-                <th>Subdivision</th>
-                <th>Position</th>
-                <th>Status</th>
-                <th>People Partner</th>
-                <th>OutOfOfficeBalance</th>
+                <th>
+                    <a asp-page="./Employees"
+                       asp-route-SortBy="FullName"
+                       asp-route-SortDirection="@(Model.SortBy == "FullName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
+                        Full name @if (Model.SortBy == "FullName")
+                        {
+                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Employees"
+                       asp-route-SortBy="SubdivisionName"
+                       asp-route-SortDirection="@(Model.SortBy == "SubdivisionName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
+                        Subdivision @if (Model.SortBy == "SubdivisionName")
+                        {
+                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Employees"
+                       asp-route-SortBy="PositionName"
+                       asp-route-SortDirection="@(Model.SortBy == "PositionName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
+                        Position @if (Model.SortBy == "PositionName")
+                        {
+                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Employees"
+                       asp-route-SortBy="StatusName"
+                       asp-route-SortDirection="@(Model.SortBy == "StatusName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
+                        Status @if (Model.SortBy == "StatusName")
+                        {
+                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Employees"
+                       asp-route-SortBy="PeoplePartnerName"
+                       asp-route-SortDirection="@(Model.SortBy == "PeoplePartnerName" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
+                        People Partner @if (Model.SortBy == "PeoplePartnerName")
+                        {
+                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Employees"
+                       asp-route-SortBy="OutOfOfficeBalance"
+                       asp-route-SortDirection="@(Model.SortBy == "OutOfOfficeBalance" ? (Model.SortDirection == "asc" ? "desc" : "asc") : "asc")">
+                        OutOfOfficeBalance @if (Model.SortBy == "OutOfOfficeBalance")
+                        {
+                            <span>@(Model.SortDirection == "asc" ? "▲" : "▼")</span>
+                        }
+                    </a>
+                </th>
                 <th>Photo</th>
                 <th>Actions</th>
             </tr>
