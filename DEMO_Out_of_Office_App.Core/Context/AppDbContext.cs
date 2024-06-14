@@ -61,10 +61,10 @@ namespace DEMOOutOfOfficeApp.Core.Context
 				.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<Role>().HasData(
-				new Role { ID = 1,UserRole = UserRole.Employee, DescriptionOfMainTasks = "Creates a leave request" },
-				new Role { ID = 2,UserRole = UserRole.HRManager, DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests" },
-				new Role { ID = 3,UserRole = UserRole.ProjectManager, DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests" },
-				new Role { ID = 4,UserRole = UserRole.Administrator, DescriptionOfMainTasks = "Grants access rights\n Manages all data" }		
+				new Role { ID = 1,UserRole = UserRole.Employee,UserRoleDescription = UserRole.Employee.ToString(), DescriptionOfMainTasks = "Creates a leave request" },
+				new Role { ID = 2,UserRole = UserRole.HRManager,UserRoleDescription = UserRole.HRManager.ToString(), DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests" },
+				new Role { ID = 3,UserRole = UserRole.ProjectManager, UserRoleDescription = UserRole.ProjectManager.ToString(), DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests" },
+				new Role { ID = 4,UserRole = UserRole.Administrator, UserRoleDescription = UserRole.Administrator.ToString(), DescriptionOfMainTasks = "Grants access rights\n Manages all data" }		
 			);
 
             modelBuilder.Entity<Subdivision>().HasData(
@@ -82,9 +82,9 @@ namespace DEMOOutOfOfficeApp.Core.Context
             );
 
             modelBuilder.Entity<EmployeeStatus>().HasData(
-               new EmployeeStatus { ID = 1, StatusId = Status.New },
-               new EmployeeStatus { ID = 2, StatusId = Status.Active },
-               new EmployeeStatus { ID = 3, StatusId = Status.Inactive }
+               new EmployeeStatus { ID = 1, StatusId = Status.New,StatusDescription = Status.New.ToString() },
+               new EmployeeStatus { ID = 2, StatusId = Status.Active,StatusDescription = Status.Active.ToString() },
+               new EmployeeStatus { ID = 3, StatusId = Status.Inactive , StatusDescription = Status.Inactive.ToString() }
            );
 
             modelBuilder.Entity<Employee>().HasData(

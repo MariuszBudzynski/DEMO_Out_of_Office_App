@@ -11,8 +11,10 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 
 		[Required]
 		public UserRole UserRole { get; set; }
-
 		[Required]
+        public string UserRoleDescription { get; set; }
+
+        [Required]
 		public string DescriptionOfMainTasks { get; set; }
 	}
 }
