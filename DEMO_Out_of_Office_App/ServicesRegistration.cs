@@ -18,7 +18,7 @@ namespace DEMOOutOfOfficeApp
 
 			services.AddRazorPages(options =>
 			{
-				options.Conventions.AuthorizeFolder("/");
+                options.Conventions.AuthorizeFolder("/");
 				options.Conventions.AllowAnonymousToPage("/Login");
 			});
 

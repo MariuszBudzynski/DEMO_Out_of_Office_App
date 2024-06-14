@@ -9,9 +9,11 @@ using System.Text;
 using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
+    [AllowAnonymous]
     public class LoginModel : PageModel
     {
         ////move the code after proper tests
@@ -56,7 +58,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
                 await HttpContext.SignInAsync("CookieAuthentication", new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Employees");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");

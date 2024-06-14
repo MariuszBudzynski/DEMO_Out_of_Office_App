@@ -24,4 +24,9 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+app.MapGet("/", async context => {
+    context.Response.Redirect("/Login");
+    await Task.CompletedTask;
+});
+
 app.Run();

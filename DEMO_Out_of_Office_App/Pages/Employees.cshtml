@@ -1,0 +1,45 @@
+﻿@page
+@model DEMOOutOfOfficeApp.Pages.EmployeesModel
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<h1>Employees</h1>
+
+<form method="get">
+    <input type="text" name="SearchTerm" value="@Model.SearchTerm" placeholder="Search by name" />
+    <button type="submit">Search</button>
+</form>
+
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-page="./Employees" asp-route-sortOrder="@Model.NameSort">Name</a>
+                </th>
+                <th>Position</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+          @*   @foreach (var employee in Model.Employees)
+            {
+                <tr>
+                    <td>@employee.FullName</td>
+                    <td>@employee.Position</td>
+                    <td>@employee.Status</td>
+                    <td>
+                        <button type="submit" name="edit" value="@employee.ID" class="btn btn-primary btn-sm">Edit</button>
+                        <button type="submit" name="deactivate" value="@employee.ID" class="btn btn-danger btn-sm">Deactivate</button>
+                    </td>
+                </tr>
+            } *@
+        </tbody>
+    </table>
+</form>
+
+<form method="post">
+    <button type="submit" name="add" value="new" class="btn btn-success">Add Employee</button>
+</form>
