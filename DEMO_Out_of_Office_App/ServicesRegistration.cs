@@ -2,6 +2,10 @@
 using System;
 using DEMOOutOfOfficeApp.Core.Context;
 using Microsoft.EntityFrameworkCore;
+using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
+using DEMOOutOfOfficeApp.Core.Repository;
+using DEMOOutOfOfficeApp.Core.UseCases;
+using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 
 namespace DEMOOutOfOfficeApp
 {
@@ -33,6 +37,9 @@ namespace DEMOOutOfOfficeApp
 			
 				options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection"))
 			);
+
+			services.AddScoped<IRepository, Repository>();
+			services.AddScoped<IGetAllDataUseCase, GetAllDataUseCase>();
 		}
 	}
 }

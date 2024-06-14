@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using DEMOOutOfOfficeApp.Common;
+using DEMOOutOfOfficeApp.Common.Interfaces;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-	public class ApprovalRequest : IEntityId
+    public class ApprovalRequest : IEntityId
 	{
 		[Key]
 		public int ID { get; set; }

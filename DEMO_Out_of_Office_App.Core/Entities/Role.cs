@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using DEMOOutOfOfficeApp.Common;
 using DEMOOutOfOfficeApp.Common.Enums;
+using DEMOOutOfOfficeApp.Common.Interfaces;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-	public class Role : IEntityId
+    public class Role : IEntityId
 	{
 		[Key]
 		public int ID { get; set; }

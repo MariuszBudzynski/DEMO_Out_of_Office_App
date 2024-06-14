@@ -1,10 +1,10 @@
-﻿using DEMOOutOfOfficeApp.Common;
-using DEMOOutOfOfficeApp.Common.Enums;
+﻿using DEMOOutOfOfficeApp.Common.Enums;
+using DEMOOutOfOfficeApp.Common.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-	public class EmployeeStatus : IEntityId
+    public class EmployeeStatus : IEntityId
 	{
 		[Key]
 		public int ID { get; set; }

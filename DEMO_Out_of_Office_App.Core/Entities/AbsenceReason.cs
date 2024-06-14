@@ -1,9 +1,9 @@
-﻿using DEMOOutOfOfficeApp.Common;
+﻿using DEMOOutOfOfficeApp.Common.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-	public class AbsenceReason : IEntityId
+    public class AbsenceReason : IEntityId
 	{
 		[Key]
 		public int ID { get; set; }

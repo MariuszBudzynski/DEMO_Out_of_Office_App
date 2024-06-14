@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using DEMOOutOfOfficeApp.Common;
+using DEMOOutOfOfficeApp.Common.Interfaces;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-	public class Project : IEntityId
+    public class Project : IEntityId
 	{
 		[Key]
 		public int ID { get; set; }

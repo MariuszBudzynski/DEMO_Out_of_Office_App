@@ -6,22 +6,25 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
+using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
+using DEMOOutOfOfficeApp.Core.Entities;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
     public class LoginModel : PageModel
     {
         ////move the code after proper tests
-        private readonly AppDbContext _context;
+        private readonly IGetAllDataUseCase _getAllDataUseCase;
 
         [BindProperty]
         public string Username { get; set; }
         [BindProperty]
         public string Password { get; set; }
 
-        public LoginModel(AppDbContext context)
+        public LoginModel(IGetAllDataUseCase getAllDataUseCase)
         {
-            _context = context;
+            _getAllDataUseCase = getAllDataUseCase;
         }
 
         public void OnGet()
@@ -32,7 +35,10 @@ namespace DEMOOutOfOfficeApp.Pages
         //Loging Authentication mechanism
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = _context.Users.SingleOrDefault(u => u.Username == Username && u.PasswordHash == GetMd5Hash(Password));
+            var user = (await _getAllDataUseCase.ExecuteAsync<User>()).SingleOrDefault(u => u.Username == Username && u.PasswordHash == GetMd5Hash(Password));
+
+            //var user = _context.Users.SingleOrDefault(u => u.Username == Username && u.PasswordHash == GetMd5Hash(Password));
+
             if (user != null)
             {
                 var claims = new List<Claim>

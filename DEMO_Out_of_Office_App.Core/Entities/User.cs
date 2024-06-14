@@ -1,15 +1,15 @@
-﻿using DEMOOutOfOfficeApp.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DEMOOutOfOfficeApp.Common.Interfaces;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-    public class User : IEntityId
+    public class User : IEntityId, IEmployeeID, IUsername, IPasswordHash
     {
         [Key]
         public int ID { get; set; }
