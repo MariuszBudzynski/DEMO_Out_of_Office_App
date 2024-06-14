@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-    public class Employee : IEntityId
-	{
+    public class Employee : IEntityId,IFullName, ISubdivision, IPosition, IStatus, IPeoplePartner, IOutOfOfficeBalance, IPhoto
+    {
 		[Key]
 		public int ID { get; set; }
 
 		[Required]
-		public string FullName { get; set; }
+		public string? FullName { get; set; }
 
 		[Required]
 		[ForeignKey("Subdivision")]
@@ -31,13 +31,13 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		[Required]
 		public decimal OutOfOfficeBalance { get; set; }
 
-		public string Photo { get; set; }
+		public string? Photo { get; set; }
 
-		public virtual Subdivision Subdivision { get; set; }
-		public virtual Position Position { get; set; }
-		public virtual EmployeeStatus Status { get; set; }
-		public virtual Role PeoplePartner { get; set; }
-		public virtual ICollection<ApprovalRequest> ApprovalRequests { get; set; }
-		public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
+		public  Subdivision? Subdivision { get; set; }
+		public  Position? Position { get; set; }
+		public EmployeeStatus? Status { get; set; }
+		public  Role? PeoplePartner { get; set; }
+		public  ICollection<ApprovalRequest>? ApprovalRequests { get; set; }
+		public  ICollection<LeaveRequest>? LeaveRequests { get; set; }
 	}
 }

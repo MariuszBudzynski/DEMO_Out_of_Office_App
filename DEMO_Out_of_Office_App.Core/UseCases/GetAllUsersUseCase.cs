@@ -4,11 +4,11 @@ using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 
 namespace DEMOOutOfOfficeApp.Core.UseCases
 {
-    public class GetAllDataUseCase : IGetAllDataUseCase
+    public class GetAllUsersUseCase : IGetAllUsersUseCase
     {
         private readonly IRepository _repository;
 
-        public GetAllDataUseCase(IRepository repository)
+        public GetAllUsersUseCase(IRepository repository)
         {
             _repository = repository;
         }

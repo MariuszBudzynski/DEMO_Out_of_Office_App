@@ -17,29 +17,23 @@ namespace DEMOOutOfOfficeApp.Pages
     public class LoginModel : PageModel
     {
         ////move the code after proper tests
-        private readonly IGetAllDataUseCase _getAllDataUseCase;
+        private readonly IGetAllUsersUseCase _getAllDataUseCase;
 
         [BindProperty]
         public string Username { get; set; }
         [BindProperty]
         public string Password { get; set; }
 
-        public LoginModel(IGetAllDataUseCase getAllDataUseCase)
+        public LoginModel(IGetAllUsersUseCase getAllDataUseCase)
         {
             _getAllDataUseCase = getAllDataUseCase;
         }
 
-        public void OnGet()
-        {
-            
-        }
-
+       
         //Loging Authentication mechanism
         public async Task<IActionResult> OnPostAsync()
         {
             var user = (await _getAllDataUseCase.ExecuteAsync<User>()).SingleOrDefault(u => u.Username == Username && u.PasswordHash == GetMd5Hash(Password));
-
-            //var user = _context.Users.SingleOrDefault(u => u.Username == Username && u.PasswordHash == GetMd5Hash(Password));
 
             if (user != null)
             {

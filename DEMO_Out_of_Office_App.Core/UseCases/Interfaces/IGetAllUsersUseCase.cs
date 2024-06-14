@@ -2,7 +2,7 @@
 
 namespace DEMOOutOfOfficeApp.Core.UseCases.Interfaces
 {
-    public interface IGetAllDataUseCase
+    public interface IGetAllUsersUseCase
     {
         Task<IEnumerable<T>> ExecuteAsync<T>() where T : class, IEntityId, IEmployeeID, IUsername, IPasswordHash;
     }
