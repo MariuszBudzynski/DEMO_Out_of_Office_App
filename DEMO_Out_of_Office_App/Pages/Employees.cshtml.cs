@@ -1,6 +1,7 @@
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.DTOS;
+using DEMOOutOfOfficeApp.Services.SortingService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -15,36 +16,22 @@ namespace DEMOOutOfOfficeApp.Pages
 
         [BindProperty(SupportsGet = true)]
         public string SearchTerm { get; set; }
-        
+        [BindProperty(SupportsGet = true)]
         public string NameSort { get; set; }
 
-        public EmployeesModel(IGetAllEmployeesUseCase getAllEmployeesUseCase)
+        public EmployeesModel(IGetAllEmployeesUseCase getAllEmployeesUseCase,SortingService sortingService)
         {
             _getAllEmployeesUseCase = getAllEmployeesUseCase;
+            NameSort = sortingService.NameSort;
         }
         public async Task OnGetAsync()
         {
            await LoadEmployees();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            //if (Request.Form.ContainsKey("add"))
-            //{
-            //    return RedirectToPage("./AddEmployee");
-            //}
-            //if (Request.Form.ContainsKey("edit"))
-            //{
-            //    var id = int.Parse(Request.Form["edit"]);
-            //    return RedirectToPage("./EditEmployee", new { id });
-            //}
-            //if (Request.Form.ContainsKey("deactivate"))
-            //{
-            //    var id = int.Parse(Request.Form["deactivate"]);
-            //    DeactivateEmployee(id);
-            //}
-
-            //LoadEmployees();
+            //await LoadEmployees();
             return Page();
         }
 
@@ -63,20 +50,14 @@ namespace DEMOOutOfOfficeApp.Pages
                 ))
                 .ToList();
 
-
-            if (!string.IsNullOrEmpty(SearchTerm))
-            {
-                Employees = Employees.Where(e => e.FullName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-
-            if (NameSort == "name_desc")
-            {
-                Employees = Employees.OrderByDescending(e => e.FullName).ToList();
-            }
-            else
-            {
-                Employees = Employees.OrderBy(e => e.FullName).ToList();
-            }
+                if (NameSort == "name_desc")
+                {
+                    Employees = Employees.OrderByDescending(e => e.FullName).ToList();
+                }
+                else
+                {
+                    Employees = Employees.OrderBy(e => e.FullName).ToList();
+                }
         }
 
         private void DeactivateEmployee(int id)

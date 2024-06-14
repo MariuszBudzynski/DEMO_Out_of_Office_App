@@ -6,6 +6,7 @@ using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
 using DEMOOutOfOfficeApp.Core.Repository;
 using DEMOOutOfOfficeApp.Core.UseCases;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
+using DEMOOutOfOfficeApp.Services.SortingService;
 
 namespace DEMOOutOfOfficeApp
 {
@@ -41,6 +42,7 @@ namespace DEMOOutOfOfficeApp
 			services.AddScoped<IRepository, Repository>();
 			services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
 			services.AddScoped<IGetAllEmployeesUseCase, GetAllEmployeesUseCase>();
-		}
+            services.AddSingleton<SortingService>();
+        }
 	}
 }

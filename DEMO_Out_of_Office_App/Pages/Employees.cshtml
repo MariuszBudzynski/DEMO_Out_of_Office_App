@@ -15,9 +15,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>
-                    <a asp-page="./Employees" asp-route-sortOrder="@Model.NameSort">Full name</a>
-                </th>
+                @* <th>Full name</th> *@
+                <th><a asp-page="./Employees" asp-route-NameSort="@(Model.NameSort == "name_desc" ? "" : "name_desc")">Full name</a></th>
                 <th>Subdivision</th>
                 <th>Position</th>
                 <th>Status</th>
