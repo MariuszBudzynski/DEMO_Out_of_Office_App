@@ -29,6 +29,9 @@ namespace DEMOOutOfOfficeApp.Core.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            var placeholderPhoto = "wwwroot/images/Test.jpg";
+            byte[] placeholderPhotoConversion = File.ReadAllBytes(placeholderPhoto);
+
             modelBuilder.Entity<LeaveRequest>()
                 .HasOne(lr => lr.Status)
                 .WithMany(ls => ls.LeaveRequests)
@@ -87,12 +90,12 @@ namespace DEMOOutOfOfficeApp.Core.Context
            );
 
             modelBuilder.Entity<Employee>().HasData(
-                new Employee { ID = 1, FullName = "John Doe", SubdivisionID = 1, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 10.0m, Photo = GetPlaceholderPhoto() },
-                new Employee { ID = 2, FullName = "Jane Smith", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 15.0m, Photo = GetPlaceholderPhoto() },
-                new Employee { ID = 3, FullName = "Alice Johnson", SubdivisionID = 3, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 12.0m, Photo = GetPlaceholderPhoto() },
-                new Employee { ID = 4, FullName = "Bob Brown", SubdivisionID = 4, PositionID = 4, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 8.0m, Photo = GetPlaceholderPhoto() },
-                new Employee { ID = 5, FullName = "Charlie Davis", SubdivisionID = 1, PositionID = 2, StatusID = 2, PeoplePartnerID = 3, OutOfOfficeBalance = 20.0m, Photo = GetPlaceholderPhoto() },
-                new Employee { ID = 6, FullName = "Diana Evans", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 18.0m, Photo = GetPlaceholderPhoto() }
+                new Employee { ID = 1, FullName = "John Doe", SubdivisionID = 1, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 10.0m, Photo = placeholderPhotoConversion },
+                new Employee { ID = 2, FullName = "Jane Smith", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 15.0m },
+                new Employee { ID = 3, FullName = "Alice Johnson", SubdivisionID = 3, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 12.0m },
+                new Employee { ID = 4, FullName = "Bob Brown", SubdivisionID = 4, PositionID = 4, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 8.0m },
+                new Employee { ID = 5, FullName = "Charlie Davis", SubdivisionID = 1, PositionID = 2, StatusID = 2, PeoplePartnerID = 3, OutOfOfficeBalance = 20.0m },
+                new Employee { ID = 6, FullName = "Diana Evans", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 18.0m }
             );
 
             modelBuilder.Entity<User>().HasData(
@@ -114,12 +117,6 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
                 return Convert.ToHexString(hashBytes);
             }
-        }
-
-        private byte[] GetPlaceholderPhoto()
-        {
-            // Example placeholder photo data (use actual photo byte array in production)
-            return new byte[] { 0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01, 0x01, 0x01, 0x00, 0x60, 0x00, 0x60, 0x00, 0x00, 0xFF, 0xDB, 0x00, 0x43, 0x00 };
         }
     }
 }

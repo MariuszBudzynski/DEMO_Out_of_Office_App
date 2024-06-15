@@ -29,7 +29,16 @@
                     <td>@employee.PeoplePartnerName</td>
                     <td>@employee.OutOfOfficeBalance</td>
                     <td>
-                        <img src="~/images" alt="Photo of @employee.FullName" width="50" height="50" />
+                        @if (employee.Photo != null && employee.Photo.Length > 0)
+                        {
+                            var imageBase64 = Convert.ToBase64String(employee.Photo);
+                            var imageSrc = string.Format("data:image/png;base64,{0}", imageBase64);
+                            <img src="@imageSrc" alt="Photo of @employee.FullName" width="50" height="50" />
+                        }
+                        else
+                        {
+                            <span>No Photo Available</span>
+                        }
                     </td>
                     <td>
                         <form method="post" asp-page-handler="Deactivate">

@@ -59,7 +59,8 @@ namespace DEMOOutOfOfficeApp.Pages
                 e.Position.Name,
                 e.Status.StatusDescription,
                 e.PeoplePartner.UserRoleDescription,
-                e.OutOfOfficeBalance
+                e.OutOfOfficeBalance,
+                e.Photo
             )).ToList();
 
             return employeeDTOs;
