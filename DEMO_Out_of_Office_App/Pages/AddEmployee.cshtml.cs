@@ -1,4 +1,7 @@
 using DEMOOutOfOfficeApp.Core.Entities;
+using DEMOOutOfOfficeApp.Core.Repository;
+using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
+using DEMOOutOfOfficeApp.Core.UseCases;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,6 +14,7 @@ namespace DEMOOutOfOfficeApp.Pages
         private readonly IGetAllPositionsUseCase _getAllPositionsUseCase;
         private readonly IGetAllRolesUseCase _getAllRolesUse;
         private readonly IGetAllStatusesUseCase _getAllStatusesUseCase;
+        private readonly ISaveSingleEmployeeUseCase _saveSingleEmployeeUseCase;
 
         [BindProperty]
         public Employee Employee { get; set; }
@@ -18,21 +22,23 @@ namespace DEMOOutOfOfficeApp.Pages
         [BindProperty]
         public IFormFile Photo { get; set; }
 
-        public List<Subdivision> Subdivisions { get; set; }
-        public List<Position> Positions { get; set; }
-        public List<Role> Roles { get; set; }
-        public List<EmployeeStatus> Statuses { get; set; }
+        public List<Subdivision> Subdivisions { get; set; } = new List<Subdivision>();
+        public List<Position> Positions { get; set; } = new List<Position>();
+        public List<Role> Roles { get; set; } = new List<Role>();
+        public List<EmployeeStatus> Statuses { get; set; } = new List<EmployeeStatus>();
 
 
         public AddEmployeeModel(IGetAllSubdivisionsUseCase getAllSubdivisionsUseCase,
                                 IGetAllPositionsUseCase getAllPositionsUseCase,
                                 IGetAllRolesUseCase getAllRolesUse,
-                                IGetAllStatusesUseCase getAllStatusesUseCase)
+                                IGetAllStatusesUseCase getAllStatusesUseCase,
+                                ISaveSingleEmployeeUseCase saveSingleEmployeeUseCase)
         {
             _getAllSubdivisionsUseCase = getAllSubdivisionsUseCase;
             _getAllPositionsUseCase = getAllPositionsUseCase;
             _getAllRolesUse = getAllRolesUse;
             _getAllStatusesUseCase = getAllStatusesUseCase;
+            _saveSingleEmployeeUseCase = saveSingleEmployeeUseCase;
         }
         public async Task OnGet()
         {
@@ -44,14 +50,6 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                await LoadSubdivisionsOptions();
-                await LoadPositionsOptions();
-                await LoadPeoplePartnerOptions();
-                await LoadStatusessOptions();
-                return Page();
-            }
 
             if (Photo != null && Photo.Length > 0)
             {
@@ -61,20 +59,7 @@ namespace DEMOOutOfOfficeApp.Pages
                     Employee.Photo = memoryStream.ToArray();
                 }
             }
-
-
-            var employee = new Employee()
-            {
-                FullName = Employee.FullName,
-                SubdivisionID = Employee.SubdivisionID,
-                PositionID = Employee.PositionID,
-                StatusID = Employee.StatusID,
-                PeoplePartnerID = Employee.PeoplePartnerID,
-                OutOfOfficeBalance = Employee.OutOfOfficeBalance,
-                Photo =Employee.Photo
-            };
-
-
+            await _saveSingleEmployeeUseCase.ExecuteAsync(Employee);
 
             return RedirectToPage("/Employees");
         }

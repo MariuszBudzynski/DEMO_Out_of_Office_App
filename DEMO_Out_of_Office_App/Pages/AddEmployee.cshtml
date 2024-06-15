@@ -6,16 +6,16 @@
 
 <h1 style="text-align: center">Add Employee</h1>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="FullName">Full Name</label>
-        <input type="text" id="FullName" name="FullName" class="form-control" asp-for="Employee.FullName" required />
+        <input type="text" id="FullName" name="Employee.FullName" class="form-control" asp-for="Employee.FullName" required />
         <span asp-validation-for="Employee.FullName" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label for="Subdivision">Subdivision</label>
-        <select id="Subdivision" name="Subdivision" class="form-control" asp-for="Employee.SubdivisionID" required>
+        <select id="Subdivision" name="Employee.SubdivisionID" class="form-control" asp-for="Employee.SubdivisionID" required>
             <option value="">Select Subdivision</option>
             @foreach (var option in Model.Subdivisions)
             {
@@ -27,7 +27,7 @@
 
     <div class="form-group">
         <label for="Position">Position</label>
-        <select id="Position" name="Position" class="form-control" asp-for="Employee.PositionID" required>
+        <select id="Position" name="Employee.PositionID" class="form-control" asp-for="Employee.PositionID" required>
             <option value="">Select Position</option>
             @foreach (var option in Model.Positions)
             {
@@ -39,7 +39,7 @@
 
     <div class="form-group">
         <label for="Status">Status</label>
-        <select id="Status" name="Status" class="form-control" asp-for="Employee.StatusID" required>
+        <select id="Status" name="Employee.StatusID" class="form-control" asp-for="Employee.StatusID" required>
             <option value="">Select Status</option>
             @foreach (var option in Model.Statuses)
             {
@@ -51,7 +51,7 @@
 
     <div class="form-group">
         <label for="PeoplePartner">People Partner</label>
-        <select id="PeoplePartner" name="PeoplePartner" class="form-control" asp-for="Employee.PeoplePartnerID" required>
+        <select id="PeoplePartner" name="Employee.PeoplePartnerID" class="form-control" asp-for="Employee.PeoplePartnerID" required>
             <option value="">Select People Partner</option>
             @foreach (var option in Model.Roles)
             {
@@ -63,14 +63,14 @@
 
     <div class="form-group">
         <label for="OutOfOfficeBalance">Out-of-Office Balance</label>
-        <input type="number" id="OutOfOfficeBalance" name="OutOfOfficeBalance" class="form-control" asp-for="Employee.OutOfOfficeBalance" required />
+        <input type="number" id="OutOfOfficeBalance" name="Employee.OutOfOfficeBalance" class="form-control" asp-for="Employee.OutOfOfficeBalance" required />
         <span asp-validation-for="Employee.OutOfOfficeBalance" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label for="Photo">Photo</label>
-        <input type="file" id="Photo" name="Photo" class="form-control-file custom-file-input" asp-for="Employee.Photo" />
-        <span asp-validation-for="Employee.Photo" class="text-danger"></span>
+        <input type="file" id="Photo" name="Photo" class="form-control-file" />
+        <span asp-validation-for="Photo" class="text-danger"></span>
     </div>
 
     <div class="form-group">

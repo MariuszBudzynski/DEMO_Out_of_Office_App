@@ -27,6 +27,17 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         }
 
+        public async Task SaveEmployeeData(Employee employee)
+        {
+            var data = await GetDataById<Employee>(employee.ID);
+
+            if (data == null)
+            {
+                await _appDbContext.AddAsync(employee);
+                await _appDbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task UpdateEmployee(Employee employee)
         {
             _appDbContext.Update(employee);
