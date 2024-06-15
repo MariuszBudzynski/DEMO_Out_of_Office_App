@@ -39,6 +39,8 @@ namespace DEMOOutOfOfficeApp
 			services.AddScoped<IRepository, Repository>();
 			services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
 			services.AddScoped<IGetAllEmployeesUseCase, GetAllEmployeesUseCase>();
+			services.AddScoped<IGetDataByIdUseCase, GetDataByIdUseCase>();
+			services.AddScoped<IUpdateEmployeeUseCase, UpdateEmployeeUseCase>();
         }
 	}
 }

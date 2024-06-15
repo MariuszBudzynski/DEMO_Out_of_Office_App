@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240613105847_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240615084846_EntityUpdate")]
+    partial class EntityUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,7 +111,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Photo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PositionID")
@@ -134,6 +133,74 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasIndex("SubdivisionID");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            FullName = "John Doe",
+                            OutOfOfficeBalance = 10.0m,
+                            PeoplePartnerID = 1,
+                            Photo = "john_doe.jpg",
+                            PositionID = 1,
+                            StatusID = 2,
+                            SubdivisionID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            FullName = "Jane Smith",
+                            OutOfOfficeBalance = 15.0m,
+                            PeoplePartnerID = 2,
+                            Photo = "jane_smith.jpg",
+                            PositionID = 3,
+                            StatusID = 2,
+                            SubdivisionID = 2
+                        },
+                        new
+                        {
+                            ID = 3,
+                            FullName = "Alice Johnson",
+                            OutOfOfficeBalance = 12.0m,
+                            PeoplePartnerID = 1,
+                            Photo = "alice_johnson.jpg",
+                            PositionID = 1,
+                            StatusID = 2,
+                            SubdivisionID = 3
+                        },
+                        new
+                        {
+                            ID = 4,
+                            FullName = "Bob Brown",
+                            OutOfOfficeBalance = 8.0m,
+                            PeoplePartnerID = 1,
+                            Photo = "bob_brown.jpg",
+                            PositionID = 4,
+                            StatusID = 2,
+                            SubdivisionID = 4
+                        },
+                        new
+                        {
+                            ID = 5,
+                            FullName = "Charlie Davis",
+                            OutOfOfficeBalance = 20.0m,
+                            PeoplePartnerID = 3,
+                            Photo = "charlie_davis.jpg",
+                            PositionID = 2,
+                            StatusID = 2,
+                            SubdivisionID = 1
+                        },
+                        new
+                        {
+                            ID = 6,
+                            FullName = "Diana Evans",
+                            OutOfOfficeBalance = 18.0m,
+                            PeoplePartnerID = 1,
+                            Photo = "diana_evans.jpg",
+                            PositionID = 3,
+                            StatusID = 2,
+                            SubdivisionID = 2
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.EmployeeStatus", b =>
@@ -144,13 +211,36 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("StatusDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
                     b.ToTable("Statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            StatusDescription = "New",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            StatusDescription = "Active",
+                            StatusId = 2
+                        },
+                        new
+                        {
+                            ID = 3,
+                            StatusDescription = "Inactive",
+                            StatusId = 3
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.LeaveRequest", b =>
@@ -224,6 +314,28 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Positions");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "Software Engineer"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Project Manager"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Name = "HR Specialist"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Name = "Marketing Coordinator"
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Project", b =>
@@ -314,6 +426,10 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Property<int>("UserRole")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserRoleDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ID");
 
                     b.ToTable("Roles");
@@ -323,25 +439,29 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         {
                             ID = 1,
                             DescriptionOfMainTasks = "Creates a leave request",
-                            UserRole = 0
+                            UserRole = 1,
+                            UserRoleDescription = "Employee"
                         },
                         new
                         {
                             ID = 2,
                             DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests",
-                            UserRole = 1
+                            UserRole = 2,
+                            UserRoleDescription = "HRManager"
                         },
                         new
                         {
                             ID = 3,
                             DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests",
-                            UserRole = 2
+                            UserRole = 3,
+                            UserRoleDescription = "ProjectManager"
                         },
                         new
                         {
                             ID = 4,
                             DescriptionOfMainTasks = "Grants access rights\n Manages all data",
-                            UserRole = 3
+                            UserRole = 4,
+                            UserRoleDescription = "Administrator"
                         });
                 });
 
@@ -360,6 +480,100 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Subdivisions");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "Finance"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Human Resources"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Name = "Research and Development"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Name = "Marketing"
+                        });
+                });
+
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.User", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            EmployeeID = 1,
+                            PasswordHash = "7C6A180B36896A0A8C02787EEAFB0E4C",
+                            Username = "john.doe"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            EmployeeID = 2,
+                            PasswordHash = "6CB75F652A9B52798EB6CF2201057C73",
+                            Username = "jane.smith"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            EmployeeID = 3,
+                            PasswordHash = "819B0643D6B89DC9B579FDFC9094F28E",
+                            Username = "alice.johnson"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            EmployeeID = 4,
+                            PasswordHash = "34CC93ECE0BA9E3F6F235D4AF979B16C",
+                            Username = "bob.brown"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            EmployeeID = 5,
+                            PasswordHash = "DB0EDD04AAAC4506F7EDAB03AC855D56",
+                            Username = "charlie.davis"
+                        },
+                        new
+                        {
+                            ID = 6,
+                            EmployeeID = 6,
+                            PasswordHash = "218DD27AEBECCECAE69AD8408D9A36BF",
+                            Username = "diana.evans"
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
@@ -509,6 +723,17 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("StatusType");
+                });
+
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.User", b =>
+                {
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.AbsenceReason", b =>

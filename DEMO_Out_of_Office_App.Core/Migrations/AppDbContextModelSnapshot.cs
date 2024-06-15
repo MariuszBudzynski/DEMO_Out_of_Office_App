@@ -108,7 +108,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Photo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PositionID")
@@ -225,19 +224,19 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         {
                             ID = 1,
                             StatusDescription = "New",
-                            StatusId = 0
+                            StatusId = 1
                         },
                         new
                         {
                             ID = 2,
                             StatusDescription = "Active",
-                            StatusId = 1
+                            StatusId = 2
                         },
                         new
                         {
                             ID = 3,
                             StatusDescription = "Inactive",
-                            StatusId = 2
+                            StatusId = 3
                         });
                 });
 
@@ -437,28 +436,28 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         {
                             ID = 1,
                             DescriptionOfMainTasks = "Creates a leave request",
-                            UserRole = 0,
+                            UserRole = 1,
                             UserRoleDescription = "Employee"
                         },
                         new
                         {
                             ID = 2,
                             DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests",
-                            UserRole = 1,
+                            UserRole = 2,
                             UserRoleDescription = "HRManager"
                         },
                         new
                         {
                             ID = 3,
                             DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests",
-                            UserRole = 2,
+                            UserRole = 3,
                             UserRoleDescription = "ProjectManager"
                         },
                         new
                         {
                             ID = 4,
                             DescriptionOfMainTasks = "Grants access rights\n Manages all data",
-                            UserRole = 3,
+                            UserRole = 4,
                             UserRoleDescription = "Administrator"
                         });
                 });

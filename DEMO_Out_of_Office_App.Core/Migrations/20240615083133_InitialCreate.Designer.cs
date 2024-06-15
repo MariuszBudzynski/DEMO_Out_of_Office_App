@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240614063122_AddeDescriptionToFewColummns")]
-    partial class AddeDescriptionToFewColummns
+    [Migration("20240615083133_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,7 +111,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Photo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PositionID")
@@ -228,19 +227,19 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         {
                             ID = 1,
                             StatusDescription = "New",
-                            StatusId = 0
+                            StatusId = 1
                         },
                         new
                         {
                             ID = 2,
                             StatusDescription = "Active",
-                            StatusId = 1
+                            StatusId = 2
                         },
                         new
                         {
                             ID = 3,
                             StatusDescription = "Inactive",
-                            StatusId = 2
+                            StatusId = 3
                         });
                 });
 

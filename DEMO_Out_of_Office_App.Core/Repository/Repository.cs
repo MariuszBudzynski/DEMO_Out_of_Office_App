@@ -21,6 +21,18 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         }
 
+        public async Task<T> GetDataById<T>(int id) where T : class, IEntityId
+        {
+            return await _appDbContext.Set<T>().FirstOrDefaultAsync(e=> e.ID == id);
+
+        }
+
+        public async Task UpdateEmployee(Employee employee)
+        {
+            _appDbContext.Update(employee);
+            await _appDbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()
         {
             return await _appDbContext.Employees

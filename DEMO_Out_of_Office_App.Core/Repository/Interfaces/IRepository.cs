@@ -7,5 +7,7 @@ namespace DEMOOutOfOfficeApp.Core.Repository.Interfaces
     {
         Task<IEnumerable<T>> GetData<T>() where T : class, IEntityId;
         Task<IEnumerable<Employee>> GetEmployeesAsync();
+        Task<T> GetDataById<T>(int id) where T : class, IEntityId;
+        Task UpdateEmployee(Employee employee);
     }
 }

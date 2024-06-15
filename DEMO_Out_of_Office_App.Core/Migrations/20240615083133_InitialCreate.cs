@@ -59,6 +59,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserRole = table.Column<int>(type: "int", nullable: false),
+                    UserRoleDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DescriptionOfMainTasks = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -72,7 +73,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    StatusDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,7 +163,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     StatusID = table.Column<int>(type: "int", nullable: false),
                     PeoplePartnerID = table.Column<int>(type: "int", nullable: false),
                     OutOfOfficeBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -265,6 +267,27 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeID = table.Column<int>(type: "int", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Users_Employees_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalTable: "Employees",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ApprovalRequests",
                 columns: table => new
                 {
@@ -299,14 +322,72 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "ID", "DescriptionOfMainTasks", "UserRole" },
+                table: "Positions",
+                columns: new[] { "ID", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Creates a leave request", 0 },
-                    { 2, "Manages the list of employees\n Approves/rejects requests", 1 },
-                    { 3, "Manages the list of projects\n Approves/rejects requests", 2 },
-                    { 4, "Grants access rights\n Manages all data", 3 }
+                    { 1, "Software Engineer" },
+                    { 2, "Project Manager" },
+                    { 3, "HR Specialist" },
+                    { 4, "Marketing Coordinator" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "ID", "DescriptionOfMainTasks", "UserRole", "UserRoleDescription" },
+                values: new object[,]
+                {
+                    { 1, "Creates a leave request", 0, "Employee" },
+                    { 2, "Manages the list of employees\n Approves/rejects requests", 1, "HRManager" },
+                    { 3, "Manages the list of projects\n Approves/rejects requests", 2, "ProjectManager" },
+                    { 4, "Grants access rights\n Manages all data", 3, "Administrator" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Statuses",
+                columns: new[] { "ID", "StatusDescription", "StatusId" },
+                values: new object[,]
+                {
+                    { 1, "New", 1 },
+                    { 2, "Active", 2 },
+                    { 3, "Inactive", 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Subdivisions",
+                columns: new[] { "ID", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Finance" },
+                    { 2, "Human Resources" },
+                    { 3, "Research and Development" },
+                    { 4, "Marketing" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "ID", "FullName", "OutOfOfficeBalance", "PeoplePartnerID", "Photo", "PositionID", "StatusID", "SubdivisionID" },
+                values: new object[,]
+                {
+                    { 1, "John Doe", 10.0m, 1, "john_doe.jpg", 1, 2, 1 },
+                    { 2, "Jane Smith", 15.0m, 2, "jane_smith.jpg", 3, 2, 2 },
+                    { 3, "Alice Johnson", 12.0m, 1, "alice_johnson.jpg", 1, 2, 3 },
+                    { 4, "Bob Brown", 8.0m, 1, "bob_brown.jpg", 4, 2, 4 },
+                    { 5, "Charlie Davis", 20.0m, 3, "charlie_davis.jpg", 2, 2, 1 },
+                    { 6, "Diana Evans", 18.0m, 1, "diana_evans.jpg", 3, 2, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "ID", "EmployeeID", "PasswordHash", "Username" },
+                values: new object[,]
+                {
+                    { 1, 1, "7C6A180B36896A0A8C02787EEAFB0E4C", "john.doe" },
+                    { 2, 2, "6CB75F652A9B52798EB6CF2201057C73", "jane.smith" },
+                    { 3, 3, "819B0643D6B89DC9B579FDFC9094F28E", "alice.johnson" },
+                    { 4, 4, "34CC93ECE0BA9E3F6F235D4AF979B16C", "bob.brown" },
+                    { 5, 5, "DB0EDD04AAAC4506F7EDAB03AC855D56", "charlie.davis" },
+                    { 6, 6, "218DD27AEBECCECAE69AD8408D9A36BF", "diana.evans" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -388,6 +469,11 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 name: "IX_ProjectStatuses_StatusTypeID",
                 table: "ProjectStatuses",
                 column: "StatusTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_EmployeeID",
+                table: "Users",
+                column: "EmployeeID");
         }
 
         /// <inheritdoc />
@@ -398,6 +484,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "Projects");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "ApprovalRequestStatuses");

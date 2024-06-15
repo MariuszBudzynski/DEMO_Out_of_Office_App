@@ -5,41 +5,45 @@
 }
 
     <h1 style="text-align: center">Employees</h1>
-
-<table id="employeesTable" class="display">
-    <thead>
-        <tr>
-            <th>Full name</th>
-            <th>Subdivision</th>
-            <th>Position</th>
-            <th>Status</th>
-            <th>People Partner</th>
-            <th>OutOfOfficeBalance</th>
-            <th>Photo</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in Model.Employees)
-        {
+    <table id="employeesTable" class="display">
+        <thead>
             <tr>
-                <td>@employee.FullName</td>
-                <td>@employee.SubdivisionName</td>
-                <td>@employee.PositionName</td>
-                <td>@employee.StatusName</td>
-                <td>@employee.PeoplePartnerName</td>
-                <td>@employee.OutOfOfficeBalance</td>
-                <td>
-                    <img src="~/images/@employee.Photo" alt="Photo of @employee.FullName" width="50" height="50" />
-                </td>
-                <td>
-                    <button type="submit" name="edit" value="@employee.ID" class="btn btn-primary btn-sm">Edit</button>
-                    <button type="submit" name="deactivate" value="@employee.ID" class="btn btn-danger btn-sm">Deactivate</button>
-                </td>
+                <th>Full name</th>
+                <th>Subdivision</th>
+                <th>Position</th>
+                <th>Status</th>
+                <th>People Partner</th>
+                <th>OutOfOfficeBalance</th>
+                <th>Photo</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model.Employees)
+            {
+                <tr>
+                    <td>@employee.FullName</td>
+                    <td>@employee.SubdivisionName</td>
+                    <td>@employee.PositionName</td>
+                    <td>@employee.StatusName</td>
+                    <td>@employee.PeoplePartnerName</td>
+                    <td>@employee.OutOfOfficeBalance</td>
+                    <td>
+                        <img src="~/images/@employee.Photo" alt="Photo of @employee.FullName" width="50" height="50" />
+                    </td>
+                    <td>
+                        <form method="post" asp-page-handler="Deactivate">
+                                <input type="hidden" name="employeeID" value="@employee.ID" />
+                                <button type="submit" class="btn btn-danger btn-sm">Deactivate</button>
+                        </form>
+                    <button type="submit" name="edit" value="@employee.ID" class="btn btn-primary btn-sm">Edit</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
 
 <form method="post">
     <button type="submit" name="add" value="new" class="btn btn-success">Add Employee</button>
