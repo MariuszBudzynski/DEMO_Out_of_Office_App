@@ -17,7 +17,7 @@ namespace DEMOOutOfOfficeApp.Pages
     public class LoginModel : PageModel
     {
         ////move the code after proper tests
-        private readonly IGetAllUsersUseCase _getAllDataUseCase;
+        private readonly IGetAllUsersUseCase _getAllUsersUseCase;
 
         [BindProperty]
         public string Username { get; set; }
@@ -26,14 +26,14 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public LoginModel(IGetAllUsersUseCase getAllDataUseCase)
         {
-            _getAllDataUseCase = getAllDataUseCase;
+            _getAllUsersUseCase = getAllDataUseCase;
         }
 
        
         //Loging Authentication mechanism
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = (await _getAllDataUseCase.ExecuteAsync<User>()).SingleOrDefault(u => u.Username == Username && u.PasswordHash == GetMd5Hash(Password));
+            var user = (await _getAllUsersUseCase.ExecuteAsync<User>()).SingleOrDefault(u => u.Username == Username && u.PasswordHash == GetMd5Hash(Password));
 
             if (user != null)
             {

@@ -42,7 +42,11 @@ namespace DEMOOutOfOfficeApp.Pages
             return RedirectToPage();
         }
 
-  
+        public IActionResult OnPostAdd()
+        {
+           return RedirectToPage("/AddEmployee");
+        }
+
 
         private async Task<List<EmployeeDTO>> FetchEmployeesAsync()
         {

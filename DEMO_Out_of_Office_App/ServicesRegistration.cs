@@ -41,6 +41,10 @@ namespace DEMOOutOfOfficeApp
 			services.AddScoped<IGetAllEmployeesUseCase, GetAllEmployeesUseCase>();
 			services.AddScoped<IGetDataByIdUseCase, GetDataByIdUseCase>();
 			services.AddScoped<IUpdateEmployeeUseCase, UpdateEmployeeUseCase>();
+			services.AddScoped<IGetAllSubdivisionsUseCase, GetAllSubdivisionUseCase>();
+			services.AddScoped<IGetAllPositionsUseCase,GetAllPositionsUseCase>();
+			services.AddScoped<IGetAllRolesUseCase, GetAllRolesUseCase>();
+			services.AddScoped<IGetAllStatusesUseCase, GetAllStatusesUseCase>();
         }
 	}
 }

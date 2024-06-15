@@ -20,3 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.equal-width-btn {
+    width: 100%;
+}
