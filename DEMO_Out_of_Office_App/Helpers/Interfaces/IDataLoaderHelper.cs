@@ -9,5 +9,6 @@ namespace DEMOOutOfOfficeApp.Helpers.Interfaces
         Task<List<Role>> LoadRolesAsync();
         Task<List<EmployeeStatus>> LoadStatusesAsync();
         Task<List<Subdivision>> LoadSubdivisionsAsync();
-    }
+        Task<Employee> LoadEmpoloyeeAsync(int id);
+	}
 }

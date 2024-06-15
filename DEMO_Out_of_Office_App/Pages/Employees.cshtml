@@ -45,7 +45,10 @@
                                 <input type="hidden" name="employeeID" value="@employee.ID" />
                             <button type="submit" class="btn btn-danger btn-sm equal-width-btn">Deactivate</button>
                         </form>
-                    <button type="submit" name="edit" value="@employee.ID" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
+                        <form method="post" asp-page-handler="Edit">
+                            <input type="hidden" name="employeeID" value="@employee.ID" />
+                            <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
+                        </form>
                     </td>
                 </tr>
             }

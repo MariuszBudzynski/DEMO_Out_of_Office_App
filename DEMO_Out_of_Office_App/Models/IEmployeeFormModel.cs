@@ -7,8 +7,8 @@ namespace DEMOOutOfOfficeApp.Models
 {
 	public interface IEmployeeFormModel
 	{
+        public int ID { get; set; }
         public Employee Employee { get; set; }
-
         public List<Subdivision> Subdivisions { get; set; }
         public List<Position> Positions { get; set; }
         public List<Role> Roles { get; set; }
