@@ -4,6 +4,8 @@ using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
 using DEMOOutOfOfficeApp.Core.Repository;
 using DEMOOutOfOfficeApp.Core.UseCases;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
+using DEMOOutOfOfficeApp.Helpers;
+using DEMOOutOfOfficeApp.Helpers.Interfaces;
 
 namespace DEMOOutOfOfficeApp
 {
@@ -46,6 +48,7 @@ namespace DEMOOutOfOfficeApp
 			services.AddScoped<IGetAllRolesUseCase, GetAllRolesUseCase>();
 			services.AddScoped<IGetAllStatusesUseCase, GetAllStatusesUseCase>();
 			services.AddScoped<ISaveSingleEmployeeUseCase, SaveSingleEmployeeUseCase>();
+			services.AddScoped<IDataLoaderHelper, DataLoaderHelper>();
         }
 	}
 }

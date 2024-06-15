@@ -1,9 +1,10 @@
 ﻿@page
-@model DEMOOutOfOfficeApp.Pages.AddEmployeeModel
+@using DEMOOutOfOfficeApp.Pages
+@model AddEmployeeModel
 @{
     ViewData["Title"] = "Add Employee";
 }
 
 <h1 style="text-align: center">Add Employee</h1>
 
-<partial name="_EmployeeForm">
+<partial name="_EmployeeForm" model="@Model">
