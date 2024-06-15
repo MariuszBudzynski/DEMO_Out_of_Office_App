@@ -163,7 +163,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     StatusID = table.Column<int>(type: "int", nullable: false),
                     PeoplePartnerID = table.Column<int>(type: "int", nullable: false),
                     OutOfOfficeBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -337,10 +337,10 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 columns: new[] { "ID", "DescriptionOfMainTasks", "UserRole", "UserRoleDescription" },
                 values: new object[,]
                 {
-                    { 1, "Creates a leave request", 0, "Employee" },
-                    { 2, "Manages the list of employees\n Approves/rejects requests", 1, "HRManager" },
-                    { 3, "Manages the list of projects\n Approves/rejects requests", 2, "ProjectManager" },
-                    { 4, "Grants access rights\n Manages all data", 3, "Administrator" }
+                    { 1, "Creates a leave request", 1, "Employee" },
+                    { 2, "Manages the list of employees\n Approves/rejects requests", 2, "HRManager" },
+                    { 3, "Manages the list of projects\n Approves/rejects requests", 3, "ProjectManager" },
+                    { 4, "Grants access rights\n Manages all data", 4, "Administrator" }
                 });
 
             migrationBuilder.InsertData(
@@ -369,12 +369,12 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 columns: new[] { "ID", "FullName", "OutOfOfficeBalance", "PeoplePartnerID", "Photo", "PositionID", "StatusID", "SubdivisionID" },
                 values: new object[,]
                 {
-                    { 1, "John Doe", 10.0m, 1, "john_doe.jpg", 1, 2, 1 },
-                    { 2, "Jane Smith", 15.0m, 2, "jane_smith.jpg", 3, 2, 2 },
-                    { 3, "Alice Johnson", 12.0m, 1, "alice_johnson.jpg", 1, 2, 3 },
-                    { 4, "Bob Brown", 8.0m, 1, "bob_brown.jpg", 4, 2, 4 },
-                    { 5, "Charlie Davis", 20.0m, 3, "charlie_davis.jpg", 2, 2, 1 },
-                    { 6, "Diana Evans", 18.0m, 1, "diana_evans.jpg", 3, 2, 2 }
+                    { 1, "John Doe", 10.0m, 1, new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 }, 1, 2, 1 },
+                    { 2, "Jane Smith", 15.0m, 2, new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 }, 3, 2, 2 },
+                    { 3, "Alice Johnson", 12.0m, 1, new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 }, 1, 2, 3 },
+                    { 4, "Bob Brown", 8.0m, 1, new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 }, 4, 2, 4 },
+                    { 5, "Charlie Davis", 20.0m, 3, new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 }, 2, 2, 1 },
+                    { 6, "Diana Evans", 18.0m, 1, new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 }, 3, 2, 2 }
                 });
 
             migrationBuilder.InsertData(

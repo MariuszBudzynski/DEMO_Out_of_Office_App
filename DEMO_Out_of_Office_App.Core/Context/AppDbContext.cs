@@ -6,66 +6,65 @@ using System.Text;
 
 namespace DEMOOutOfOfficeApp.Core.Context
 {
-	public class AppDbContext : DbContext
-	{
-        public AppDbContext(DbContextOptions options) : base(options) {}
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions options) : base(options) { }
 
-		public DbSet<Employee> Employees { get; set; }
-		public DbSet<Role> Roles { get; set; }
-		public DbSet<Subdivision> Subdivisions { get; set; }
-		public DbSet<EmployeeStatus> Statuses { get; set; }
-		public DbSet<ProjectType> ProjectTypes { get; set; }
-		public DbSet<ProjectStatus> ProjectStatuses { get; set; }
-		public DbSet<Project> Projects { get; set; }
-		public DbSet<Position> Positions { get; set; }
-		public DbSet<LeaveRequestsStatus> LeaveRequestsStatuses { get; set; }
-		public DbSet<LeaveRequest> LeaveRequests { get; set; }
-		public DbSet<ApprovalRequestStatus> ApprovalRequestStatuses { get; set; }
-		public DbSet<ApprovalRequest> ApprovalRequests { get; set; }
-		public DbSet<AbsenceReason> AbsenceReasons { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Subdivision> Subdivisions { get; set; }
+        public DbSet<EmployeeStatus> Statuses { get; set; }
+        public DbSet<ProjectType> ProjectTypes { get; set; }
+        public DbSet<ProjectStatus> ProjectStatuses { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Position> Positions { get; set; }
+        public DbSet<LeaveRequestsStatus> LeaveRequestsStatuses { get; set; }
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<ApprovalRequestStatus> ApprovalRequestStatuses { get; set; }
+        public DbSet<ApprovalRequest> ApprovalRequests { get; set; }
+        public DbSet<AbsenceReason> AbsenceReasons { get; set; }
         public DbSet<User> Users { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			base.OnModelCreating(modelBuilder);
+        {
+            base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<LeaveRequest>()
-				.HasOne(lr => lr.Status)
-				.WithMany(ls => ls.LeaveRequests)
-				.HasForeignKey(lr => lr.StatusID)
-				.OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<LeaveRequest>()
+                .HasOne(lr => lr.Status)
+                .WithMany(ls => ls.LeaveRequests)
+                .HasForeignKey(lr => lr.StatusID)
+                .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<Project>()
-				.HasOne(p => p.ProjectStatus)
-				.WithMany(ps => ps.Projects)
-				.HasForeignKey(p => p.StatusID)
-				.OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.ProjectStatus)
+                .WithMany(ps => ps.Projects)
+                .HasForeignKey(p => p.StatusID)
+                .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<Project>()
-				.HasOne(p => p.ProjectType)
-				.WithMany(pt => pt.Projects)
-				.HasForeignKey(p => p.ProjectTypeID)
-				.OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.ProjectType)
+                .WithMany(pt => pt.Projects)
+                .HasForeignKey(p => p.ProjectTypeID)
+                .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<ApprovalRequest>()
-			   .HasOne(ar => ar.Approver)
-			   .WithMany(e => e.ApprovalRequests)
-			   .HasForeignKey(ar => ar.ApproverID)
-			   .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ApprovalRequest>()
+               .HasOne(ar => ar.Approver)
+               .WithMany(e => e.ApprovalRequests)
+               .HasForeignKey(ar => ar.ApproverID)
+               .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<ApprovalRequest>()
-				.HasOne(ar => ar.ApprovalRequestStatus)
-				.WithMany(ars => ars.ApprovalRequests)
-				.HasForeignKey(ar => ar.StatusID)
-				.OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ApprovalRequest>()
+                .HasOne(ar => ar.ApprovalRequestStatus)
+                .WithMany(ars => ars.ApprovalRequests)
+                .HasForeignKey(ar => ar.StatusID)
+                .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<Role>().HasData(
-				new Role { ID = 1,UserRole = UserRole.Employee,UserRoleDescription = UserRole.Employee.ToString(), DescriptionOfMainTasks = "Creates a leave request" },
-				new Role { ID = 2,UserRole = UserRole.HRManager,UserRoleDescription = UserRole.HRManager.ToString(), DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests" },
-				new Role { ID = 3,UserRole = UserRole.ProjectManager, UserRoleDescription = UserRole.ProjectManager.ToString(), DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests" },
-				new Role { ID = 4,UserRole = UserRole.Administrator, UserRoleDescription = UserRole.Administrator.ToString(), DescriptionOfMainTasks = "Grants access rights\n Manages all data" }		
-			);
+            modelBuilder.Entity<Role>().HasData(
+                new Role { ID = 1, UserRole = UserRole.Employee, UserRoleDescription = UserRole.Employee.ToString(), DescriptionOfMainTasks = "Creates a leave request" },
+                new Role { ID = 2, UserRole = UserRole.HRManager, UserRoleDescription = UserRole.HRManager.ToString(), DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests" },
+                new Role { ID = 3, UserRole = UserRole.ProjectManager, UserRoleDescription = UserRole.ProjectManager.ToString(), DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests" },
+                new Role { ID = 4, UserRole = UserRole.Administrator, UserRoleDescription = UserRole.Administrator.ToString(), DescriptionOfMainTasks = "Grants access rights\n Manages all data" }
+            );
 
             modelBuilder.Entity<Subdivision>().HasData(
                 new Subdivision { ID = 1, Name = "Finance" },
@@ -74,7 +73,7 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new Subdivision { ID = 4, Name = "Marketing" }
             );
 
-			modelBuilder.Entity<Position>().HasData(
+            modelBuilder.Entity<Position>().HasData(
                 new Position { ID = 1, Name = "Software Engineer" },
                 new Position { ID = 2, Name = "Project Manager" },
                 new Position { ID = 3, Name = "HR Specialist" },
@@ -82,18 +81,18 @@ namespace DEMOOutOfOfficeApp.Core.Context
             );
 
             modelBuilder.Entity<EmployeeStatus>().HasData(
-               new EmployeeStatus { ID = 1, StatusId = Status.New,StatusDescription = Status.New.ToString() },
-               new EmployeeStatus { ID = 2, StatusId = Status.Active,StatusDescription = Status.Active.ToString() },
-               new EmployeeStatus { ID = 3, StatusId = Status.Inactive , StatusDescription = Status.Inactive.ToString() }
+               new EmployeeStatus { ID = 1, StatusId = Status.New, StatusDescription = Status.New.ToString() },
+               new EmployeeStatus { ID = 2, StatusId = Status.Active, StatusDescription = Status.Active.ToString() },
+               new EmployeeStatus { ID = 3, StatusId = Status.Inactive, StatusDescription = Status.Inactive.ToString() }
            );
 
             modelBuilder.Entity<Employee>().HasData(
-                new Employee { ID = 1, FullName = "John Doe", SubdivisionID = 1, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 10.0m, Photo = "john_doe.jpg" },
-                new Employee { ID = 2, FullName = "Jane Smith", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 15.0m, Photo = "jane_smith.jpg" },
-                new Employee { ID = 3, FullName = "Alice Johnson", SubdivisionID = 3, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 12.0m, Photo = "alice_johnson.jpg" },
-                new Employee { ID = 4, FullName = "Bob Brown", SubdivisionID = 4, PositionID = 4, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 8.0m, Photo = "bob_brown.jpg" },
-                new Employee { ID = 5, FullName = "Charlie Davis", SubdivisionID = 1, PositionID = 2, StatusID = 2, PeoplePartnerID = 3, OutOfOfficeBalance = 20.0m, Photo = "charlie_davis.jpg" },
-                new Employee { ID = 6, FullName = "Diana Evans", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 18.0m, Photo = "diana_evans.jpg" }
+                new Employee { ID = 1, FullName = "John Doe", SubdivisionID = 1, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 10.0m, Photo = GetPlaceholderPhoto() },
+                new Employee { ID = 2, FullName = "Jane Smith", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 15.0m, Photo = GetPlaceholderPhoto() },
+                new Employee { ID = 3, FullName = "Alice Johnson", SubdivisionID = 3, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 12.0m, Photo = GetPlaceholderPhoto() },
+                new Employee { ID = 4, FullName = "Bob Brown", SubdivisionID = 4, PositionID = 4, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 8.0m, Photo = GetPlaceholderPhoto() },
+                new Employee { ID = 5, FullName = "Charlie Davis", SubdivisionID = 1, PositionID = 2, StatusID = 2, PeoplePartnerID = 3, OutOfOfficeBalance = 20.0m, Photo = GetPlaceholderPhoto() },
+                new Employee { ID = 6, FullName = "Diana Evans", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 18.0m, Photo = GetPlaceholderPhoto() }
             );
 
             modelBuilder.Entity<User>().HasData(
@@ -104,8 +103,8 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new User { ID = 5, EmployeeID = 5, Username = "charlie.davis", PasswordHash = GetMd5Hash("password5") },
                 new User { ID = 6, EmployeeID = 6, Username = "diana.evans", PasswordHash = GetMd5Hash("password6") }
             );
-
         }
+
         // A simple hash just for test data purposes
         private string GetMd5Hash(string input)
         {
@@ -117,5 +116,10 @@ namespace DEMOOutOfOfficeApp.Core.Context
             }
         }
 
+        private byte[] GetPlaceholderPhoto()
+        {
+            // Example placeholder photo data (use actual photo byte array in production)
+            return new byte[] { 0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01, 0x01, 0x01, 0x00, 0x60, 0x00, 0x60, 0x00, 0x00, 0xFF, 0xDB, 0x00, 0x43, 0x00 };
+        }
     }
 }

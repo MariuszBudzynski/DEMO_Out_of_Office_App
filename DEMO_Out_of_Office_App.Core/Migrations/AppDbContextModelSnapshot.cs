@@ -107,8 +107,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Property<int>("PeoplePartnerID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("Photo")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("PositionID")
                         .HasColumnType("int");
@@ -138,7 +138,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             FullName = "John Doe",
                             OutOfOfficeBalance = 10.0m,
                             PeoplePartnerID = 1,
-                            Photo = "john_doe.jpg",
+                            Photo = new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 },
                             PositionID = 1,
                             StatusID = 2,
                             SubdivisionID = 1
@@ -149,7 +149,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             FullName = "Jane Smith",
                             OutOfOfficeBalance = 15.0m,
                             PeoplePartnerID = 2,
-                            Photo = "jane_smith.jpg",
+                            Photo = new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 },
                             PositionID = 3,
                             StatusID = 2,
                             SubdivisionID = 2
@@ -160,7 +160,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             FullName = "Alice Johnson",
                             OutOfOfficeBalance = 12.0m,
                             PeoplePartnerID = 1,
-                            Photo = "alice_johnson.jpg",
+                            Photo = new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 },
                             PositionID = 1,
                             StatusID = 2,
                             SubdivisionID = 3
@@ -171,7 +171,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             FullName = "Bob Brown",
                             OutOfOfficeBalance = 8.0m,
                             PeoplePartnerID = 1,
-                            Photo = "bob_brown.jpg",
+                            Photo = new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 },
                             PositionID = 4,
                             StatusID = 2,
                             SubdivisionID = 4
@@ -182,7 +182,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             FullName = "Charlie Davis",
                             OutOfOfficeBalance = 20.0m,
                             PeoplePartnerID = 3,
-                            Photo = "charlie_davis.jpg",
+                            Photo = new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 },
                             PositionID = 2,
                             StatusID = 2,
                             SubdivisionID = 1
@@ -193,7 +193,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             FullName = "Diana Evans",
                             OutOfOfficeBalance = 18.0m,
                             PeoplePartnerID = 1,
-                            Photo = "diana_evans.jpg",
+                            Photo = new byte[] { 255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 1, 0, 96, 0, 96, 0, 0, 255, 219, 0, 67, 0 },
                             PositionID = 3,
                             StatusID = 2,
                             SubdivisionID = 2

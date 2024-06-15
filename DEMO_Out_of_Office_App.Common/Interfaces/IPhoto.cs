@@ -8,6 +8,6 @@ namespace DEMOOutOfOfficeApp.Common.Interfaces
 {
     public interface IPhoto
     {
-        public string Photo { get; set; }
+        public byte[] Photo { get; set; }
     }
 }

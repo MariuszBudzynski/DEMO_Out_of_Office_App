@@ -59,8 +59,7 @@ namespace DEMOOutOfOfficeApp.Pages
                 e.Position.Name,
                 e.Status.StatusDescription,
                 e.PeoplePartner.UserRoleDescription,
-                e.OutOfOfficeBalance,
-                e.Photo
+                e.OutOfOfficeBalance
             )).ToList();
 
             return employeeDTOs;
@@ -83,8 +82,7 @@ namespace DEMOOutOfOfficeApp.Pages
                 PositionID = position.ID,
                 StatusID = status.ID,
                 PeoplePartnerID = role.ID,
-                OutOfOfficeBalance = employeeDTO.OutOfOfficeBalance,
-                Photo = employeeDTO.Photo,
+                OutOfOfficeBalance = employeeDTO.OutOfOfficeBalance
             };
         }
 

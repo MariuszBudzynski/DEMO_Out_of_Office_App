@@ -14,7 +14,10 @@ namespace DEMOOutOfOfficeApp.Pages
 
         [BindProperty]
         public Employee Employee { get; set; }
-        
+
+        [BindProperty]
+        public IFormFile Photo { get; set; }
+
         public List<Subdivision> Subdivisions { get; set; }
         public List<Position> Positions { get; set; }
         public List<Role> Roles { get; set; }
@@ -38,6 +41,44 @@ namespace DEMOOutOfOfficeApp.Pages
             await LoadPeoplePartnerOptions();
             await LoadStatusessOptions();
         }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                await LoadSubdivisionsOptions();
+                await LoadPositionsOptions();
+                await LoadPeoplePartnerOptions();
+                await LoadStatusessOptions();
+                return Page();
+            }
+
+            if (Photo != null && Photo.Length > 0)
+            {
+                using (var memoryStream = new System.IO.MemoryStream())
+                {
+                    await Photo.CopyToAsync(memoryStream);
+                    Employee.Photo = memoryStream.ToArray();
+                }
+            }
+
+
+            var employee = new Employee()
+            {
+                FullName = Employee.FullName,
+                SubdivisionID = Employee.SubdivisionID,
+                PositionID = Employee.PositionID,
+                StatusID = Employee.StatusID,
+                PeoplePartnerID = Employee.PeoplePartnerID,
+                OutOfOfficeBalance = Employee.OutOfOfficeBalance,
+                Photo =Employee.Photo
+            };
+
+
+
+            return RedirectToPage("/Employees");
+        }
+
 
         private async Task LoadSubdivisionsOptions()
         {

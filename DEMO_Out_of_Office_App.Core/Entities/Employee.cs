@@ -31,7 +31,7 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		[Required]
 		public decimal OutOfOfficeBalance { get; set; }
 
-		public string? Photo { get; set; }
+		public byte[]? Photo { get; set; }
 
 		public  Subdivision? Subdivision { get; set; }
 		public  Position? Position { get; set; }
