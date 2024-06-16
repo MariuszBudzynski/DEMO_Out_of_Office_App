@@ -23,6 +23,11 @@ namespace DEMOOutOfOfficeApp.Pages
             ApprovalRequests = await FetchApprovalRequestsAsync();
         }
 
+        public IActionResult OnPostOpen()
+        {
+            return RedirectToPage("OpenApprovalRequest");
+        }
+
         private async Task<List<AprovalRequestDTO>> FetchApprovalRequestsAsync()
         {
             var approvalRequests = await _getAprovalRequestsUseCase.ExecuteAsync();

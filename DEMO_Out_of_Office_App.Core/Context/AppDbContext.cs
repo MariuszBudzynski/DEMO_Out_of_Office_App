@@ -132,8 +132,8 @@ namespace DEMOOutOfOfficeApp.Core.Context
 
             modelBuilder.Entity<ApprovalRequestStatus>().HasData(
             new ApprovalRequestStatus { ID = 1, StatusType = ApprovalRequestStatusType.New, Description = ApprovalRequestStatusType.New.ToString() },
-            new ApprovalRequestStatus { ID = 2, StatusType = ApprovalRequestStatusType.Approve, Description = ApprovalRequestStatusType.Approve.ToString() },
-            new ApprovalRequestStatus { ID = 3, StatusType = ApprovalRequestStatusType.Reject, Description = ApprovalRequestStatusType.Reject.ToString() }
+            new ApprovalRequestStatus { ID = 2, StatusType = ApprovalRequestStatusType.Approved, Description = ApprovalRequestStatusType.Approved.ToString() },
+            new ApprovalRequestStatus { ID = 3, StatusType = ApprovalRequestStatusType.Rejected, Description = ApprovalRequestStatusType.Rejected.ToString() }
 );
 
 

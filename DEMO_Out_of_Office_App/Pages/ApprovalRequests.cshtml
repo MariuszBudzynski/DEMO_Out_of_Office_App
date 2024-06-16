@@ -39,9 +39,12 @@
 </table>
 
 @* change this to form if needed when preparing the code behid *@
-<div class="mb-3">
+<form method="post" asp-page-handler="Open">
+    <button type="submit" name="Open" class="btn btn-success">Open Request</button>
+</form>
+@* <div class="mb-3">
     <a class="btn btn-primary" asp-page="/ApprovalRequests/Create">Open a Request</a>
-</div>
+</div> *@
 
 @section Scripts {
     <script type="text/javascript">
