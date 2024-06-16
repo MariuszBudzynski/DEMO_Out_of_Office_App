@@ -20,7 +20,20 @@ namespace DEMOOutOfOfficeApp
 			{
                 options.Conventions.AuthorizeFolder("/");
 				options.Conventions.AllowAnonymousToPage("/Login");
-			});
+                options.Conventions.AuthorizePage("/Projects", "EmployeeHRPMAdminPolicy");
+                options.Conventions.AuthorizePage("/LeaveRequests", "EmployeeHRPMAdminPolicy");
+                options.Conventions.AuthorizePage("/ApprovalRequests", "HRPMAdminPolicy");
+                options.Conventions.AuthorizePage("/Employees", "HRPMAdminPolicy");
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("EmployeeHRPMAdminPolicy", policy =>
+                    policy.RequireRole("Employee", "HRManager", "ProjectManager", "Administrator"));
+
+                options.AddPolicy("HRPMAdminPolicy", policy =>
+                    policy.RequireRole("HRManager", "ProjectManager", "Administrator"));
+            });
 
             services.AddAuthentication("CookieAuthentication")
 			.AddCookie("CookieAuthentication", config =>

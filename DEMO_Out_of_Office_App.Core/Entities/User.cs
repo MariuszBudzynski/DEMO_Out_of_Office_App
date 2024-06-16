@@ -26,6 +26,11 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         [MaxLength(100)]
         public string PasswordHash { get; set; }
 
+        [Required]
+        [ForeignKey("Role")]
+        public int RoleID { get; set; }
+
         public virtual Employee Employee { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

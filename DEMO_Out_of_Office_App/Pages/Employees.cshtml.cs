@@ -2,11 +2,13 @@ using DEMOOutOfOfficeApp.Common.Enums;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.DTOS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
+    [Authorize(Policy = "HRPMAdminPolicy")]
     public class EmployeesModel : PageModel
     {
         private readonly IGetAllEmployeesUseCase _getAllEmployeesUseCase;

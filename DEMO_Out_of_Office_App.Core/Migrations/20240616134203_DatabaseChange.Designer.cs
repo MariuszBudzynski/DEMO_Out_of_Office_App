@@ -4,6 +4,7 @@ using DEMOOutOfOfficeApp.Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240616134203_DatabaseChange")]
+    partial class DatabaseChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -732,9 +735,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -744,8 +744,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("EmployeeID");
 
-                    b.HasIndex("RoleID");
-
                     b.ToTable("Users");
 
                     b.HasData(
@@ -754,7 +752,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 1,
                             EmployeeID = 1,
                             PasswordHash = "7C6A180B36896A0A8C02787EEAFB0E4C",
-                            RoleID = 2,
                             Username = "john.doe"
                         },
                         new
@@ -762,7 +759,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 2,
                             EmployeeID = 2,
                             PasswordHash = "6CB75F652A9B52798EB6CF2201057C73",
-                            RoleID = 4,
                             Username = "jane.smith"
                         },
                         new
@@ -770,7 +766,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 3,
                             EmployeeID = 3,
                             PasswordHash = "819B0643D6B89DC9B579FDFC9094F28E",
-                            RoleID = 3,
                             Username = "alice.johnson"
                         },
                         new
@@ -778,7 +773,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 4,
                             EmployeeID = 4,
                             PasswordHash = "34CC93ECE0BA9E3F6F235D4AF979B16C",
-                            RoleID = 1,
                             Username = "bob.brown"
                         },
                         new
@@ -786,7 +780,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 5,
                             EmployeeID = 5,
                             PasswordHash = "DB0EDD04AAAC4506F7EDAB03AC855D56",
-                            RoleID = 1,
                             Username = "charlie.davis"
                         },
                         new
@@ -794,7 +787,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 6,
                             EmployeeID = 6,
                             PasswordHash = "218DD27AEBECCECAE69AD8408D9A36BF",
-                            RoleID = 1,
                             Username = "diana.evans"
                         });
                 });
@@ -923,15 +915,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Employee");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.AbsenceReason", b =>

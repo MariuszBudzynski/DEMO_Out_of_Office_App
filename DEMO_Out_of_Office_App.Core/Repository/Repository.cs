@@ -21,6 +21,14 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         }
 
+        public async Task<IEnumerable<User>> GetUsersAsync()
+        {
+            return await _appDbContext.Users
+                .Include(u => u.Employee)
+                .Include(u => u.Role)
+                .ToListAsync();
+        }
+
         public async Task<T> GetDataById<T>(int id) where T : class, IEntityId
         {
             return await _appDbContext.Set<T>().FirstOrDefaultAsync(e=> e.ID == id);

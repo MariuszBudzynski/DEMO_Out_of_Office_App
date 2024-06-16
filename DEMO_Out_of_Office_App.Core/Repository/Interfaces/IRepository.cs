@@ -12,5 +12,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository.Interfaces
         Task SaveEmployeeData(Employee employee);
         Task<IEnumerable<ApprovalRequest>> GetEmpAprovalRequestsAsync();
         Task<IEnumerable<LeaveRequest>> GetLeaveRequestsAsync();
+        Task<IEnumerable<User>> GetUsersAsync();
     }
 }

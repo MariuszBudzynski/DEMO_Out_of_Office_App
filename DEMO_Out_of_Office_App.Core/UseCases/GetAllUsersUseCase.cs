@@ -1,4 +1,5 @@
 ﻿using DEMOOutOfOfficeApp.Common.Interfaces;
+using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 
@@ -13,9 +14,9 @@ namespace DEMOOutOfOfficeApp.Core.UseCases
             _repository = repository;
         }
 
-        public async Task<IEnumerable<T>> ExecuteAsync<T>() where T : class, IEntityId, IEmployeeID, IUsername, IPasswordHash
+        public async Task<IEnumerable<User>> ExecuteAsync() 
         {
-            return await _repository.GetData<T>();
+            return await _repository.GetUsersAsync();
         }
     }
 }

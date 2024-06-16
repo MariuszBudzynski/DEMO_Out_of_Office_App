@@ -62,6 +62,13 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 .HasForeignKey(ar => ar.StatusID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Role)
+                .WithMany()
+                .HasForeignKey(u => u.RoleID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             modelBuilder.Entity<Role>().HasData(
                 new Role { ID = 1, UserRole = UserRole.Employee, UserRoleDescription = UserRole.Employee.ToString(), DescriptionOfMainTasks = "Creates a leave request" },
                 new Role { ID = 2, UserRole = UserRole.HRManager, UserRoleDescription = UserRole.HRManager.ToString(), DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests" },
@@ -99,12 +106,12 @@ namespace DEMOOutOfOfficeApp.Core.Context
             );
 
             modelBuilder.Entity<User>().HasData(
-                new User { ID = 1, EmployeeID = 1, Username = "john.doe", PasswordHash = GetMd5Hash("password1") },
-                new User { ID = 2, EmployeeID = 2, Username = "jane.smith", PasswordHash = GetMd5Hash("password2") },
-                new User { ID = 3, EmployeeID = 3, Username = "alice.johnson", PasswordHash = GetMd5Hash("password3") },
-                new User { ID = 4, EmployeeID = 4, Username = "bob.brown", PasswordHash = GetMd5Hash("password4") },
-                new User { ID = 5, EmployeeID = 5, Username = "charlie.davis", PasswordHash = GetMd5Hash("password5") },
-                new User { ID = 6, EmployeeID = 6, Username = "diana.evans", PasswordHash = GetMd5Hash("password6") }
+                new User { ID = 1, EmployeeID = 1, Username = "john.doe", PasswordHash = GetMd5Hash("password1"),RoleID = (int)UserRole.HRManager },
+                new User { ID = 2, EmployeeID = 2, Username = "jane.smith", PasswordHash = GetMd5Hash("password2"), RoleID = (int)UserRole.Administrator },
+                new User { ID = 3, EmployeeID = 3, Username = "alice.johnson", PasswordHash = GetMd5Hash("password3"), RoleID = (int)UserRole.ProjectManager },
+                new User { ID = 4, EmployeeID = 4, Username = "bob.brown", PasswordHash = GetMd5Hash("password4") , RoleID = (int)UserRole.Employee },
+                new User { ID = 5, EmployeeID = 5, Username = "charlie.davis", PasswordHash = GetMd5Hash("password5"), RoleID = (int)UserRole.Employee },
+                new User { ID = 6, EmployeeID = 6, Username = "diana.evans", PasswordHash = GetMd5Hash("password6"), RoleID = (int)UserRole.Employee }
             );
 
 
@@ -122,11 +129,11 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 );
 
             modelBuilder.Entity<LeaveRequest>().HasData(
-        new LeaveRequest { ID = 1, EmployeeID = 1, AbsenceReasonID = 4, StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023, 6, 15), Comment = "Vacation", StatusType = LeaveRequestsStatusType.New },
-        new LeaveRequest { ID = 2, EmployeeID = 2, AbsenceReasonID = 2, StartDate = new DateTime(2023, 7, 10), EndDate = new DateTime(2023, 7, 20), Comment = "Medical leave", StatusType = LeaveRequestsStatusType.Approved },
-        new LeaveRequest { ID = 3, EmployeeID = 3, AbsenceReasonID = 1, StartDate = new DateTime(2023, 8, 5), EndDate = new DateTime(2023, 8, 15), Comment = "Family event", StatusType = LeaveRequestsStatusType.Rejected },
-        new LeaveRequest { ID = 4, EmployeeID = 4, AbsenceReasonID = 3, StartDate = new DateTime(2023, 9, 1), EndDate = new DateTime(2023, 9, 10), Comment = "Business trip", StatusType = LeaveRequestsStatusType.New }
-    );
+                new LeaveRequest { ID = 1, EmployeeID = 1, AbsenceReasonID = 4, StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023, 6, 15), Comment = "Vacation", StatusType = LeaveRequestsStatusType.New },
+                new LeaveRequest { ID = 2, EmployeeID = 2, AbsenceReasonID = 2, StartDate = new DateTime(2023, 7, 10), EndDate = new DateTime(2023, 7, 20), Comment = "Medical leave", StatusType = LeaveRequestsStatusType.Approved },
+                new LeaveRequest { ID = 3, EmployeeID = 3, AbsenceReasonID = 1, StartDate = new DateTime(2023, 8, 5), EndDate = new DateTime(2023, 8, 15), Comment = "Family event", StatusType = LeaveRequestsStatusType.Rejected },
+                new LeaveRequest { ID = 4, EmployeeID = 4, AbsenceReasonID = 3, StartDate = new DateTime(2023, 9, 1), EndDate = new DateTime(2023, 9, 10), Comment = "Business trip", StatusType = LeaveRequestsStatusType.New }
+            );
 
 
             modelBuilder.Entity<ApprovalRequestStatus>().HasData(
@@ -145,6 +152,31 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new ApprovalRequest { ID = 4, ApproverID = 2, LeaveRequestID = 4, StatusID = 3, Comment = "Rejected due to conflicting schedule" }
             );
 
+            modelBuilder.Entity<Project>().HasData(
+            new Project { ID = 1, ProjectTypeID = 1, StartDate = new DateTime(2023, 1, 10), ProjectManagerID = 2, Comment = "Internal project for HR system", StatusID = 1 },
+            new Project { ID = 2, ProjectTypeID = 2, StartDate = new DateTime(2023, 2, 15), ProjectManagerID = 3, Comment = "Client project for ABC Inc.", StatusID = 1 },
+            new Project { ID = 3, ProjectTypeID = 1, StartDate = new DateTime(2023, 3, 20), ProjectManagerID = 4, Comment = "Research project", StatusID = 1 }
+             );
+
+                modelBuilder.Entity<ProjectType>().HasData(
+            new ProjectType { ID = 1, Name = "Internal" },
+            new ProjectType { ID = 2, Name = "Client" }    
+                 );
+
+            modelBuilder.Entity<ProjectStatus>().HasData(
+                new ProjectStatus { ID = 1, StatusType = ProjectStatusType.Active },
+                new ProjectStatus { ID = 2, StatusType = ProjectStatusType.Inactive }
+
+             );
+
+            modelBuilder.Entity<Project>().HasData(
+                new Project { ID = 4, ProjectTypeID = 2, StartDate = new DateTime(2023, 4, 5), ProjectManagerID = 1, Comment = "Marketing campaign", StatusID = 1 },
+                new Project { ID = 5, ProjectTypeID = 1, StartDate = new DateTime(2023, 5, 10), ProjectManagerID = 2, Comment = "IT infrastructure upgrade", StatusID = 1 },
+                new Project { ID = 6, ProjectTypeID = 2, StartDate = new DateTime(2023, 6, 15), ProjectManagerID = 3, Comment = "Client project for XYZ Corp.", StatusID = 1 },
+                new Project { ID = 7, ProjectTypeID = 1, StartDate = new DateTime(2023, 7, 20), ProjectManagerID = 4, Comment = "Research and development", StatusID = 1 }
+
+            );
+           
         }
 
         // A simple hash just for test data purposes

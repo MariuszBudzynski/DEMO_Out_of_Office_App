@@ -9,7 +9,7 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		[Key]
 		public int ID { get; set; }
 		[Required]
-		public EmployeeStatus StatusType { get; set; }
+		public ProjectStatusType StatusType { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
 	}
 }
