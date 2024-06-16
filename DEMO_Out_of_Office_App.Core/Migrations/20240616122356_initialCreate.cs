@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,32 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbsenceReasons", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApprovalRequestStatuses",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusType = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApprovalRequestStatuses", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeaveRequestsStatuses",
+                columns: table => new
+                {
+                    StatusType = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaveRequestsStatuses", x => x.StatusType);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,44 +118,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subdivisions", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApprovalRequestStatuses",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusTypeID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApprovalRequestStatuses", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_ApprovalRequestStatuses_Statuses_StatusTypeID",
-                        column: x => x.StatusTypeID,
-                        principalTable: "Statuses",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeaveRequestsStatuses",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusTypeID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeaveRequestsStatuses", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_LeaveRequestsStatuses_Statuses_StatusTypeID",
-                        column: x => x.StatusTypeID,
-                        principalTable: "Statuses",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,7 +193,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StatusID = table.Column<int>(type: "int", nullable: false)
+                    StatusType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -223,10 +211,10 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LeaveRequests_LeaveRequestsStatuses_StatusID",
-                        column: x => x.StatusID,
+                        name: "FK_LeaveRequests_LeaveRequestsStatuses_StatusType",
+                        column: x => x.StatusType,
                         principalTable: "LeaveRequestsStatuses",
-                        principalColumn: "ID",
+                        principalColumn: "StatusType",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -333,6 +321,26 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ApprovalRequestStatuses",
+                columns: new[] { "ID", "Description", "StatusType" },
+                values: new object[,]
+                {
+                    { 1, "New", 1 },
+                    { 2, "Approved", 2 },
+                    { 3, "Rejected", 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "LeaveRequestsStatuses",
+                columns: new[] { "StatusType", "Description" },
+                values: new object[,]
+                {
+                    { 1, "New" },
+                    { 2, "Approved" },
+                    { 3, "Rejected" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Positions",
                 columns: new[] { "ID", "Name" },
                 values: new object[,]
@@ -389,24 +397,14 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "LeaveRequestsStatuses",
-                columns: new[] { "ID", "StatusTypeID" },
-                values: new object[,]
-                {
-                    { 1, 1 },
-                    { 2, 2 },
-                    { 3, 3 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "LeaveRequests",
-                columns: new[] { "ID", "AbsenceReasonID", "Comment", "EmployeeID", "EndDate", "StartDate", "StatusID" },
+                columns: new[] { "ID", "AbsenceReasonID", "Comment", "EmployeeID", "EndDate", "StartDate", "StatusType" },
                 values: new object[,]
                 {
                     { 1, 4, "Vacation", 1, new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
                     { 2, 2, "Medical leave", 2, new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 3, 1, "Family event", 3, new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 4, 3, "Business trip", 4, new DateTime(2023, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 }
+                    { 3, 1, "Family event", 3, new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 4, 3, "Business trip", 4, new DateTime(2023, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -420,6 +418,17 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     { 4, 4, "34CC93ECE0BA9E3F6F235D4AF979B16C", "bob.brown" },
                     { 5, 5, "DB0EDD04AAAC4506F7EDAB03AC855D56", "charlie.davis" },
                     { 6, 6, "218DD27AEBECCECAE69AD8408D9A36BF", "diana.evans" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ApprovalRequests",
+                columns: new[] { "ID", "ApproverID", "Comment", "LeaveRequestID", "StatusID" },
+                values: new object[,]
+                {
+                    { 1, 2, "Approved", 1, 1 },
+                    { 2, 3, "Pending review", 2, 2 },
+                    { 3, 4, "Approved for family event", 3, 1 },
+                    { 4, 2, "Rejected due to conflicting schedule", 4, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -436,11 +445,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 name: "IX_ApprovalRequests_StatusID",
                 table: "ApprovalRequests",
                 column: "StatusID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApprovalRequestStatuses_StatusTypeID",
-                table: "ApprovalRequestStatuses",
-                column: "StatusTypeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_PeoplePartnerID",
@@ -473,14 +477,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 column: "EmployeeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeaveRequests_StatusID",
+                name: "IX_LeaveRequests_StatusType",
                 table: "LeaveRequests",
-                column: "StatusID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LeaveRequestsStatuses_StatusTypeID",
-                table: "LeaveRequestsStatuses",
-                column: "StatusTypeID");
+                column: "StatusType");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_ProjectManagerID",
@@ -548,10 +547,10 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Subdivisions");
+                name: "Statuses");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
+                name: "Subdivisions");
         }
     }
 }

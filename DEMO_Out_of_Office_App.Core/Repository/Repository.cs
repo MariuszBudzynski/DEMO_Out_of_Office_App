@@ -63,5 +63,14 @@ namespace DEMOOutOfOfficeApp.Core.Repository
           .ToListAsync();
         }
 
+        public async Task<IEnumerable<LeaveRequest>> GetLeaveRequestsAsync()
+        {
+                return await _appDbContext.LeaveRequests
+            .Include(lr => lr.Employee)
+            .Include(lr => lr.AbsenceReason)
+            .Include(lr => lr.LeaveRequestsStatus)
+            .ToListAsync();
+        }
+
     }
 }

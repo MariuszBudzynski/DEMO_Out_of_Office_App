@@ -6,4 +6,51 @@
 
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
-<partial name="_ApprovalRequestsForm" model="@Model">
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Approver</th>
+                <th>Leave Request ID</th>
+                <th>Status</th>
+                <th>Comment</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select asp-for="ApprovalRequest.id" class="form-control">
+                        @foreach (var employee in Model.Employees)
+                        {
+                            <option value="@employee.ID">@employee.FullName</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <select asp-for="ApprovalRequest.LeaveRequestId" class="form-control">
+                        @foreach (var leaveRequest in Model.LeaveRequests)
+                        {
+                            <option value="@leaveRequest.ID">@leaveRequest.ID</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    @* <select asp-for="ApprovalRequest.Status" class="form-control">
+                        @foreach (var status in Model.LeaveRequestsStatuses)
+                        {
+                            <option value="@status.ID">@status.D</option>
+                        }
+                    </select> *@
+                </td>
+                <td>
+                    @* <input asp-for="Comment" class="form-control" /> *@
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>

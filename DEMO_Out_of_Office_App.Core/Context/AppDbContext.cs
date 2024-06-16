@@ -33,10 +33,10 @@ namespace DEMOOutOfOfficeApp.Core.Context
             byte[] placeholderPhotoConversion = File.ReadAllBytes(placeholderPhoto);
 
             modelBuilder.Entity<LeaveRequest>()
-                .HasOne(lr => lr.Status)
-                .WithMany(ls => ls.LeaveRequests)
-                .HasForeignKey(lr => lr.StatusID)
-                .OnDelete(DeleteBehavior.Restrict);
+              .HasOne(lr => lr.LeaveRequestsStatus)
+              .WithMany(ls => ls.LeaveRequests)
+              .HasForeignKey(lr => lr.StatusType)
+              .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.ProjectStatus)
@@ -109,12 +109,10 @@ namespace DEMOOutOfOfficeApp.Core.Context
 
 
             modelBuilder.Entity<LeaveRequestsStatus>().HasData(
-
-                 new LeaveRequestsStatus  { ID = 1, StatusTypeID = 1 },
-                new LeaveRequestsStatus  { ID = 2, StatusTypeID = 2 },
-                new LeaveRequestsStatus { ID = 3, StatusTypeID = 3 }
-
-                );
+                new LeaveRequestsStatus { StatusType = LeaveRequestsStatusType.New, Description = LeaveRequestsStatusType.New.ToString() },
+                new LeaveRequestsStatus { StatusType = LeaveRequestsStatusType.Approved, Description = LeaveRequestsStatusType.Approved.ToString() },
+                new LeaveRequestsStatus { StatusType = LeaveRequestsStatusType.Rejected, Description = LeaveRequestsStatusType.Rejected.ToString() }
+            );
 
             modelBuilder.Entity<AbsenceReason>().HasData(
                     new AbsenceReason { ID = 1, Name = "Vacation" },
@@ -124,11 +122,12 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 );
 
             modelBuilder.Entity<LeaveRequest>().HasData(
-                new LeaveRequest { ID = 1, EmployeeID = 1, AbsenceReasonID = 4, StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023, 6, 15), Comment = "Vacation", StatusID = 1 },
-                new LeaveRequest { ID = 2, EmployeeID = 2, AbsenceReasonID = 2, StartDate = new DateTime(2023, 7, 10), EndDate = new DateTime(2023, 7, 20), Comment = "Medical leave", StatusID = 2 },
-                new LeaveRequest { ID = 3, EmployeeID = 3, AbsenceReasonID = 1, StartDate = new DateTime(2023, 8, 5), EndDate = new DateTime(2023, 8, 15), Comment = "Family event", StatusID = 1 },
-                new LeaveRequest { ID = 4, EmployeeID = 4, AbsenceReasonID = 3, StartDate = new DateTime(2023, 9, 1), EndDate = new DateTime(2023, 9, 10), Comment = "Business trip", StatusID = 3 }
-            );
+        new LeaveRequest { ID = 1, EmployeeID = 1, AbsenceReasonID = 4, StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023, 6, 15), Comment = "Vacation", StatusType = LeaveRequestsStatusType.New },
+        new LeaveRequest { ID = 2, EmployeeID = 2, AbsenceReasonID = 2, StartDate = new DateTime(2023, 7, 10), EndDate = new DateTime(2023, 7, 20), Comment = "Medical leave", StatusType = LeaveRequestsStatusType.Approved },
+        new LeaveRequest { ID = 3, EmployeeID = 3, AbsenceReasonID = 1, StartDate = new DateTime(2023, 8, 5), EndDate = new DateTime(2023, 8, 15), Comment = "Family event", StatusType = LeaveRequestsStatusType.Rejected },
+        new LeaveRequest { ID = 4, EmployeeID = 4, AbsenceReasonID = 3, StartDate = new DateTime(2023, 9, 1), EndDate = new DateTime(2023, 9, 10), Comment = "Business trip", StatusType = LeaveRequestsStatusType.New }
+    );
+
 
             modelBuilder.Entity<ApprovalRequestStatus>().HasData(
             new ApprovalRequestStatus { ID = 1, StatusType = ApprovalRequestStatusType.New, Description = ApprovalRequestStatusType.New.ToString() },

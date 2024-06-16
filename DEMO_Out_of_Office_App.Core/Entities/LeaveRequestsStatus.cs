@@ -1,17 +1,21 @@
-﻿using DEMOOutOfOfficeApp.Common.Interfaces;
+﻿using DEMOOutOfOfficeApp.Common.Enums;
+using DEMOOutOfOfficeApp.Common.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
     public class LeaveRequestsStatus : IEntityId
 	{
-		[Key]
-		public int ID { get; set; }
-		[Required]
-		public EmployeeStatus StatusType { get; set; }
+        [Key]
         [Required]
-         public int StatusTypeID { get; set; }
+        public LeaveRequestsStatusType StatusType { get; set; }
+        [Required]
+        public string Description { get; set; }
 
         public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
-	}
+
+        [NotMapped]
+        public int ID { get; set; }
+    }
 }

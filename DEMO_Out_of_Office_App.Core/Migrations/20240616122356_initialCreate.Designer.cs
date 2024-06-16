@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240616090445_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240616122356_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,40 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasIndex("StatusID");
 
                     b.ToTable("ApprovalRequests");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            ApproverID = 2,
+                            Comment = "Approved",
+                            LeaveRequestID = 1,
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            ApproverID = 3,
+                            Comment = "Pending review",
+                            LeaveRequestID = 2,
+                            StatusID = 2
+                        },
+                        new
+                        {
+                            ID = 3,
+                            ApproverID = 4,
+                            Comment = "Approved for family event",
+                            LeaveRequestID = 3,
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 4,
+                            ApproverID = 2,
+                            Comment = "Rejected due to conflicting schedule",
+                            LeaveRequestID = 4,
+                            StatusID = 3
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestStatus", b =>
@@ -104,14 +138,36 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("StatusTypeID")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusType")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("StatusTypeID");
-
                     b.ToTable("ApprovalRequestStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Description = "New",
+                            StatusType = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Description = "Approved",
+                            StatusType = 2
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Description = "Rejected",
+                            StatusType = 3
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Employee", b =>
@@ -284,7 +340,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusID")
+                    b.Property<int>("StatusType")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -293,7 +349,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("EmployeeID");
 
-                    b.HasIndex("StatusID");
+                    b.HasIndex("StatusType");
 
                     b.ToTable("LeaveRequests");
 
@@ -306,7 +362,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             EmployeeID = 1,
                             EndDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StartDate = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StatusID = 1
+                            StatusType = 1
                         },
                         new
                         {
@@ -316,7 +372,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             EmployeeID = 2,
                             EndDate = new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StartDate = new DateTime(2023, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StatusID = 2
+                            StatusType = 2
                         },
                         new
                         {
@@ -326,7 +382,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             EmployeeID = 3,
                             EndDate = new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StartDate = new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StatusID = 1
+                            StatusType = 3
                         },
                         new
                         {
@@ -336,42 +392,38 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             EmployeeID = 4,
                             EndDate = new DateTime(2023, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StartDate = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StatusID = 3
+                            StatusType = 1
                         });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.LeaveRequestsStatus", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("StatusType")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusTypeID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("StatusTypeID");
+                    b.HasKey("StatusType");
 
                     b.ToTable("LeaveRequestsStatuses");
 
                     b.HasData(
                         new
                         {
-                            ID = 1,
-                            StatusTypeID = 1
+                            StatusType = 1,
+                            Description = "New"
                         },
                         new
                         {
-                            ID = 2,
-                            StatusTypeID = 2
+                            StatusType = 2,
+                            Description = "Approved"
                         },
                         new
                         {
-                            ID = 3,
-                            StatusTypeID = 3
+                            StatusType = 3,
+                            Description = "Rejected"
                         });
                 });
 
@@ -679,17 +731,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Navigation("LeaveRequest");
                 });
 
-            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestStatus", b =>
-                {
-                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.EmployeeStatus", "StatusType")
-                        .WithMany()
-                        .HasForeignKey("StatusTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StatusType");
-                });
-
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Employee", b =>
                 {
                     b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Role", "PeoplePartner")
@@ -739,9 +780,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.LeaveRequestsStatus", "Status")
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.LeaveRequestsStatus", "LeaveRequestsStatus")
                         .WithMany("LeaveRequests")
-                        .HasForeignKey("StatusID")
+                        .HasForeignKey("StatusType")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -749,18 +790,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.Navigation("Employee");
 
-                    b.Navigation("Status");
-                });
-
-            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.LeaveRequestsStatus", b =>
-                {
-                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.EmployeeStatus", "StatusType")
-                        .WithMany()
-                        .HasForeignKey("StatusTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StatusType");
+                    b.Navigation("LeaveRequestsStatus");
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Project", b =>
