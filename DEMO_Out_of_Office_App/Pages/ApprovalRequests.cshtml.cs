@@ -31,7 +31,7 @@ namespace DEMOOutOfOfficeApp.Pages
                 e.ID,
                 e.Approver.FullName,
                 e.LeaveRequest.ID,
-                e.ApprovalRequestStatus.StatusType.StatusDescription,
+                e.ApprovalRequestStatus.Description,
                 e.Comment
                 )).ToList();
 

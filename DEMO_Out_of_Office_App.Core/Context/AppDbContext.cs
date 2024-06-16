@@ -131,10 +131,11 @@ namespace DEMOOutOfOfficeApp.Core.Context
             );
 
             modelBuilder.Entity<ApprovalRequestStatus>().HasData(
-            new ApprovalRequestStatus { ID = 1, StatusTypeID = 1 },
-            new ApprovalRequestStatus { ID = 2, StatusTypeID = 2 },
-            new ApprovalRequestStatus { ID = 3, StatusTypeID = 3 }
-             );
+            new ApprovalRequestStatus { ID = 1, StatusType = ApprovalRequestStatusType.New, Description = ApprovalRequestStatusType.New.ToString() },
+            new ApprovalRequestStatus { ID = 2, StatusType = ApprovalRequestStatusType.Approve, Description = ApprovalRequestStatusType.Approve.ToString() },
+            new ApprovalRequestStatus { ID = 3, StatusType = ApprovalRequestStatusType.Reject, Description = ApprovalRequestStatusType.Reject.ToString() }
+);
+
 
 
 
