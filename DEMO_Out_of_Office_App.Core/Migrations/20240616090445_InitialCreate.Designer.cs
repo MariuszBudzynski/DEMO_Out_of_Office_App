@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240615151618_InitialCreate")]
+    [Migration("20240616090445_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -40,6 +40,28 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("AbsenceReasons");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "Vacation"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Sick Leave"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Name = "Family Leave"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Name = "Personal Leave"
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
@@ -274,6 +296,48 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasIndex("StatusID");
 
                     b.ToTable("LeaveRequests");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            AbsenceReasonID = 4,
+                            Comment = "Vacation",
+                            EmployeeID = 1,
+                            EndDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            AbsenceReasonID = 2,
+                            Comment = "Medical leave",
+                            EmployeeID = 2,
+                            EndDate = new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 2
+                        },
+                        new
+                        {
+                            ID = 3,
+                            AbsenceReasonID = 1,
+                            Comment = "Family event",
+                            EmployeeID = 3,
+                            EndDate = new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 4,
+                            AbsenceReasonID = 3,
+                            Comment = "Business trip",
+                            EmployeeID = 4,
+                            EndDate = new DateTime(2023, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 3
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.LeaveRequestsStatus", b =>
@@ -292,6 +356,23 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasIndex("StatusTypeID");
 
                     b.ToTable("LeaveRequestsStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            StatusTypeID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            StatusTypeID = 2
+                        },
+                        new
+                        {
+                            ID = 3,
+                            StatusTypeID = 3
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Position", b =>

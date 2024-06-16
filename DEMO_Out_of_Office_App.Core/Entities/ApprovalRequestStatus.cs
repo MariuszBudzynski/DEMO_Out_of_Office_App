@@ -10,6 +10,8 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		[Required]
 		public EmployeeStatus StatusType { get; set; }
 
-		public virtual ICollection<ApprovalRequest> ApprovalRequests { get; set; }
+        [Required]
+        public int StatusTypeID { get; set; }
+        public virtual ICollection<ApprovalRequest> ApprovalRequests { get; set; }
 	}
 }

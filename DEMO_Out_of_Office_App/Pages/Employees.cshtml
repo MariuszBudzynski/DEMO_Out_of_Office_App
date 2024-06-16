@@ -4,7 +4,8 @@
     ViewData["Title"] = "Employees";
 }
 
-    <h1 style="text-align: center">Employees</h1>
+<h1 style="text-align: center">@ViewData["Title"]</h1>
+
     <table id="employeesTable" class="display">
         <thead>
             <tr>
@@ -54,7 +55,6 @@
             }
         </tbody>
     </table>
-
 
 
 <form method="post" asp-page-handler="Add">

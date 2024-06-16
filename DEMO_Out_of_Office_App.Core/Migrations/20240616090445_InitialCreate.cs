@@ -322,6 +322,17 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AbsenceReasons",
+                columns: new[] { "ID", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Vacation" },
+                    { 2, "Sick Leave" },
+                    { 3, "Family Leave" },
+                    { 4, "Personal Leave" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Positions",
                 columns: new[] { "ID", "Name" },
                 values: new object[,]
@@ -375,6 +386,27 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     { 4, "Bob Brown", 8.0m, 1, null, 4, 2, 4 },
                     { 5, "Charlie Davis", 20.0m, 3, null, 2, 2, 1 },
                     { 6, "Diana Evans", 18.0m, 1, null, 3, 2, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "LeaveRequestsStatuses",
+                columns: new[] { "ID", "StatusTypeID" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 },
+                    { 3, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "LeaveRequests",
+                columns: new[] { "ID", "AbsenceReasonID", "Comment", "EmployeeID", "EndDate", "StartDate", "StatusID" },
+                values: new object[,]
+                {
+                    { 1, 4, "Vacation", 1, new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 2, 2, "Medical leave", 2, new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 3, 1, "Family event", 3, new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 4, 3, "Business trip", 4, new DateTime(2023, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 }
                 });
 
             migrationBuilder.InsertData(

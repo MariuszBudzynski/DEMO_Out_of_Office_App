@@ -9,7 +9,9 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		public int ID { get; set; }
 		[Required]
 		public EmployeeStatus StatusType { get; set; }
+        [Required]
+         public int StatusTypeID { get; set; }
 
-		public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
+        public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
 	}
 }

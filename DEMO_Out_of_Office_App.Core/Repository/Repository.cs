@@ -54,5 +54,15 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<ApprovalRequest>> GetEmpAprovalRequestsAsync()
+        {
+          return await _appDbContext.ApprovalRequests
+                .Include(e=>e.Approver)
+                .Include(e=>e.LeaveRequest)
+                .Include(e=>e.ApprovalRequestStatus)
+                    .ThenInclude(ars=>ars.StatusType)
+                .ToListAsync();
+        }
+
     }
 }

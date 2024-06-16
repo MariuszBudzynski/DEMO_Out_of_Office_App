@@ -1,0 +1,52 @@
+﻿@page
+@model DEMOOutOfOfficeApp.Pages.ApprovalRequestsModel
+@{
+    ViewData["Title"] = "Approval Requests";
+}
+
+<h1 style="text-align: center">@ViewData["Title"]</h1>
+
+<table id="aprovalltable" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Approver</th>
+            <th>Leave Request ID</th>
+            <th>Status</th>
+            <th>Comment</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model.ApprovalRequests)
+        {
+            <tr>
+                <td>@request.Aprover</td>
+                <td>@request.LeaveRequestId</td>
+                <td>@request.Status</td>
+                <td>@request.Comment</td>
+                <td>
+                    @* <a class="btn btn-primary" asp-page="/ApprovalRequests/Details" asp-route-id="@request.ID">Open</a>
+                    <form method="post" asp-page-handler="Approve" asp-route-id="@request.ID" class="d-inline">
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
+                    <form method="post" asp-page-handler="Reject" asp-route-id="@request.ID" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </form> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* change this to form if needed when preparing the code behid *@
+<div class="mb-3">
+    <a class="btn btn-primary" asp-page="/ApprovalRequests/Create">Open a Request</a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#aprovalltable').DataTable();
+        });
+    </script>
+}

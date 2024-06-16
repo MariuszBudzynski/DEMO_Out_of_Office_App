@@ -106,6 +106,45 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new User { ID = 5, EmployeeID = 5, Username = "charlie.davis", PasswordHash = GetMd5Hash("password5") },
                 new User { ID = 6, EmployeeID = 6, Username = "diana.evans", PasswordHash = GetMd5Hash("password6") }
             );
+
+
+            modelBuilder.Entity<LeaveRequestsStatus>().HasData(
+
+                 new LeaveRequestsStatus  { ID = 1, StatusTypeID = 1 },
+                new LeaveRequestsStatus  { ID = 2, StatusTypeID = 2 },
+                new LeaveRequestsStatus { ID = 3, StatusTypeID = 3 }
+
+                );
+
+            modelBuilder.Entity<AbsenceReason>().HasData(
+                    new AbsenceReason { ID = 1, Name = "Vacation" },
+                    new AbsenceReason { ID = 2, Name = "Sick Leave" },
+                    new AbsenceReason { ID = 3, Name = "Family Leave" },
+                    new AbsenceReason { ID = 4, Name = "Personal Leave" }
+                );
+
+            modelBuilder.Entity<LeaveRequest>().HasData(
+                new LeaveRequest { ID = 1, EmployeeID = 1, AbsenceReasonID = 4, StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023, 6, 15), Comment = "Vacation", StatusID = 1 },
+                new LeaveRequest { ID = 2, EmployeeID = 2, AbsenceReasonID = 2, StartDate = new DateTime(2023, 7, 10), EndDate = new DateTime(2023, 7, 20), Comment = "Medical leave", StatusID = 2 },
+                new LeaveRequest { ID = 3, EmployeeID = 3, AbsenceReasonID = 1, StartDate = new DateTime(2023, 8, 5), EndDate = new DateTime(2023, 8, 15), Comment = "Family event", StatusID = 1 },
+                new LeaveRequest { ID = 4, EmployeeID = 4, AbsenceReasonID = 3, StartDate = new DateTime(2023, 9, 1), EndDate = new DateTime(2023, 9, 10), Comment = "Business trip", StatusID = 3 }
+            );
+
+            modelBuilder.Entity<ApprovalRequestStatus>().HasData(
+            new ApprovalRequestStatus { ID = 1, StatusTypeID = 1 },
+            new ApprovalRequestStatus { ID = 2, StatusTypeID = 2 },
+            new ApprovalRequestStatus { ID = 3, StatusTypeID = 3 }
+             );
+
+
+
+            modelBuilder.Entity<ApprovalRequest>().HasData(
+                new ApprovalRequest { ID = 1, ApproverID = 2, LeaveRequestID = 1, StatusID = 1, Comment = "Approved" },
+                new ApprovalRequest { ID = 2, ApproverID = 3, LeaveRequestID = 2, StatusID = 2, Comment = "Pending review" },
+                new ApprovalRequest { ID = 3, ApproverID = 4, LeaveRequestID = 3, StatusID = 1, Comment = "Approved for family event" },
+                new ApprovalRequest { ID = 4, ApproverID = 2, LeaveRequestID = 4, StatusID = 3, Comment = "Rejected due to conflicting schedule" }
+            );
+
         }
 
         // A simple hash just for test data purposes

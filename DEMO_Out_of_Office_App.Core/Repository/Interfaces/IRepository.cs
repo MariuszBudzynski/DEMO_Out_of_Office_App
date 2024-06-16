@@ -10,5 +10,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository.Interfaces
         Task<T> GetDataById<T>(int id) where T : class, IEntityId;
         Task UpdateEmployee(Employee employee);
         Task SaveEmployeeData(Employee employee);
+        Task<IEnumerable<ApprovalRequest>> GetEmpAprovalRequestsAsync();
     }
 }
