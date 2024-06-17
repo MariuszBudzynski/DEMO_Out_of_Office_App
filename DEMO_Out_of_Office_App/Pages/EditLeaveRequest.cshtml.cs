@@ -14,23 +14,26 @@ namespace DEMOOutOfOfficeApp.Pages
         private int _id;
         private readonly DataLoaderHelper _dataLoaderHelper;
         private readonly IUpdateLeaveRequestUseCase _updateLeaveRequestUseCase;
+        private readonly IGetDataByIdUseCase _getDataByIdUseCase;
 
         [BindProperty(SupportsGet = true)]
         public LeaveRequestDTO? LeaveRequestDTO { get; set; }
 
-        public List<AbsenceReason> AbsenceReason { get; set; } = new List<AbsenceReason>();
+        public List<AbsenceReason> AbsenceReasons { get; set; } = new List<AbsenceReason>();
         
-        public EditLeaveRequestModel(DataLoaderHelper dataLoaderHelper, IUpdateLeaveRequestUseCase updateLeaveRequestUseCase)
+        public EditLeaveRequestModel(DataLoaderHelper dataLoaderHelper, IUpdateLeaveRequestUseCase updateLeaveRequestUseCase,IGetDataByIdUseCase getDataByIdUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _updateLeaveRequestUseCase = updateLeaveRequestUseCase;
+            _getDataByIdUseCase = getDataByIdUseCase;
         }
 
         public async Task OnGet(int id)
         {
             _id = id;
+            AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
             await LoadLeaveRequest();
-            AbsenceReason = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
+            
         }
 
         public async Task LoadLeaveRequest()
@@ -41,16 +44,24 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-           
-            var leaverequest = await CreateNewLeaveRequest();
-           await _updateLeaveRequestUseCase.ExecureAsync(leaverequest);
+
+            var leaveRequest = await _getDataByIdUseCase.ExecuteAsync<LeaveRequest>(LeaveRequestDTO.Id);
+            int absenceReasonId = GetAbsenceReasonId(LeaveRequestDTO.AbsenceReason);
+
+            leaveRequest.AbsenceReasonID = absenceReasonId;
+            leaveRequest.StartDate = LeaveRequestDTO.StartDate;
+            leaveRequest.EndDate = LeaveRequestDTO.EndDate;
+            leaveRequest.Comment = LeaveRequestDTO.Comment;
+            leaveRequest.StatusType = LeaveRequestsStatusType.New;
+
+           await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
 
             return RedirectToPage("LeaveRequests");
         }
 
         private async Task<LeaveRequest> CreateNewLeaveRequest()
         {
-            int absenceReasonId = GetAbsenceReasonId(LeaveRequestDTO.AbsenceReason);
+            int absenceReasonId =  GetAbsenceReasonId(LeaveRequestDTO.AbsenceReason);
 
             return new LeaveRequest()
             {

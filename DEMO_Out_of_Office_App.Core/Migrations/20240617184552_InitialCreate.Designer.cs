@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240617152938_InitialCreate")]
+    [Migration("20240617184552_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -50,17 +50,17 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         new
                         {
                             ID = 2,
-                            Name = "SickLeave"
+                            Name = "Sick Leave"
                         },
                         new
                         {
                             ID = 3,
-                            Name = "FamilyLeave"
+                            Name = "Family Leave"
                         },
                         new
                         {
                             ID = 4,
-                            Name = "PersonalLeave"
+                            Name = "Personal Leave"
                         });
                 });
 
@@ -167,6 +167,12 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 3,
                             Description = "Rejected",
                             StatusType = 3
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Description = "Cancelled",
+                            StatusType = 4
                         });
                 });
 
@@ -424,6 +430,11 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         {
                             StatusType = 3,
                             Description = "Rejected"
+                        },
+                        new
+                        {
+                            StatusType = 4,
+                            Description = "Cancelled"
                         });
                 });
 

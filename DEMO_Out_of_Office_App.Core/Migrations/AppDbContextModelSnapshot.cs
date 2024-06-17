@@ -164,6 +164,12 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 3,
                             Description = "Rejected",
                             StatusType = 3
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Description = "Cancelled",
+                            StatusType = 4
                         });
                 });
 
@@ -421,6 +427,11 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         {
                             StatusType = 3,
                             Description = "Rejected"
+                        },
+                        new
+                        {
+                            StatusType = 4,
+                            Description = "Cancelled"
                         });
                 });
 

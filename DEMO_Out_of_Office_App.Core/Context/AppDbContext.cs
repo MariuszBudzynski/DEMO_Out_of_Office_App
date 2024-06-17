@@ -123,7 +123,8 @@ namespace DEMOOutOfOfficeApp.Core.Context
             modelBuilder.Entity<LeaveRequestsStatus>().HasData(
                 new LeaveRequestsStatus { StatusType = LeaveRequestsStatusType.New, Description = LeaveRequestsStatusType.New.ToString() },
                 new LeaveRequestsStatus { StatusType = LeaveRequestsStatusType.Approved, Description = LeaveRequestsStatusType.Approved.ToString() },
-                new LeaveRequestsStatus { StatusType = LeaveRequestsStatusType.Rejected, Description = LeaveRequestsStatusType.Rejected.ToString() }
+                new LeaveRequestsStatus { StatusType = LeaveRequestsStatusType.Rejected, Description = LeaveRequestsStatusType.Rejected.ToString() },
+                new LeaveRequestsStatus { StatusType = LeaveRequestsStatusType.Cancelled, Description = LeaveRequestsStatusType.Cancelled.ToString() }
             );
 
             // Seed data for absence reasons
@@ -146,7 +147,8 @@ namespace DEMOOutOfOfficeApp.Core.Context
             modelBuilder.Entity<ApprovalRequestStatus>().HasData(
                 new ApprovalRequestStatus { ID = 1, StatusType = ApprovalRequestStatusType.New, Description = ApprovalRequestStatusType.New.ToString() },
                 new ApprovalRequestStatus { ID = 2, StatusType = ApprovalRequestStatusType.Approved, Description = ApprovalRequestStatusType.Approved.ToString() },
-                new ApprovalRequestStatus { ID = 3, StatusType = ApprovalRequestStatusType.Rejected, Description = ApprovalRequestStatusType.Rejected.ToString() }
+                new ApprovalRequestStatus { ID = 3, StatusType = ApprovalRequestStatusType.Rejected, Description = ApprovalRequestStatusType.Rejected.ToString() },
+                new ApprovalRequestStatus { ID = 4, StatusType = ApprovalRequestStatusType.Cancelled, Description = ApprovalRequestStatusType.Cancelled.ToString() }
             );
 
             // Seed data for approval requests

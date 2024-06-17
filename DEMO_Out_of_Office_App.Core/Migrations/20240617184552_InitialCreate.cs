@@ -316,9 +316,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 values: new object[,]
                 {
                     { 1, "Vacation" },
-                    { 2, "SickLeave" },
-                    { 3, "FamilyLeave" },
-                    { 4, "PersonalLeave" }
+                    { 2, "Sick Leave" },
+                    { 3, "Family Leave" },
+                    { 4, "Personal Leave" }
                 });
 
             migrationBuilder.InsertData(
@@ -328,7 +328,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 {
                     { 1, "New", 1 },
                     { 2, "Approved", 2 },
-                    { 3, "Rejected", 3 }
+                    { 3, "Rejected", 3 },
+                    { 4, "Cancelled", 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -338,7 +339,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 {
                     { 1, "New" },
                     { 2, "Approved" },
-                    { 3, "Rejected" }
+                    { 3, "Rejected" },
+                    { 4, "Cancelled" }
                 });
 
             migrationBuilder.InsertData(

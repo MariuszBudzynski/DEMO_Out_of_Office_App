@@ -19,7 +19,6 @@
             <th>Comment</th>
             <th>Status</th>
             <th>Actions</th>
-
         </tr>
     </thead>
     <tbody>
@@ -36,15 +35,13 @@
                 <td>
                     <form asp-page-handler="OpenLeaveRequest" method="post">
                         <input type="hidden" name="id" value="@leaveRequest.Id" />
-                        <button type="submit" class="btn btn-primary btn-sm">Open</button>
+                        <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Open</button>
                     </form>
                     <form asp-page-handler="EditLeaveRequest" method="post">
                         <input type="hidden" name="id" value="@leaveRequest.Id" />
-                        <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                        <button type="submit" class="btn btn-warning btn-sm equal-width-btn">Edit</button>
                     </form>
                 </td>
-
-
             </tr>
         }
     </tbody>
