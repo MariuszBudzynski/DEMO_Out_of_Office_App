@@ -45,7 +45,7 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             return RedirectToPage("/OpenLeaveRequest", new { id = id });
         }
-        public IActionResult OnPostEditLeaveReques(int id)
+        public IActionResult OnPostEditLeaveRequest(int id)
         {
             return RedirectToPage("/EditLeaveRequest", new { id = id });
         }

@@ -1,19 +1,23 @@
-﻿@using DEMOOutOfOfficeApp.Models
-@model IEmployeeFormModel
+﻿@page
+@model DEMOOutOfOfficeApp.Pages.EditLeaveRequestModel
+
+@{
+    ViewData["Title"] = "Edit Leave Request";
+}
 
 <form id="employeeForm" method="post" enctype="multipart/form-data">
-    @if (Model.Employee != null && Model.Employee.ID != 0)
+
+    @if (Model.LeaveRequestDTO.Id != null && Model.LeaveRequestDTO.Id != 0)
     {
-        <input type="hidden" id="Employee_ID" name="Employee.ID" value="@Model.Employee.ID" />
+        <input type="hidden" id="LeaveRequestId_ID" name="LeaveRequest.ID" value="@Model.LeaveRequestDTO.Id" />
     }
 
     <div class="form-group">
         <label for="FullName">Full Name</label>
-        <input type="text" id="FullName" name="Employee.FullName" class="form-control" asp-for="Employee.FullName" required />
-        <span asp-validation-for="Employee.FullName" class="text-danger"></span>
+        <p class="form-control-static">@Model.LeaveRequestDTO.EmployeeName</p>
     </div>
 
-    <div class="form-group">
+  @*   <div class="form-group">
         <label for="Subdivision">Subdivision</label>
         <select id="Subdivision" name="Employee.SubdivisionID" class="form-control" asp-for="Employee.SubdivisionID" required>
             <option value="">Select Subdivision</option>
@@ -23,9 +27,9 @@
             }
         </select>
         <span asp-validation-for="Employee.SubdivisionID" class="text-danger"></span>
-    </div>
+    </div> *@
 
-    <div class="form-group">
+    @* <div class="form-group">
         <label for="Position">Position</label>
         <select id="Position" name="Employee.PositionID" class="form-control" asp-for="Employee.PositionID" required>
             <option value="">Select Position</option>
@@ -35,9 +39,9 @@
             }
         </select>
         <span asp-validation-for="Employee.PositionID" class="text-danger"></span>
-    </div>
+    </div> *@
 
-    <div class="form-group">
+    @* <div class="form-group">
         <label for="Status">Status</label>
         <select id="Status" name="Employee.StatusID" class="form-control" asp-for="Employee.StatusID" required>
             <option value="">Select Status</option>
@@ -47,9 +51,9 @@
             }
         </select>
         <span asp-validation-for="Employee.StatusID" class="text-danger"></span>
-    </div>
+    </div> *@
 
-    <div class="form-group">
+   @*  <div class="form-group">
         <label for="PeoplePartner">People Partner</label>
         <select id="PeoplePartner" name="Employee.PeoplePartnerID" class="form-control" asp-for="Employee.PeoplePartnerID" required>
             <option value="">Select People Partner</option>
@@ -59,22 +63,22 @@
             }
         </select>
         <span asp-validation-for="Employee.PeoplePartnerID" class="text-danger"></span>
-    </div>
+    </div> *@
 
-    <div class="form-group">
+   @*  <div class="form-group">
         <label for="OutOfOfficeBalance">Out-of-Office Balance</label>
         <input type="number" id="OutOfOfficeBalance" name="Employee.OutOfOfficeBalance" class="form-control" asp-for="Employee.OutOfOfficeBalance" required />
         <span asp-validation-for="Employee.OutOfOfficeBalance" class="text-danger"></span>
-    </div>
+    </div> *@
 
-    <div class="form-group mt-3">
+   @*  <div class="form-group mt-3">
         <label for="Photo">Photo</label>
         <input type="file" id="Photo" name="Photo" class="form-control-file" />
         <span asp-validation-for="Photo" class="text-danger"></span>
-    </div>
+    </div> *@
 
-    <div class="form-group mt-3">
+    @* <div class="form-group mt-3">
         <button type="submit" class="btn btn-success">Save</button>
         <a asp-page="/Employees" class="btn btn-secondary">Back</a>
-    </div>
+    </div> *@
 </form>
