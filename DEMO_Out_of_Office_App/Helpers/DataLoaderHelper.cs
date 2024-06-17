@@ -57,22 +57,27 @@ namespace DEMOOutOfOfficeApp.Helpers
 			return await _getDataByIdUseCase.ExecuteAsync<Employee>( id );
 		}
 
-        public async Task<List<ProjectDTO>> LoadProjectsDTOAsync()
+        public async Task<List<ProjectDTO>> LoadProjectsDTOAsync(int employeeId)
         {
-			var projects = await _getProjectsUseCase.ExecuteAsync();
+            var projects = await _getProjectsUseCase.ExecuteAsync();
 
-			var projectsDTO = projects.Select(e => new ProjectDTO(
-				e.ID,
-				e.ProjectType.Name,
-				e.StartDate,
-				e.EndDate,
-				e.ProjectManager.FullName,
-				e.Comment,
-				e.ProjectStatus.StatusType.ToString()
-			)).ToList();
+            if (employeeId != 0)
+            {
+                projects = projects.Where(p => p.ProjectManagerID == employeeId).ToList();
+            }
 
-			return projectsDTO;
+            var projectsDTO = projects.Select(e => new ProjectDTO(
+                e.ID,
+                e.ProjectType.Name,
+                e.StartDate,
+                e.EndDate,
+                e.ProjectManager.FullName,
+                e.Comment,
+                e.ProjectStatus.StatusType.ToString()
+            )).ToList();
 
+            return projectsDTO;
         }
+
     }
 }
