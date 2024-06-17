@@ -1,3 +1,4 @@
+using DEMOOutOfOfficeApp.Common.Interfaces;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.DTOS;
 using DEMOOutOfOfficeApp.Helpers;
@@ -38,6 +39,15 @@ namespace DEMOOutOfOfficeApp.Pages
             }
 
             return 0;
+        }
+
+        public IActionResult OnPostOpenLeaveRequest(int id)
+        {
+            return RedirectToPage("/OpenLeaveRequest", new { id = id });
+        }
+        public IActionResult OnPostEditLeaveReques(int id)
+        {
+            return RedirectToPage("/EditLeaveRequest", new { id = id });
         }
     }
 }

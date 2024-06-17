@@ -104,5 +104,23 @@ namespace DEMOOutOfOfficeApp.Helpers
             return projectsDTO;
         }
 
+        public async Task<List<LeaveRequestDTO>> LoadLeaveRequestsDTOAsync()
+        {
+            var projects = await _getLeaveRequestsUseCase.ExecuteAsync();
+
+
+            var projectsDTO = projects.Select(e => new LeaveRequestDTO(
+                e.ID,
+                e.Employee.FullName,
+                e.AbsenceReason.Name,
+                e.StartDate,
+                e.EndDate,
+                e.Comment,
+                e.LeaveRequestsStatus.Description
+            )).ToList();
+
+            return projectsDTO;
+        }
+
     }
 }

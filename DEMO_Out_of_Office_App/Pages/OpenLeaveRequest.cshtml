@@ -1,0 +1,46 @@
+﻿@page
+@model DEMOOutOfOfficeApp.Pages.OpenLeaveRequestModel
+
+@{
+    ViewData["Title"] = "Leave Request";
+}
+
+<h1 style="text-align: center">@ViewData["Title"]</h1>
+
+<div class="container">
+    <table id="leaveRequestTable" class="table table-striped table-bordered" style="width:100%">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Employee</th>
+                <th scope="col">Absence Reason</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.LeaveRequestDTO.EmployeeName</td>
+                <td>@Model.LeaveRequestDTO.AbsenceReason</td>
+                <td>@Model.LeaveRequestDTO.StartDate.ToShortDateString()</td>
+                <td>@Model.LeaveRequestDTO.EndDate.ToShortDateString()</td>
+                <td>@Model.LeaveRequestDTO.Comment</td>
+                <td>@Model.LeaveRequestDTO.Status</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#leaveRequestTable').DataTable({
+                "paging": false,
+                "info": false,
+                "searching": false
+                "ordering": false
+            });
+        });
+    </script>
+}
