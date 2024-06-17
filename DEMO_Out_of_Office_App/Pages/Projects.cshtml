@@ -17,7 +17,10 @@
             <th>Project Manager</th>
             <th>Comment</th>
             <th>Status</th>
-            <th>Actions</th>
+            @if (!User.IsInRole("Employee"))
+            {
+                <th>Actions</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -31,9 +34,11 @@
                 <td>@project.Comment</td>
                 <td>@project.ProjectStatus</td>
 
-                <td>
-                    @* buttons will go here *@
-                    @* <form method="post" asp-page-handler="Deactivate">
+                @if (!User.IsInRole("Employee"))
+                {
+                    <td>
+                        @* buttons will go here *@
+                        @* <form method="post" asp-page-handler="Deactivate">
                 <input type="hidden" name="employeeID" value="@employee.ID" />
                 <button type="submit" class="btn btn-danger btn-sm equal-width-btn">Deactivate</button>
                 </form>
@@ -41,7 +46,9 @@
                 <input type="hidden" name="employeeID" value="@employee.ID" />
                 <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
                 </form> *@
-                </td>
+                    </td>
+                }
+               
             </tr>
         }
     </tbody>
