@@ -24,12 +24,12 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 
 		public string Comment { get; set; }
 
-		[Required]
-		[ForeignKey("Status")]
-		public int StatusID { get; set; }
+        [Required]
+        [ForeignKey("ProjectStatus")]
+        public int StatusID { get; set; }
 
-		public virtual ProjectType ProjectType { get; set; }
-		public virtual ProjectStatus ProjectStatus { get; set; }
-		public virtual Employee ProjectManager { get; set; }
+        public virtual ProjectType ProjectType { get; set; }
+        public virtual ProjectStatus ProjectStatus { get; set; }
+        public virtual Employee ProjectManager { get; set; }
 	}
 }

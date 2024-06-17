@@ -17,7 +17,6 @@ namespace DEMOOutOfOfficeApp.Pages
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        ////move the code after proper tests
         private readonly IGetAllUsersUseCase _getAllUsersUseCase;
 
         [BindProperty]
@@ -29,7 +28,6 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             _getAllUsersUseCase = getAllDataUseCase;
         }
-
 
         //Loging Authentication mechanism
         public async Task<IActionResult> OnPostAsync()
@@ -49,14 +47,13 @@ namespace DEMOOutOfOfficeApp.Pages
                 var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
                 var authProperties = new AuthenticationProperties
                 {
-                    IsPersistent = false, // cookie will not be Persistent
-                    ExpiresUtc = null
+                    IsPersistent = false,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(20)
                 };
 
                 await HttpContext.SignInAsync("CookieAuthentication", new ClaimsPrincipal(claimsIdentity), authProperties);
 
                 var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
-
 
                 if (user.Role.UserRole == UserRole.Employee)
                 {
@@ -66,7 +63,6 @@ namespace DEMOOutOfOfficeApp.Pages
                 {
                     return RedirectToPage("/Employees");
                 }
-
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");

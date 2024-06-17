@@ -1,7 +1,9 @@
 ﻿using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
+using DEMOOutOfOfficeApp.DTOS;
 using DEMOOutOfOfficeApp.Helpers.Interfaces;
+using System.Linq;
 
 namespace DEMOOutOfOfficeApp.Helpers
 {
@@ -12,12 +14,14 @@ namespace DEMOOutOfOfficeApp.Helpers
 		private readonly IGetAllRolesUseCase _getAllRolesUse;
 		private readonly IGetAllStatusesUseCase _getAllStatusesUseCase;
 		private readonly IGetDataByIdUseCase _getDataByIdUseCase;
+        private readonly IGetProjectsUseCase _getProjectsUseCase;
 
-		public DataLoaderHelper(IGetAllSubdivisionsUseCase getAllSubdivisionsUseCase,
+        public DataLoaderHelper(IGetAllSubdivisionsUseCase getAllSubdivisionsUseCase,
 								IGetAllPositionsUseCase getAllPositionsUseCase,
 								IGetAllRolesUseCase getAllRolesUse,
 								IGetAllStatusesUseCase getAllStatusesUseCase,
-								IGetDataByIdUseCase getDataByIdUseCase
+								IGetDataByIdUseCase getDataByIdUseCase,
+								IGetProjectsUseCase getProjectsUseCase
 								)
 		{
 			_getAllSubdivisionsUseCase = getAllSubdivisionsUseCase;
@@ -25,7 +29,8 @@ namespace DEMOOutOfOfficeApp.Helpers
 			_getAllRolesUse = getAllRolesUse;
 			_getAllStatusesUseCase = getAllStatusesUseCase;
 			_getDataByIdUseCase = getDataByIdUseCase;
-		}
+            _getProjectsUseCase = getProjectsUseCase;
+        }
 
 		public async Task<List<Subdivision>> LoadSubdivisionsAsync()
 		{
@@ -51,5 +56,23 @@ namespace DEMOOutOfOfficeApp.Helpers
 		{
 			return await _getDataByIdUseCase.ExecuteAsync<Employee>( id );
 		}
-	}
+
+        public async Task<List<ProjectDTO>> LoadProjectsDTOAsync()
+        {
+			var projects = await _getProjectsUseCase.ExecuteAsync();
+
+			var projectsDTO = projects.Select(e => new ProjectDTO(
+				e.ID,
+				e.ProjectType.Name,
+				e.StartDate,
+				e.EndDate,
+				e.ProjectManager.FullName,
+				e.Comment,
+				e.ProjectStatus.StatusType.ToString()
+			)).ToList();
+
+			return projectsDTO;
+
+        }
+    }
 }

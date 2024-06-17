@@ -11,5 +11,5 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		[Required]
 		public ProjectStatusType StatusType { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
-	}
+    }
 }

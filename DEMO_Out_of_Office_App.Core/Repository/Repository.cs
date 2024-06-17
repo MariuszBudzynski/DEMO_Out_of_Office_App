@@ -17,7 +17,7 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         public async Task<IEnumerable<T>> GetData<T>() where T : class, IEntityId
         {
-           return await _appDbContext.Set<T>().ToListAsync();
+            return await _appDbContext.Set<T>().ToListAsync();
 
         }
 
@@ -31,7 +31,7 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         public async Task<T> GetDataById<T>(int id) where T : class, IEntityId
         {
-            return await _appDbContext.Set<T>().FirstOrDefaultAsync(e=> e.ID == id);
+            return await _appDbContext.Set<T>().FirstOrDefaultAsync(e => e.ID == id);
 
         }
 
@@ -73,11 +73,20 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         public async Task<IEnumerable<LeaveRequest>> GetLeaveRequestsAsync()
         {
-                return await _appDbContext.LeaveRequests
-            .Include(lr => lr.Employee)
-            .Include(lr => lr.AbsenceReason)
-            .Include(lr => lr.LeaveRequestsStatus)
-            .ToListAsync();
+            return await _appDbContext.LeaveRequests
+        .Include(lr => lr.Employee)
+        .Include(lr => lr.AbsenceReason)
+        .Include(lr => lr.LeaveRequestsStatus)
+        .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Project>> GetProjectsAsync()
+        {
+            return await _appDbContext.Projects
+                .Include(p => p.ProjectType)
+                .Include(p => p.ProjectStatus)
+                .Include(p => p.ProjectManager)
+                .ToListAsync();
         }
 
     }

@@ -6,4 +6,51 @@
     ViewData["Title"] = "Projects";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1 style="text-align: center">@ViewData["Title"]</h1>
+
+<table id="projectstable" class="display">
+    <thead>
+        <tr>
+            <th>Project Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Project Manager</th>
+            <th>Comment</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model.Projects)
+        {
+            <tr>
+                <td>@project.ProjectName</td>
+                <td>@project.StartDate</td>
+                <td>@project.EndDate</td>
+                <td>@project.Projectmanager</td>
+                <td>@project.Comment</td>
+                <td>@project.ProjectStatus</td>
+
+                <td>
+                    @* buttons will go here *@
+                    @* <form method="post" asp-page-handler="Deactivate">
+                <input type="hidden" name="employeeID" value="@employee.ID" />
+                <button type="submit" class="btn btn-danger btn-sm equal-width-btn">Deactivate</button>
+                </form>
+                <form method="post" asp-page-handler="Edit">
+                <input type="hidden" name="employeeID" value="@employee.ID" />
+                <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
+                </form> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#projectstable').DataTable();
+        });
+    </script>
+}

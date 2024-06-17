@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var isAuthenticated = User.Identity.IsAuthenticated;
+    var isEmployee = User.IsInRole("Employee");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,49 +25,37 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <!-- Left-aligned items -->
-                        @if (User.Identity.IsAuthenticated)
+                        @if (isAuthenticated)
                         {
-                            @if (User.IsInRole("Employee"))
+                            @if (isEmployee)
                             {
                                 <li class="nav-item">
-                                    <form id="logoutForm" asp-page="/Projects" method="post" class="form-inline">
-                                        <button type="submit" class="btn btn-link nav-link">Projects</button>
-                                    </form>
+                                    <a class="nav-link" asp-page="/Projects">Projects</a>
                                 </li>
                                 <li class="nav-item">
-                                    <form id="logoutForm" asp-page="/LeaveRequests" method="post" class="form-inline">
-                                        <button type="submit" class="btn btn-link nav-link">LeaveRequests</button>
-                                    </form>
+                                    <a class="nav-link" asp-page="/LeaveRequests">Leave Requests</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item ms-auto">
-                                    <form id="logoutForm" asp-page="/Projects" method="post" class="form-inline">
-                                        <button type="submit" class="btn btn-link nav-link">Projects</button>
-                                    </form>
+                                    <a class="nav-link" asp-page="/Projects">Projects</a>
                                 </li>
                                 <li class="nav-item">
-                                    <form id="logoutForm" asp-page="/LeaveRequests" method="post" class="form-inline">
-                                        <button type="submit" class="btn btn-link nav-link">LeaveRequests</button>
-                                    </form>
+                                    <a class="nav-link" asp-page="/LeaveRequests">Leave Requests</a>
                                 </li>
                                 <li class="nav-item">
-                                    <form id="logoutForm" asp-page="/Employees" method="post" class="form-inline">
-                                        <button type="submit" class="btn btn-link nav-link">Employees</button>
-                                    </form>
+                                    <a class="nav-link" asp-page="/Employees">Employees</a>
                                 </li>
                                 <li class="nav-item">
-                                    <form id="logoutForm" asp-page="/ApprovalRequests" method="post" class="form-inline">
-                                        <button type="submit" class="btn btn-link nav-link">Approval Requests</button>
-                                    </form>
+                                    <a class="nav-link" asp-page="/ApprovalRequests">Approval Requests</a>
                                 </li>
                             }
                         }
                     </ul>
                     <ul class="navbar-nav">
                         <!-- Right-aligned item (Logout) -->
-                        @if (User.Identity.IsAuthenticated)
+                        @if (isAuthenticated)
                         {
                             <li class="nav-item">
                                 <form id="logoutForm" asp-page="/Logout" method="post" class="form-inline">
