@@ -15,13 +15,15 @@ namespace DEMOOutOfOfficeApp.Helpers
 		private readonly IGetAllStatusesUseCase _getAllStatusesUseCase;
 		private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly IGetProjectsUseCase _getProjectsUseCase;
+        private readonly IGetLeaveRequestsUseCase _getLeaveRequestsUseCase;
 
         public DataLoaderHelper(IGetAllSubdivisionsUseCase getAllSubdivisionsUseCase,
 								IGetAllPositionsUseCase getAllPositionsUseCase,
 								IGetAllRolesUseCase getAllRolesUse,
 								IGetAllStatusesUseCase getAllStatusesUseCase,
 								IGetDataByIdUseCase getDataByIdUseCase,
-								IGetProjectsUseCase getProjectsUseCase
+								IGetProjectsUseCase getProjectsUseCase,
+                                IGetLeaveRequestsUseCase getLeaveRequestsUseCase
 								)
 		{
 			_getAllSubdivisionsUseCase = getAllSubdivisionsUseCase;
@@ -30,6 +32,7 @@ namespace DEMOOutOfOfficeApp.Helpers
 			_getAllStatusesUseCase = getAllStatusesUseCase;
 			_getDataByIdUseCase = getDataByIdUseCase;
             _getProjectsUseCase = getProjectsUseCase;
+            _getLeaveRequestsUseCase = getLeaveRequestsUseCase;
         }
 
 		public async Task<List<Subdivision>> LoadSubdivisionsAsync()
@@ -74,6 +77,28 @@ namespace DEMOOutOfOfficeApp.Helpers
                 e.ProjectManager.FullName,
                 e.Comment,
                 e.ProjectStatus.StatusType.ToString()
+            )).ToList();
+
+            return projectsDTO;
+        }
+
+        public async Task<List<LeaveRequestDTO>> LoadLeaveRequestsDTOAsync(int employeeId)
+        {
+            var projects = await _getLeaveRequestsUseCase.ExecuteAsync();
+
+            if (employeeId != 0)
+            {
+                projects = projects.Where(p => p.EmployeeID == employeeId).ToList();
+            }
+
+            var projectsDTO = projects.Select(e => new LeaveRequestDTO(
+                e.ID,
+                e.Employee.FullName,
+                e.AbsenceReason.Name,
+                e.StartDate,
+                e.EndDate,
+                e.Comment,
+                e.LeaveRequestsStatus.Description
             )).ToList();
 
             return projectsDTO;

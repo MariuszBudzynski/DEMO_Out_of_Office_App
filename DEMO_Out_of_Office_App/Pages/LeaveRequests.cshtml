@@ -7,4 +7,55 @@
     ViewData["Title"] = "Leave Requests";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1 style="text-align: center">@ViewData["Title"]</h1>
+
+<table id="projectstable" class="display">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Absence Reason</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Comment</th>
+            <th>Status</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var leaveRequest in Model.LeaveRequests)
+        {
+            <tr>
+                <td>@leaveRequest.EmployeeName</td>
+                <td>@leaveRequest.AbsenceReason</td>
+                <td>@leaveRequest.StartDate</td>
+                <td>@leaveRequest.EndDate</td>
+                <td>@leaveRequest.Comment</td>
+                <td>@leaveRequest.Status</td>
+
+
+                    <td>
+                        @* buttons will go here *@
+                        @* <form method="post" asp-page-handler="Deactivate">
+                <input type="hidden" name="employeeID" value="@employee.ID" />
+                <button type="submit" class="btn btn-danger btn-sm equal-width-btn">Deactivate</button>
+                </form>
+                <form method="post" asp-page-handler="Edit">
+                <input type="hidden" name="employeeID" value="@employee.ID" />
+                <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
+                </form> *@
+                    </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#projectstable').DataTable();
+        });
+    </script>
+}

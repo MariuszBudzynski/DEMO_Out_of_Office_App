@@ -88,6 +88,5 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 .Include(p => p.ProjectManager)
                 .ToListAsync();
         }
-
     }
 }
