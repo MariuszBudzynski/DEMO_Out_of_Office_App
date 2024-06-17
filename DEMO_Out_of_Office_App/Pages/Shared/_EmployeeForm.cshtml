@@ -7,71 +7,87 @@
         <input type="hidden" id="Employee_ID" name="Employee.ID" value="@Model.Employee.ID" />
     }
 
-    <div class="form-group">
-        <label for="FullName">Full Name</label>
-        <input type="text" id="FullName" name="Employee.FullName" class="form-control" asp-for="Employee.FullName" required />
-        <span asp-validation-for="Employee.FullName" class="text-danger"></span>
-    </div>
+    <table class="table">
+        <tr>
+            <td><label for="FullName">Full Name</label></td>
+            <td>
+                <input type="text" id="FullName" name="Employee.FullName" class="form-control" asp-for="Employee.FullName" required />
+                <span asp-validation-for="Employee.FullName" class="text-danger"></span>
+            </td>
+        </tr>
 
-    <div class="form-group">
-        <label for="Subdivision">Subdivision</label>
-        <select id="Subdivision" name="Employee.SubdivisionID" class="form-control" asp-for="Employee.SubdivisionID" required>
-            <option value="">Select Subdivision</option>
-            @foreach (var option in Model.Subdivisions)
-            {
-                <option value="@option.ID">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="Employee.SubdivisionID" class="text-danger"></span>
-    </div>
+        <tr>
+            <td><label for="Subdivision">Subdivision</label></td>
+            <td>
+                <select id="Subdivision" name="Employee.SubdivisionID" class="form-control" asp-for="Employee.SubdivisionID" required>
+                    <option value="">Select Subdivision</option>
+                    @foreach (var option in Model.Subdivisions)
+                    {
+                        <option value="@option.ID">@option.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Employee.SubdivisionID" class="text-danger"></span>
+            </td>
+        </tr>
 
-    <div class="form-group">
-        <label for="Position">Position</label>
-        <select id="Position" name="Employee.PositionID" class="form-control" asp-for="Employee.PositionID" required>
-            <option value="">Select Position</option>
-            @foreach (var option in Model.Positions)
-            {
-                <option value="@option.ID">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="Employee.PositionID" class="text-danger"></span>
-    </div>
+        <tr>
+            <td><label for="Position">Position</label></td>
+            <td>
+                <select id="Position" name="Employee.PositionID" class="form-control" asp-for="Employee.PositionID" required>
+                    <option value="">Select Position</option>
+                    @foreach (var option in Model.Positions)
+                    {
+                        <option value="@option.ID">@option.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Employee.PositionID" class="text-danger"></span>
+            </td>
+        </tr>
 
-    <div class="form-group">
-        <label for="Status">Status</label>
-        <select id="Status" name="Employee.StatusID" class="form-control" asp-for="Employee.StatusID" required>
-            <option value="">Select Status</option>
-            @foreach (var option in Model.Statuses)
-            {
-                <option value="@option.ID">@option.StatusDescription</option>
-            }
-        </select>
-        <span asp-validation-for="Employee.StatusID" class="text-danger"></span>
-    </div>
+        <tr>
+            <td><label for="Status">Status</label></td>
+            <td>
+                <select id="Status" name="Employee.StatusID" class="form-control" asp-for="Employee.StatusID" required>
+                    <option value="">Select Status</option>
+                    @foreach (var option in Model.Statuses)
+                    {
+                        <option value="@option.ID">@option.StatusDescription</option>
+                    }
+                </select>
+                <span asp-validation-for="Employee.StatusID" class="text-danger"></span>
+            </td>
+        </tr>
 
-    <div class="form-group">
-        <label for="PeoplePartner">People Partner</label>
-        <select id="PeoplePartner" name="Employee.PeoplePartnerID" class="form-control" asp-for="Employee.PeoplePartnerID" required>
-            <option value="">Select People Partner</option>
-            @foreach (var option in Model.Roles)
-            {
-                <option value="@option.ID">@option.UserRoleDescription</option>
-            }
-        </select>
-        <span asp-validation-for="Employee.PeoplePartnerID" class="text-danger"></span>
-    </div>
+        <tr>
+            <td><label for="PeoplePartner">People Partner</label></td>
+            <td>
+                <select id="PeoplePartner" name="Employee.PeoplePartnerID" class="form-control" asp-for="Employee.PeoplePartnerID" required>
+                    <option value="">Select People Partner</option>
+                    @foreach (var option in Model.Roles)
+                    {
+                        <option value="@option.ID">@option.UserRoleDescription</option>
+                    }
+                </select>
+                <span asp-validation-for="Employee.PeoplePartnerID" class="text-danger"></span>
+            </td>
+        </tr>
 
-    <div class="form-group">
-        <label for="OutOfOfficeBalance">Out-of-Office Balance</label>
-        <input type="number" id="OutOfOfficeBalance" name="Employee.OutOfOfficeBalance" class="form-control" asp-for="Employee.OutOfOfficeBalance" required />
-        <span asp-validation-for="Employee.OutOfOfficeBalance" class="text-danger"></span>
-    </div>
+        <tr>
+            <td><label for="OutOfOfficeBalance">Out-of-Office Balance</label></td>
+            <td>
+                <input type="number" id="OutOfOfficeBalance" name="Employee.OutOfOfficeBalance" class="form-control" asp-for="Employee.OutOfOfficeBalance" required />
+                <span asp-validation-for="Employee.OutOfOfficeBalance" class="text-danger"></span>
+            </td>
+        </tr>
 
-    <div class="form-group mt-3">
-        <label for="Photo">Photo</label>
-        <input type="file" id="Photo" name="Photo" class="form-control-file" />
-        <span asp-validation-for="Photo" class="text-danger"></span>
-    </div>
+        <tr>
+            <td><label for="Photo">Photo</label></td>
+            <td>
+                <input type="file" id="Photo" name="Photo" class="form-control-file" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
+            </td>
+        </tr>
+    </table>
 
     <div class="form-group mt-3">
         <button type="submit" class="btn btn-success">Save</button>
