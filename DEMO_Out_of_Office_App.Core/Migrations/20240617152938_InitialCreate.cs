@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,6 +66,19 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProjectStatuses",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectStatuses", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProjectTypes",
                 columns: table => new
                 {
@@ -118,25 +131,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subdivisions", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProjectStatuses",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusTypeID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProjectStatuses", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_ProjectStatuses_Statuses_StatusTypeID",
-                        column: x => x.StatusTypeID,
-                        principalTable: "Statuses",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -262,7 +256,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeID = table.Column<int>(type: "int", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    PasswordHash = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RoleID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -273,6 +268,12 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         principalTable: "Employees",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleID",
+                        column: x => x.RoleID,
+                        principalTable: "Roles",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -315,9 +316,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 values: new object[,]
                 {
                     { 1, "Vacation" },
-                    { 2, "Sick Leave" },
-                    { 3, "Family Leave" },
-                    { 4, "Personal Leave" }
+                    { 2, "SickLeave" },
+                    { 3, "FamilyLeave" },
+                    { 4, "PersonalLeave" }
                 });
 
             migrationBuilder.InsertData(
@@ -349,6 +350,24 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     { 2, "Project Manager" },
                     { 3, "HR Specialist" },
                     { 4, "Marketing Coordinator" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProjectStatuses",
+                columns: new[] { "ID", "StatusType" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProjectTypes",
+                columns: new[] { "ID", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Internal" },
+                    { 2, "Client" }
                 });
 
             migrationBuilder.InsertData(
@@ -408,16 +427,30 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "ID", "EmployeeID", "PasswordHash", "Username" },
+                table: "Projects",
+                columns: new[] { "ID", "Comment", "EndDate", "ProjectManagerID", "ProjectTypeID", "StartDate", "StatusID" },
                 values: new object[,]
                 {
-                    { 1, 1, "7C6A180B36896A0A8C02787EEAFB0E4C", "john.doe" },
-                    { 2, 2, "6CB75F652A9B52798EB6CF2201057C73", "jane.smith" },
-                    { 3, 3, "819B0643D6B89DC9B579FDFC9094F28E", "alice.johnson" },
-                    { 4, 4, "34CC93ECE0BA9E3F6F235D4AF979B16C", "bob.brown" },
-                    { 5, 5, "DB0EDD04AAAC4506F7EDAB03AC855D56", "charlie.davis" },
-                    { 6, 6, "218DD27AEBECCECAE69AD8408D9A36BF", "diana.evans" }
+                    { 1, "Internal project for HR system", null, 2, 1, new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 2, "Client project for ABC Inc.", null, 3, 2, new DateTime(2023, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 3, "Research project", null, 4, 1, new DateTime(2023, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 4, "Marketing campaign", null, 1, 2, new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 5, "IT infrastructure upgrade", null, 2, 1, new DateTime(2023, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 6, "Client project for XYZ Corp.", null, 3, 2, new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 7, "Research and development", null, 4, 1, new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "ID", "EmployeeID", "PasswordHash", "RoleID", "Username" },
+                values: new object[,]
+                {
+                    { 1, 1, "7C6A180B36896A0A8C02787EEAFB0E4C", 2, "john.doe" },
+                    { 2, 2, "6CB75F652A9B52798EB6CF2201057C73", 4, "jane.smith" },
+                    { 3, 3, "819B0643D6B89DC9B579FDFC9094F28E", 3, "alice.johnson" },
+                    { 4, 4, "34CC93ECE0BA9E3F6F235D4AF979B16C", 1, "bob.brown" },
+                    { 5, 5, "DB0EDD04AAAC4506F7EDAB03AC855D56", 1, "charlie.davis" },
+                    { 6, 6, "218DD27AEBECCECAE69AD8408D9A36BF", 1, "diana.evans" }
                 });
 
             migrationBuilder.InsertData(
@@ -497,14 +530,14 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 column: "StatusID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectStatuses_StatusTypeID",
-                table: "ProjectStatuses",
-                column: "StatusTypeID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_EmployeeID",
                 table: "Users",
                 column: "EmployeeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoleID",
+                table: "Users",
+                column: "RoleID");
         }
 
         /// <inheritdoc />

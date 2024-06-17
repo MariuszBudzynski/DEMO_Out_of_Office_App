@@ -52,6 +52,12 @@ namespace DEMOOutOfOfficeApp.Core.Repository
             await _appDbContext.SaveChangesAsync();
         }
 
+        public async Task UpdateLeaveRequest(LeaveRequest leaveRequest)
+        {
+            _appDbContext.Update(leaveRequest);
+            await _appDbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()
         {
             return await _appDbContext.Employees

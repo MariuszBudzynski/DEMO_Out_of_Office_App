@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240616122356_initialCreate")]
-    partial class initialCreate
+    [Migration("20240617154148_EnumNameChange")]
+    partial class EnumNameChange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,17 +50,17 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         new
                         {
                             ID = 2,
-                            Name = "Sick Leave"
+                            Name = "SickLeave"
                         },
                         new
                         {
                             ID = 3,
-                            Name = "Family Leave"
+                            Name = "FamilyLeave"
                         },
                         new
                         {
                             ID = 4,
-                            Name = "Personal Leave"
+                            Name = "PersonalLeave"
                         });
                 });
 
@@ -502,6 +502,71 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasIndex("StatusID");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Comment = "Internal project for HR system",
+                            ProjectManagerID = 2,
+                            ProjectTypeID = 1,
+                            StartDate = new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Comment = "Client project for ABC Inc.",
+                            ProjectManagerID = 3,
+                            ProjectTypeID = 2,
+                            StartDate = new DateTime(2023, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Comment = "Research project",
+                            ProjectManagerID = 4,
+                            ProjectTypeID = 1,
+                            StartDate = new DateTime(2023, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Comment = "Marketing campaign",
+                            ProjectManagerID = 1,
+                            ProjectTypeID = 2,
+                            StartDate = new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 5,
+                            Comment = "IT infrastructure upgrade",
+                            ProjectManagerID = 2,
+                            ProjectTypeID = 1,
+                            StartDate = new DateTime(2023, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 6,
+                            Comment = "Client project for XYZ Corp.",
+                            ProjectManagerID = 3,
+                            ProjectTypeID = 2,
+                            StartDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 7,
+                            Comment = "Research and development",
+                            ProjectManagerID = 4,
+                            ProjectTypeID = 1,
+                            StartDate = new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusID = 1
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ProjectStatus", b =>
@@ -512,14 +577,24 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("StatusTypeID")
+                    b.Property<int>("StatusType")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("StatusTypeID");
-
                     b.ToTable("ProjectStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            StatusType = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            StatusType = 2
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ProjectType", b =>
@@ -537,6 +612,18 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("ProjectTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "Internal"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Client"
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Role", b =>
@@ -648,6 +735,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("RoleID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -657,6 +747,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasIndex("EmployeeID");
 
+                    b.HasIndex("RoleID");
+
                     b.ToTable("Users");
 
                     b.HasData(
@@ -665,6 +757,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 1,
                             EmployeeID = 1,
                             PasswordHash = "7C6A180B36896A0A8C02787EEAFB0E4C",
+                            RoleID = 2,
                             Username = "john.doe"
                         },
                         new
@@ -672,6 +765,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 2,
                             EmployeeID = 2,
                             PasswordHash = "6CB75F652A9B52798EB6CF2201057C73",
+                            RoleID = 4,
                             Username = "jane.smith"
                         },
                         new
@@ -679,6 +773,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 3,
                             EmployeeID = 3,
                             PasswordHash = "819B0643D6B89DC9B579FDFC9094F28E",
+                            RoleID = 3,
                             Username = "alice.johnson"
                         },
                         new
@@ -686,6 +781,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 4,
                             EmployeeID = 4,
                             PasswordHash = "34CC93ECE0BA9E3F6F235D4AF979B16C",
+                            RoleID = 1,
                             Username = "bob.brown"
                         },
                         new
@@ -693,6 +789,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 5,
                             EmployeeID = 5,
                             PasswordHash = "DB0EDD04AAAC4506F7EDAB03AC855D56",
+                            RoleID = 1,
                             Username = "charlie.davis"
                         },
                         new
@@ -700,6 +797,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ID = 6,
                             EmployeeID = 6,
                             PasswordHash = "218DD27AEBECCECAE69AD8408D9A36BF",
+                            RoleID = 1,
                             Username = "diana.evans"
                         });
                 });
@@ -820,17 +918,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Navigation("ProjectType");
                 });
 
-            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ProjectStatus", b =>
-                {
-                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.EmployeeStatus", "StatusType")
-                        .WithMany()
-                        .HasForeignKey("StatusTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StatusType");
-                });
-
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.User", b =>
                 {
                     b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Employee", "Employee")
@@ -839,7 +926,15 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.AbsenceReason", b =>

@@ -14,5 +14,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository.Interfaces
         Task<IEnumerable<LeaveRequest>> GetLeaveRequestsAsync();
         Task<IEnumerable<User>> GetUsersAsync();
         Task<IEnumerable<Project>> GetProjectsAsync();
+        Task UpdateLeaveRequest(LeaveRequest leaveRequest);
     }
 }

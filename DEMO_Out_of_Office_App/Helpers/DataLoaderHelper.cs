@@ -16,6 +16,7 @@ namespace DEMOOutOfOfficeApp.Helpers
 		private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly IGetProjectsUseCase _getProjectsUseCase;
         private readonly IGetLeaveRequestsUseCase _getLeaveRequestsUseCase;
+        private readonly IGetDataUseCase _getDataUseCase;
 
         public DataLoaderHelper(IGetAllSubdivisionsUseCase getAllSubdivisionsUseCase,
 								IGetAllPositionsUseCase getAllPositionsUseCase,
@@ -23,7 +24,8 @@ namespace DEMOOutOfOfficeApp.Helpers
 								IGetAllStatusesUseCase getAllStatusesUseCase,
 								IGetDataByIdUseCase getDataByIdUseCase,
 								IGetProjectsUseCase getProjectsUseCase,
-                                IGetLeaveRequestsUseCase getLeaveRequestsUseCase
+                                IGetLeaveRequestsUseCase getLeaveRequestsUseCase,
+                                IGetDataUseCase getDataUseCase
 								)
 		{
 			_getAllSubdivisionsUseCase = getAllSubdivisionsUseCase;
@@ -33,6 +35,7 @@ namespace DEMOOutOfOfficeApp.Helpers
 			_getDataByIdUseCase = getDataByIdUseCase;
             _getProjectsUseCase = getProjectsUseCase;
             _getLeaveRequestsUseCase = getLeaveRequestsUseCase;
+            _getDataUseCase = getDataUseCase;
         }
 
 		public async Task<List<Subdivision>> LoadSubdivisionsAsync()
@@ -59,6 +62,11 @@ namespace DEMOOutOfOfficeApp.Helpers
 		{
 			return await _getDataByIdUseCase.ExecuteAsync<Employee>( id );
 		}
+
+        public async Task<IEnumerable<AbsenceReason>> LoadAbsenceReasonAsync()
+        {
+            return await _getDataUseCase.ExecuteAsync<AbsenceReason>();
+        }
 
         public async Task<List<ProjectDTO>> LoadProjectsDTOAsync(int employeeId)
         {

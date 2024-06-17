@@ -5,7 +5,7 @@
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class EntityUpdate2 : Migration
+    public partial class EnumNameChange : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

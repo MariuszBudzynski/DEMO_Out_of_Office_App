@@ -128,10 +128,10 @@ namespace DEMOOutOfOfficeApp.Core.Context
 
             // Seed data for absence reasons
             modelBuilder.Entity<AbsenceReason>().HasData(
-                new AbsenceReason { ID = 1, Name = "Vacation" },
-                new AbsenceReason { ID = 2, Name = "Sick Leave" },
-                new AbsenceReason { ID = 3, Name = "Family Leave" },
-                new AbsenceReason { ID = 4, Name = "Personal Leave" }
+                new AbsenceReason { ID = (int)AbsenceReasonType.Vacation, Name = GetDisplayName(AbsenceReasonType.Vacation) },
+                new AbsenceReason { ID = (int)AbsenceReasonType.SickLeave, Name = GetDisplayName(AbsenceReasonType.SickLeave) },
+                new AbsenceReason { ID = (int)AbsenceReasonType.FamilyLeave, Name = GetDisplayName(AbsenceReasonType.FamilyLeave) },
+                new AbsenceReason { ID = (int)AbsenceReasonType.PersonalLeave, Name = GetDisplayName(AbsenceReasonType.PersonalLeave) }
             );
 
             // Seed data for leave requests
@@ -189,6 +189,22 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
                 return Convert.ToHexString(hashBytes);
             }
+        }
+
+        //Loading custom artibute enum names
+        public static string GetDisplayName(Enum value)
+        {
+            var type = value.GetType();
+            var memberInfo = type.GetMember(value.ToString());
+            if (memberInfo.Length > 0)
+            {
+                var attributes = memberInfo[0].GetCustomAttributes(typeof(EnumDisplayNameAttribute), false);
+                if (attributes.Length > 0)
+                {
+                    return ((EnumDisplayNameAttribute)attributes[0]).DisplayName;
+                }
+            }
+            return value.ToString(); 
         }
     }
 }

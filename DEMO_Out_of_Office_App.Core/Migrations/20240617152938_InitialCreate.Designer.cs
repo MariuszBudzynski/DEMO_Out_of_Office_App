@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240616172220_EntityUpdate")]
-    partial class EntityUpdate
+    [Migration("20240617152938_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,17 +50,17 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         new
                         {
                             ID = 2,
-                            Name = "Sick Leave"
+                            Name = "SickLeave"
                         },
                         new
                         {
                             ID = 3,
-                            Name = "Family Leave"
+                            Name = "FamilyLeave"
                         },
                         new
                         {
                             ID = 4,
-                            Name = "Personal Leave"
+                            Name = "PersonalLeave"
                         });
                 });
 

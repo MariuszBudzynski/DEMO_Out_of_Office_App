@@ -66,6 +66,7 @@ namespace DEMOOutOfOfficeApp
 			services.AddScoped<IGetLeaveRequestsUseCase, GetLeaveRequestsUseCase>();
 			services.AddScoped<IGetDataUseCase, GetDataUseCase>();
 			services.AddScoped<IGetProjectsUseCase, GetProjectsUseCase>();
+			services.AddScoped<IUpdateLeaveRequestUseCase, UpdateLeaveRequestUseCase>();
 			services.AddScoped<DataLoaderHelper>();
         }
 	}
