@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DEMOOutOfOfficeApp.Pages
+namespace DEMOOutOfOfficeApp.Pages.ApprovalRequests
 {
     [Authorize(Policy = "HRPMAdminPolicy")]
     public class ApprovalRequestsModel : PageModel

@@ -9,8 +9,8 @@ using DEMOOutOfOfficeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DEMOOutOfOfficeApp.Pages
-{   
+namespace DEMOOutOfOfficeApp.Pages.LeaveRequests
+{
     public class OpenLeaveRequestModel : PageModel
     {
         private int _id;
@@ -59,7 +59,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task LoadLeaveRequest()
         {
-            var leaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync()).FirstOrDefault(e=>e.Id==_id);
+            var leaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync()).FirstOrDefault(e => e.Id == _id);
             LeaveRequestDTO = leaveRequests;
 
         }

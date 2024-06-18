@@ -57,11 +57,11 @@ namespace DEMOOutOfOfficeApp.Pages
 
                 if (user.Role.UserRole == UserRole.Employee)
                 {
-                    return RedirectToPage("/Projects");
+                    return RedirectToPage("/Projects/Projects");
                 }
                 else
                 {
-                    return RedirectToPage("/Employees");
+                    return RedirectToPage("/Employees/Employees");
                 }
             }
 

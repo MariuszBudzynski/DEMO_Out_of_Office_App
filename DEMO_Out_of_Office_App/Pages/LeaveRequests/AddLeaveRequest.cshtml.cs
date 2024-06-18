@@ -9,7 +9,7 @@ using DEMOOutOfOfficeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DEMOOutOfOfficeApp.Pages
+namespace DEMOOutOfOfficeApp.Pages.LeaveRequests
 {
     public class AddLeaveRequestModel : PageModel, IEditLeaveRequestFormModel
     {
@@ -23,7 +23,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public List<AbsenceReason> AbsenceReasons { get; set; } = new List<AbsenceReason>();
 
-        public AddLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IGetDataByIdUseCase getDataByIdUseCase,ISaveDataUseCase saveDataUse)
+        public AddLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IGetDataByIdUseCase getDataByIdUseCase, ISaveDataUseCase saveDataUse)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _getDataByIdUseCase = getDataByIdUseCase;
@@ -45,7 +45,7 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             var employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(id);
 
-            return new LeaveRequestDTO(_id, employee.FullName, String.Empty, DateTime.Now, DateTime.Now, String.Empty, LeaveRequestsStatusType.New.ToString());
+            return new LeaveRequestDTO(_id, employee.FullName, string.Empty, DateTime.Now, DateTime.Now, string.Empty, LeaveRequestsStatusType.New.ToString());
         }
 
         private LeaveRequest CreateNewLeaveRequest()
@@ -59,7 +59,7 @@ namespace DEMOOutOfOfficeApp.Pages
                 _ => throw new ArgumentException($"Unknown absence reason: {LeaveRequestDTO.AbsenceReason}")
             };
 
-           return new LeaveRequest()
+            return new LeaveRequest()
             {
                 EmployeeID = LeaveRequestDTO.Id,
                 AbsenceReasonID = absenceReasonId,

@@ -5,10 +5,10 @@ using DEMOOutOfOfficeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DEMOOutOfOfficeApp.Pages
+namespace DEMOOutOfOfficeApp.Pages.ApprovalRequests
 {
     public class OpenApprovalRequestModel : PageModel
-	{
+    {
 
         private readonly IGetAllEmployeesUseCase _getAllEmployeesUseCase;
         private readonly IGetLeaveRequestsUseCase _getLeaveRequestsUseCase;
