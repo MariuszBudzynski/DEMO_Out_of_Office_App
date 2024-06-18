@@ -10,12 +10,12 @@ using DEMOOutOfOfficeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DEMOOutOfOfficeApp.Pages.Employees
+namespace DEMOOutOfOfficeApp.Pages
 {
-    public class AddEmployeeModel : PageModel, IEmployeeFormModel
+    public class AddEmployeeModel : PageModel , IEmployeeFormModel
     {
-        private readonly IDataLoaderHelper _dataLoaderHelper;
-        private readonly ISaveSingleEmployeeUseCase _saveSingleEmployeeUseCase;
+		private readonly IDataLoaderHelper _dataLoaderHelper;
+		private readonly ISaveSingleEmployeeUseCase _saveSingleEmployeeUseCase;
         private IEnumerable<User> usersHRManagerROle;
 
         [BindProperty]
@@ -29,16 +29,16 @@ namespace DEMOOutOfOfficeApp.Pages.Employees
         public List<EmployeeStatus> Statuses { get; set; } = new List<EmployeeStatus>();
         public List<PeoplePartnerDTO> PeoplePartner { get; set; }
 
-        public AddEmployeeModel(IDataLoaderHelper dataLoaderHelper, ISaveSingleEmployeeUseCase saveSingleEmployeeUseCase)
+        public AddEmployeeModel(IDataLoaderHelper dataLoaderHelper,ISaveSingleEmployeeUseCase saveSingleEmployeeUseCase)
         {
-            _dataLoaderHelper = dataLoaderHelper;
-            _saveSingleEmployeeUseCase = saveSingleEmployeeUseCase;
-        }
+			_dataLoaderHelper = dataLoaderHelper;
+			_saveSingleEmployeeUseCase = saveSingleEmployeeUseCase;
+		}
         public async Task OnGet()
         {
-            Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
-            Positions = (await _dataLoaderHelper.LoadPositionsAsync()).ToList();
-            Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
+			Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
+			Positions = (await _dataLoaderHelper.LoadPositionsAsync()).ToList();
+			Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
             PeoplePartner = (await _dataLoaderHelper.GetListOfPeoplePartner()).ToList();
 
         }
@@ -48,7 +48,7 @@ namespace DEMOOutOfOfficeApp.Pages.Employees
 
             if (Photo != null && Photo.Length > 0)
             {
-                using (var memoryStream = new MemoryStream())
+                using (var memoryStream = new System.IO.MemoryStream())
                 {
                     await Photo.CopyToAsync(memoryStream);
                     Employee.Photo = memoryStream.ToArray();

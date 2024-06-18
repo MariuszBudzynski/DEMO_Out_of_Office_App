@@ -8,9 +8,9 @@ using DEMOOutOfOfficeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DEMOOutOfOfficeApp.Pages.LeaveRequests
+namespace DEMOOutOfOfficeApp.Pages
 {
-    public class EditLeaveRequestModel : PageModel, IEditLeaveRequestFormModel
+    public class EditLeaveRequestModel : PageModel , IEditLeaveRequestFormModel
     {
         private int _id;
         private readonly IDataLoaderHelper _dataLoaderHelper;
@@ -21,8 +21,8 @@ namespace DEMOOutOfOfficeApp.Pages.LeaveRequests
         public LeaveRequestDTO? LeaveRequestDTO { get; set; }
 
         public List<AbsenceReason> AbsenceReasons { get; set; } = new List<AbsenceReason>();
-
-        public EditLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IUpdateLeaveRequestUseCase updateLeaveRequestUseCase, IGetDataByIdUseCase getDataByIdUseCase)
+        
+        public EditLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IUpdateLeaveRequestUseCase updateLeaveRequestUseCase,IGetDataByIdUseCase getDataByIdUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _updateLeaveRequestUseCase = updateLeaveRequestUseCase;
@@ -34,7 +34,7 @@ namespace DEMOOutOfOfficeApp.Pages.LeaveRequests
             _id = id;
             AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
             await LoadLeaveRequest();
-
+            
         }
 
         public async Task LoadLeaveRequest()
@@ -55,14 +55,14 @@ namespace DEMOOutOfOfficeApp.Pages.LeaveRequests
             leaveRequest.Comment = LeaveRequestDTO.Comment;
             leaveRequest.StatusType = LeaveRequestsStatusType.New;
 
-            await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
+           await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
 
             return RedirectToPage("LeaveRequests");
         }
 
         private async Task<LeaveRequest> CreateNewLeaveRequest()
         {
-            int absenceReasonId = GetAbsenceReasonId(LeaveRequestDTO.AbsenceReason);
+            int absenceReasonId =  GetAbsenceReasonId(LeaveRequestDTO.AbsenceReason);
 
             return new LeaveRequest()
             {

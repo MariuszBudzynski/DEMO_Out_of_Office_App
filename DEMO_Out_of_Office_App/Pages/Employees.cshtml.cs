@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DEMOOutOfOfficeApp.Pages.Employees
+namespace DEMOOutOfOfficeApp.Pages
 {
     [Authorize(Policy = "HRPMAdminPolicy")]
     public class EmployeesModel : PageModel
@@ -54,19 +54,19 @@ namespace DEMOOutOfOfficeApp.Pages.Employees
 
         public IActionResult OnPostAdd()
         {
-            return RedirectToPage("/AddEmployee");
+           return RedirectToPage("/AddEmployee");
         }
 
         public IActionResult OnPostEdit(int employeeID)
         {
-            return RedirectToPage("/EditEmployee", new { id = employeeID });
-        }
+			return RedirectToPage("/EditEmployee", new { id = employeeID });
+		}
 
         private async Task<List<EmployeeDTO>> FetchEmployeesAsync()
         {
             var employees = await _getAllEmployeesUseCase.ExecuteAsync();
 
-            usersHRManagerROle = (await _getAllUsersUseCase.ExecuteAsync()).ToList().Where(e => e.RoleID == (int)UserRole.HRManager);
+            usersHRManagerROle = (await _getAllUsersUseCase.ExecuteAsync()).ToList().Where(e=>e.RoleID == (int)UserRole.HRManager);
 
 
             foreach (var employee in employees)
