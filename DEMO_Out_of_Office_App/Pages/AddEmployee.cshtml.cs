@@ -1,8 +1,10 @@
+using DEMOOutOfOfficeApp.Common.Enums;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.Repository;
 using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
 using DEMOOutOfOfficeApp.Core.UseCases;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
+using DEMOOutOfOfficeApp.DTOS;
 using DEMOOutOfOfficeApp.Helpers.Interfaces;
 using DEMOOutOfOfficeApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +16,9 @@ namespace DEMOOutOfOfficeApp.Pages
     {
 		private readonly IDataLoaderHelper _dataLoaderHelper;
 		private readonly ISaveSingleEmployeeUseCase _saveSingleEmployeeUseCase;
+        private IEnumerable<User> usersHRManagerROle;
 
-		[BindProperty]
+        [BindProperty]
         public Employee Employee { get; set; }
 
         [BindProperty]
@@ -23,9 +26,8 @@ namespace DEMOOutOfOfficeApp.Pages
         public int ID { get; set; }
         public List<Subdivision> Subdivisions { get; set; } = new List<Subdivision>();
         public List<Position> Positions { get; set; } = new List<Position>();
-        public List<Role> Roles { get; set; } = new List<Role>();
         public List<EmployeeStatus> Statuses { get; set; } = new List<EmployeeStatus>();
-
+        public List<PeoplePartnerDTO> PeoplePartner { get; set; }
 
         public AddEmployeeModel(IDataLoaderHelper dataLoaderHelper,ISaveSingleEmployeeUseCase saveSingleEmployeeUseCase)
         {
@@ -35,10 +37,11 @@ namespace DEMOOutOfOfficeApp.Pages
         public async Task OnGet()
         {
 			Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
-			Roles = (await _dataLoaderHelper.LoadRolesAsync()).ToList();
 			Positions = (await _dataLoaderHelper.LoadPositionsAsync()).ToList();
 			Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
-		}
+            PeoplePartner = (await _dataLoaderHelper.GetListOfPeoplePartner()).ToList();
+
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -54,6 +57,18 @@ namespace DEMOOutOfOfficeApp.Pages
             await _saveSingleEmployeeUseCase.ExecuteAsync(Employee);
 
             return RedirectToPage("/Employees");
+        }
+
+        private async Task<List<PeoplePartnerDTO>> GetListOfPeoplePartner()
+        {
+            usersHRManagerROle = (await _dataLoaderHelper.LoadAllUsersAsync()).ToList().Where(e => e.RoleID == (int)UserRole.HRManager);
+
+            return usersHRManagerROle.Select(e => new PeoplePartnerDTO(
+                e.ID,
+                e.FullName
+                )).ToList();
+
+
         }
     }
 }

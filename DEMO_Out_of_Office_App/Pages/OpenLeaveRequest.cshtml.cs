@@ -4,6 +4,7 @@ using DEMOOutOfOfficeApp.Core.UseCases;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.DTOS;
 using DEMOOutOfOfficeApp.Helpers;
+using DEMOOutOfOfficeApp.Helpers.Interfaces;
 using DEMOOutOfOfficeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,13 +14,13 @@ namespace DEMOOutOfOfficeApp.Pages
     public class OpenLeaveRequestModel : PageModel
     {
         private int _id;
-        private readonly DataLoaderHelper _dataLoaderHelper;
+        private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly IUpdateLeaveRequestUseCase _updateLeaveRequestUseCase;
         private readonly IUpdateAprovalRequestUseCase _updateAprovalRequestUseCase;
 
         public LeaveRequestDTO? LeaveRequestDTO { get; set; }
-        public OpenLeaveRequestModel(DataLoaderHelper dataLoaderHelper,
+        public OpenLeaveRequestModel(IDataLoaderHelper dataLoaderHelper,
                                     IGetDataByIdUseCase getDataByIdUseCase,
                                     IUpdateLeaveRequestUseCase updateLeaveRequestUseCase,
                                     IUpdateAprovalRequestUseCase updateAprovalRequestUseCase)

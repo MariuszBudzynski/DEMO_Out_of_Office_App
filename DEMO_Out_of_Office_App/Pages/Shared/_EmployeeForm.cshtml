@@ -63,9 +63,9 @@
             <td>
                 <select id="PeoplePartner" name="Employee.PeoplePartnerID" class="form-control" asp-for="Employee.PeoplePartnerID" required>
                     <option value="">Select People Partner</option>
-                    @foreach (var option in Model.Roles)
+                    @foreach (var option in Model.PeoplePartner)
                     {
-                        <option value="@option.ID">@option.UserRoleDescription</option>
+                        <option value="@option.Id">@option.FullName</option>
                     }
                 </select>
                 <span asp-validation-for="Employee.PeoplePartnerID" class="text-danger"></span>

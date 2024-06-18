@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
@@ -68,32 +69,33 @@ namespace DEMOOutOfOfficeApp.Pages
             usersHRManagerROle = (await _getAllUsersUseCase.ExecuteAsync()).ToList().Where(e=>e.RoleID == (int)UserRole.HRManager);
 
 
-
-            var employeeDTOs = employees.Select(e => new EmployeeDTO(
-                e.ID,
-                e.FullName,
-                e.Subdivision.Name,
-                e.Position.Name,
-                e.Status.StatusDescription,
-                MatchEmployeeName(usersHRManagerROle,e),
-                e.OutOfOfficeBalance,
-                e.Photo
-            )).ToList();
-
-            return employeeDTOs;
-        }
-
-        private string MatchEmployeeName(IEnumerable<User> usersHRManagerROle, Employee employe)
-        {
-            foreach (var user in usersHRManagerROle)
+            foreach (var employee in employees)
             {
-                if (user.EmployeeID == employe.PeoplePartnerID)
-                {
-                    return employe.FullName;
-                }
+                var peoplePartner = await GetPeoplePartner(employee.PeoplePartnerID);
+
+                var employeeDTO = new EmployeeDTO(
+                    employee.ID,
+                    employee.FullName,
+                    employee.Subdivision.Name,
+                    employee.Position.Name,
+                    employee.Status.StatusDescription,
+                    peoplePartner,
+                    employee.OutOfOfficeBalance,
+                    employee.Photo
+                );
+
+                Employees.Add(employeeDTO);
             }
 
-            return String.Empty;
+            return Employees;
+
+        }
+
+        private async Task<string> GetPeoplePartner(int peoplePartnerId)
+        {
+            var data = await _getDataByIdUseCase.ExecuteAsync<User>(peoplePartnerId);
+
+            return data.FullName;
         }
 
 

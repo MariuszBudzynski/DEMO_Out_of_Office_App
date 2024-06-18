@@ -81,7 +81,13 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 var data = await GetDataById<Employee>(employee.ID);
                 if (data != null)
                 {
-                    _appDbContext.Update(employee);
+                    data.FullName = employee.FullName;
+                    data.Subdivision = employee.Subdivision;
+                    data.PositionID = employee.PositionID;
+                    data.StatusID = employee.StatusID;
+                    data.PeoplePartnerID = employee.PeoplePartnerID;
+                    data.OutOfOfficeBalance = employee.OutOfOfficeBalance;
+                    data.Photo = data.Photo;
                     await _appDbContext.SaveChangesAsync();
                 }
             }

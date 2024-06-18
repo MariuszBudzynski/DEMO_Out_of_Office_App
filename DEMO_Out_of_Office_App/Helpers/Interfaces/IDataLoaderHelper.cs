@@ -17,5 +17,7 @@ namespace DEMOOutOfOfficeApp.Helpers.Interfaces
         Task<IEnumerable<EmployeeStatus>> LoadStatusesAsync();
         Task<IEnumerable<Subdivision>> LoadSubdivisionsAsync();
         Task<IEnumerable<Project>> LoadEmpoloyeeProjects(int employeeId);
+        Task<IEnumerable<User>> LoadAllUsersAsync();
+        Task<IEnumerable<PeoplePartnerDTO>> GetListOfPeoplePartner();
     }
 }

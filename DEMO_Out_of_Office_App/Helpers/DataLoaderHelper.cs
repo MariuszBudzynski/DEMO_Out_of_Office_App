@@ -1,4 +1,5 @@
-﻿using DEMOOutOfOfficeApp.Common.Interfaces;
+﻿using DEMOOutOfOfficeApp.Common.Enums;
+using DEMOOutOfOfficeApp.Common.Interfaces;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
@@ -47,6 +48,11 @@ namespace DEMOOutOfOfficeApp.Helpers
         public async Task<IEnumerable<Employee>> LoadAllEmployeesAsync()
         {
             return (await _getDataUseCase.ExecuteAsync<Employee>()).ToList();
+        }
+
+        public async Task<IEnumerable<User>> LoadAllUsersAsync()
+        {
+            return (await _getDataUseCase.ExecuteAsync<User>()).ToList();
         }
 
         public async Task<IEnumerable<LeaveRequest>> LoadAllLeaveRequestAsync()
@@ -153,5 +159,15 @@ namespace DEMOOutOfOfficeApp.Helpers
             return projectsDTO;
         }
 
+        public async Task<IEnumerable<PeoplePartnerDTO>> GetListOfPeoplePartner()
+        {
+            var usersHRManagerROle = (await LoadAllUsersAsync()).ToList().Where(e => e.RoleID == (int)UserRole.HRManager);
+
+            return usersHRManagerROle.Select(e => new PeoplePartnerDTO(
+                e.ID,
+                e.FullName
+                ));
+
+        }
     }
 }

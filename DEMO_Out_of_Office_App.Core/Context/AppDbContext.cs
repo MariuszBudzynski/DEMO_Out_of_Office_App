@@ -111,12 +111,12 @@ namespace DEMOOutOfOfficeApp.Core.Context
 
             // Seed data for users
             modelBuilder.Entity<User>().HasData(
-                new User { ID = 1, EmployeeID = 1, Username = "john.doe", PasswordHash = GetMd5Hash("password1"), RoleID = (int)UserRole.HRManager },
-                new User { ID = 2, EmployeeID = 2, Username = "jane.smith", PasswordHash = GetMd5Hash("password2"), RoleID = (int)UserRole.Administrator },
-                new User { ID = 3, EmployeeID = 3, Username = "alice.johnson", PasswordHash = GetMd5Hash("password3"), RoleID = (int)UserRole.ProjectManager },
-                new User { ID = 4, EmployeeID = 4, Username = "bob.brown", PasswordHash = GetMd5Hash("password4"), RoleID = (int)UserRole.Employee },
-                new User { ID = 5, EmployeeID = 5, Username = "charlie.davis", PasswordHash = GetMd5Hash("password5"), RoleID = (int)UserRole.HRManager },
-                new User { ID = 6, EmployeeID = 6, Username = "diana.evans", PasswordHash = GetMd5Hash("password6"), RoleID = (int)UserRole.Employee }
+                new User { ID = 1, EmployeeID = 1,FullName= "John Doe", Username = "john.doe", PasswordHash = GetMd5Hash("password1"), RoleID = (int)UserRole.HRManager },
+                new User { ID = 2, EmployeeID = 2,FullName = "Jane Smith", Username = "jane.smith", PasswordHash = GetMd5Hash("password2"), RoleID = (int)UserRole.Administrator },
+                new User { ID = 3, EmployeeID = 3,FullName = "Alice Johnson", Username = "alice.johnson", PasswordHash = GetMd5Hash("password3"), RoleID = (int)UserRole.ProjectManager },
+                new User { ID = 4, EmployeeID = 4,FullName = "Bob Brown", Username = "bob.brown", PasswordHash = GetMd5Hash("password4"), RoleID = (int)UserRole.Employee },
+                new User { ID = 5, EmployeeID = 5,FullName = "Charlie Davis", Username = "charlie.davis", PasswordHash = GetMd5Hash("password5"), RoleID = (int)UserRole.HRManager },
+                new User { ID = 6, EmployeeID = 6,FullName = "Diana Evans", Username = "diana.evans", PasswordHash = GetMd5Hash("password6"), RoleID = (int)UserRole.Employee }
             );
 
             // Seed data for leave requests statuses
