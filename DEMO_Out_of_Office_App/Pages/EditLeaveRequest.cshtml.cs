@@ -3,6 +3,7 @@ using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.DTOS;
 using DEMOOutOfOfficeApp.Helpers;
+using DEMOOutOfOfficeApp.Helpers.Interfaces;
 using DEMOOutOfOfficeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,7 +13,7 @@ namespace DEMOOutOfOfficeApp.Pages
     public class EditLeaveRequestModel : PageModel , IEditLeaveRequestFormModel
     {
         private int _id;
-        private readonly DataLoaderHelper _dataLoaderHelper;
+        private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IUpdateLeaveRequestUseCase _updateLeaveRequestUseCase;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
 
@@ -21,7 +22,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public List<AbsenceReason> AbsenceReasons { get; set; } = new List<AbsenceReason>();
         
-        public EditLeaveRequestModel(DataLoaderHelper dataLoaderHelper, IUpdateLeaveRequestUseCase updateLeaveRequestUseCase,IGetDataByIdUseCase getDataByIdUseCase)
+        public EditLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IUpdateLeaveRequestUseCase updateLeaveRequestUseCase,IGetDataByIdUseCase getDataByIdUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _updateLeaveRequestUseCase = updateLeaveRequestUseCase;

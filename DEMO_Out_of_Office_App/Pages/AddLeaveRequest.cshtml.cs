@@ -15,7 +15,6 @@ namespace DEMOOutOfOfficeApp.Pages
     {
         private int _id;
         private readonly IDataLoaderHelper _dataLoaderHelper;
-        private readonly IUpdateLeaveRequestUseCase _updateLeaveRequestUseCase;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly ISaveDataUseCase saveDataUse;
 
