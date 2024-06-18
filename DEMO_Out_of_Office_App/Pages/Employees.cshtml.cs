@@ -1,10 +1,13 @@
 using DEMOOutOfOfficeApp.Common.Enums;
+using DEMOOutOfOfficeApp.Core.Context;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.DTOS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
@@ -14,17 +17,21 @@ namespace DEMOOutOfOfficeApp.Pages
         private readonly IGetAllEmployeesUseCase _getAllEmployeesUseCase;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly IUpdateEmployeeUseCase _updateEmployeeUseCase;
+        private readonly IGetAllUsersUseCase _getAllUsersUseCase;
+        private IEnumerable<User> usersHRManagerROle;
 
         [BindProperty(SupportsGet = true)]
         public List<EmployeeDTO> Employees { get; set; }
 
         public EmployeesModel(IGetAllEmployeesUseCase getAllEmployeesUseCase,
                               IGetDataByIdUseCase getDataByIdUseCase,
-                              IUpdateEmployeeUseCase updateEmployeeUseCase)
+                              IUpdateEmployeeUseCase updateEmployeeUseCase,
+                              IGetAllUsersUseCase getAllUsersUseCase)
         {
             _getAllEmployeesUseCase = getAllEmployeesUseCase;
             _getDataByIdUseCase = getDataByIdUseCase;
             _updateEmployeeUseCase = updateEmployeeUseCase;
+            _getAllUsersUseCase = getAllUsersUseCase;
         }
         public async Task OnGetAsync()
         {
@@ -58,19 +65,38 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             var employees = await _getAllEmployeesUseCase.ExecuteAsync();
 
+            usersHRManagerROle = (await _getAllUsersUseCase.ExecuteAsync()).ToList().Where(e=>e.RoleID == (int)UserRole.HRManager);
+
+
+
             var employeeDTOs = employees.Select(e => new EmployeeDTO(
                 e.ID,
                 e.FullName,
                 e.Subdivision.Name,
                 e.Position.Name,
                 e.Status.StatusDescription,
-                e.PeoplePartner.UserRoleDescription,
+                MatchEmployeeName(usersHRManagerROle,e),
                 e.OutOfOfficeBalance,
                 e.Photo
             )).ToList();
 
             return employeeDTOs;
         }
+
+        private string MatchEmployeeName(IEnumerable<User> usersHRManagerROle, Employee employe)
+        {
+            foreach (var user in usersHRManagerROle)
+            {
+                if (user.EmployeeID == employe.PeoplePartnerID)
+                {
+                    return employe.FullName;
+                }
+            }
+
+            return String.Empty;
+        }
+
+
 
         private async Task<Employee> ConvertToEmployee(EmployeeDTO employeeDTO)
         {
@@ -92,7 +118,6 @@ namespace DEMOOutOfOfficeApp.Pages
                 OutOfOfficeBalance = employeeDTO.OutOfOfficeBalance
             };
         }
-
 
     }
 }

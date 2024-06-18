@@ -119,7 +119,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 .Include(e => e.Subdivision)
                 .Include(e => e.Position)
                 .Include(e => e.Status)
-                .Include(e => e.PeoplePartner)
                 .ToListAsync();
 
             if (employees == null || !employees.Any())

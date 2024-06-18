@@ -32,5 +32,6 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 
         public virtual Employee Employee { get; set; }
         public virtual Role Role { get; set; }
+
     }
 }

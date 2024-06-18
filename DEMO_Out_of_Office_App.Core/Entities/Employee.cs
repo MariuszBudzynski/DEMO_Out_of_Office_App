@@ -23,9 +23,7 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		[Required]
 		[ForeignKey("Status")]
 		public int StatusID { get; set; }
-
 		[Required]
-		[ForeignKey("Role")]
 		public int PeoplePartnerID { get; set; }
 
 		[Required]
@@ -36,8 +34,10 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		public  Subdivision? Subdivision { get; set; }
 		public  Position? Position { get; set; }
 		public EmployeeStatus? Status { get; set; }
-		public  Role? PeoplePartner { get; set; }
 		public  ICollection<ApprovalRequest>? ApprovalRequests { get; set; }
 		public  ICollection<LeaveRequest>? LeaveRequests { get; set; }
-	}
+
+        public virtual User? User { get; set; }
+
+    }
 }
