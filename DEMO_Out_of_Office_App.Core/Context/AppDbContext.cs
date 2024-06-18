@@ -173,13 +173,13 @@ namespace DEMOOutOfOfficeApp.Core.Context
 
             // Seed data for projects
             modelBuilder.Entity<Project>().HasData(
-                new Project { ID = 1, ProjectTypeID = 1, StartDate = new DateTime(2023, 1, 10), ProjectManagerID = 2, Comment = "Internal project for HR system", StatusID = 1 },
+                new Project { ID = 1, ProjectTypeID = 1, StartDate = new DateTime(2023, 1, 10), ProjectManagerID = 3, Comment = "Internal project for HR system", StatusID = 1 },
                 new Project { ID = 2, ProjectTypeID = 2, StartDate = new DateTime(2023, 2, 15), ProjectManagerID = 3, Comment = "Client project for ABC Inc.", StatusID = 1 },
-                new Project { ID = 3, ProjectTypeID = 1, StartDate = new DateTime(2023, 3, 20), ProjectManagerID = 4, Comment = "Research project", StatusID = 1 },
-                new Project { ID = 4, ProjectTypeID = 2, StartDate = new DateTime(2023, 4, 5), ProjectManagerID = 1, Comment = "Marketing campaign", StatusID = 1 },
-                new Project { ID = 5, ProjectTypeID = 1, StartDate = new DateTime(2023, 5, 10), ProjectManagerID = 2, Comment = "IT infrastructure upgrade", StatusID = 1 },
+                new Project { ID = 3, ProjectTypeID = 1, StartDate = new DateTime(2023, 3, 20), ProjectManagerID = 3, Comment = "Research project", StatusID = 1 },
+                new Project { ID = 4, ProjectTypeID = 2, StartDate = new DateTime(2023, 4, 5), ProjectManagerID = 3, Comment = "Marketing campaign", StatusID = 1 },
+                new Project { ID = 5, ProjectTypeID = 1, StartDate = new DateTime(2023, 5, 10), ProjectManagerID = 3, Comment = "IT infrastructure upgrade", StatusID = 1 },
                 new Project { ID = 6, ProjectTypeID = 2, StartDate = new DateTime(2023, 6, 15), ProjectManagerID = 3, Comment = "Client project for XYZ Corp.", StatusID = 1 },
-                new Project { ID = 7, ProjectTypeID = 1, StartDate = new DateTime(2023, 7, 20), ProjectManagerID = 4, Comment = "Research and development", StatusID = 1 }
+                new Project { ID = 7, ProjectTypeID = 1, StartDate = new DateTime(2023, 7, 20), ProjectManagerID = 3, Comment = "Research and development", StatusID = 1 }
             );
         }
 
