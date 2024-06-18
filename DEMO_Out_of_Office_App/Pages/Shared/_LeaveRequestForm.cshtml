@@ -1,0 +1,54 @@
+﻿@using DEMOOutOfOfficeApp.Models
+@model IEditLeaveRequestFormModel
+
+<form id="editleaverequestform" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="EmployeeId" name="LeaveRequestDTO.Id" value="@Model.LeaveRequestDTO.Id" />
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th style="width: 20%">Full Name</th>
+                <td>@Model.LeaveRequestDTO.EmployeeName</td>
+            </tr>
+            <tr>
+                <th>Select Reason</th>
+                <td>
+                    <select id="LeaveRequestDTO_AbsenceReason" name="LeaveRequestDTO.AbsenceReason" class="form-control"
+                            asp-for="LeaveRequestDTO.AbsenceReason" required>
+                        @foreach (var reason in Model.AbsenceReasons)
+                        {
+                            <option value="@reason.Name">@reason.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="LeaveRequestDTO.AbsenceReason" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>Start Date</th>
+                <td>
+                    <input type="date" id="StartDate" name="LeaveRequestDTO.StartDate" class="form-control"
+                           value="@Model.LeaveRequestDTO.StartDate.ToString("yyyy-MM-dd")" required />
+                    <span asp-validation-for="LeaveRequestDTO.StartDate" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>End Date</th>
+                <td>
+                    <input type="date" id="EndDate" name="LeaveRequestDTO.EndDate" class="form-control"
+                           value="@Model.LeaveRequestDTO.EndDate.ToString("yyyy-MM-dd")" required />
+                    <span asp-validation-for="LeaveRequestDTO.EndDate" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>
+                    <textarea id="Comment" name="LeaveRequestDTO.Comment" class="form-control">@Model.LeaveRequestDTO.Comment</textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>@Model.LeaveRequestDTO.Status</td>
+            </tr>
+        </tbody>
+    </table>
+</form>

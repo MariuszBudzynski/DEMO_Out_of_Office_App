@@ -17,88 +17,161 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         public async Task<IEnumerable<T>> GetData<T>() where T : class, IEntityId
         {
-            return await _appDbContext.Set<T>().ToListAsync();
+            var data = await _appDbContext.Set<T>().ToListAsync();
+            if (data == null || !data.Any())
+            {
+                return Enumerable.Empty<T>();
+            }
+            return data;
+        }
 
+        public async Task SaveData<T>(T data) where T : class, IEntityId
+        {
+            if (data != null)
+            {
+                await _appDbContext.Set<T>().AddAsync(data);
+                await _appDbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return await _appDbContext.Users
+            var users = await _appDbContext.Users
                 .Include(u => u.Employee)
                 .Include(u => u.Role)
                 .ToListAsync();
+
+            if (users == null || !users.Any())
+            {
+                return Enumerable.Empty<User>();
+            }
+            return users;
         }
 
         public async Task<T> GetDataById<T>(int id) where T : class, IEntityId
         {
-            return await _appDbContext.Set<T>().FirstOrDefaultAsync(e => e.ID == id);
-
+            if (id > 0)
+            {
+                var data = await _appDbContext.Set<T>().FirstOrDefaultAsync(e => e.ID == id);
+                if (data != null)
+                {
+                    return data;
+                }
+            }
+            return null;
         }
 
         public async Task SaveEmployeeData(Employee employee)
         {
-            var data = await GetDataById<Employee>(employee.ID);
-
-            if (data == null)
+            if (employee != null)
             {
-                await _appDbContext.AddAsync(employee);
-                await _appDbContext.SaveChangesAsync();
+                var data = await GetDataById<Employee>(employee.ID);
+                if (data == null)
+                {
+                    await _appDbContext.AddAsync(employee);
+                    await _appDbContext.SaveChangesAsync();
+                }
             }
         }
 
         public async Task UpdateEmployee(Employee employee)
         {
-            _appDbContext.Update(employee);
-            await _appDbContext.SaveChangesAsync();
+            if (employee != null)
+            {
+                var data = await GetDataById<Employee>(employee.ID);
+                if (data != null)
+                {
+                    _appDbContext.Update(employee);
+                    await _appDbContext.SaveChangesAsync();
+                }
+            }
         }
 
         public async Task UpdateLeaveRequest(LeaveRequest leaveRequest)
         {
-            _appDbContext.Update(leaveRequest);
-            await _appDbContext.SaveChangesAsync();
+            if (leaveRequest != null)
+            {
+                var data = await GetDataById<LeaveRequest>(leaveRequest.ID);
+                if (data != null)
+                {
+                    _appDbContext.Update(leaveRequest);
+                    await _appDbContext.SaveChangesAsync();
+                }
+            }
         }
 
         public async Task UpdateApprovalRequest(ApprovalRequest approvalRequest)
         {
-            _appDbContext.Update(approvalRequest);
-            await _appDbContext.SaveChangesAsync();
+            if (approvalRequest != null)
+            {
+                var data = await GetDataById<ApprovalRequest>(approvalRequest.ID);
+                if (data != null)
+                {
+                    _appDbContext.Update(approvalRequest);
+                    await _appDbContext.SaveChangesAsync();
+                }
+            }
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()
         {
-            return await _appDbContext.Employees
+            var employees = await _appDbContext.Employees
                 .Include(e => e.Subdivision)
                 .Include(e => e.Position)
                 .Include(e => e.Status)
                 .Include(e => e.PeoplePartner)
                 .ToListAsync();
+
+            if (employees == null || !employees.Any())
+            {
+                return Enumerable.Empty<Employee>();
+            }
+            return employees;
         }
 
         public async Task<IEnumerable<ApprovalRequest>> GetEmpAprovalRequestsAsync()
         {
-            return await _appDbContext.ApprovalRequests
-          .Include(ar => ar.Approver)
-          .Include(ar => ar.LeaveRequest)
-          .Include(ar => ar.ApprovalRequestStatus)
-          .ToListAsync();
+            var approvalRequests = await _appDbContext.ApprovalRequests
+                .Include(ar => ar.Approver)
+                .Include(ar => ar.LeaveRequest)
+                .Include(ar => ar.ApprovalRequestStatus)
+                .ToListAsync();
+
+            if (approvalRequests == null || !approvalRequests.Any())
+            {
+                return Enumerable.Empty<ApprovalRequest>();
+            }
+            return approvalRequests;
         }
 
         public async Task<IEnumerable<LeaveRequest>> GetLeaveRequestsAsync()
         {
-            return await _appDbContext.LeaveRequests
-        .Include(lr => lr.Employee)
-        .Include(lr => lr.AbsenceReason)
-        .Include(lr => lr.LeaveRequestsStatus)
-        .ToListAsync();
+            var leaveRequests = await _appDbContext.LeaveRequests
+                .Include(lr => lr.Employee)
+                .Include(lr => lr.AbsenceReason)
+                .Include(lr => lr.LeaveRequestsStatus)
+                .ToListAsync();
+
+            if (leaveRequests == null || !leaveRequests.Any())
+            {
+                return Enumerable.Empty<LeaveRequest>();
+            }
+            return leaveRequests;
         }
 
         public async Task<IEnumerable<Project>> GetProjectsAsync()
         {
-            return await _appDbContext.Projects
+            var projects = await _appDbContext.Projects
                 .Include(p => p.ProjectType)
                 .Include(p => p.ProjectStatus)
                 .Include(p => p.ProjectManager)
                 .ToListAsync();
+
+            if (projects == null || !projects.Any())
+            {
+                return Enumerable.Empty<Project>();
+            }
+            return projects;
         }
     }
 }

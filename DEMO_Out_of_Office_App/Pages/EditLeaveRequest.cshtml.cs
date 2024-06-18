@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
-    public class EditLeaveRequestModel : PageModel 
+    public class EditLeaveRequestModel : PageModel , IEditLeaveRequestFormModel
     {
         private int _id;
         private readonly DataLoaderHelper _dataLoaderHelper;

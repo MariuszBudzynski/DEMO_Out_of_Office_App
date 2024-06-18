@@ -101,13 +101,13 @@ namespace DEMOOutOfOfficeApp.Core.Context
 
             // Seed data for employees
             modelBuilder.Entity<Employee>().HasData(
-                new Employee { ID = 1, FullName = "John Doe", SubdivisionID = 1, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 10.0m, Photo = placeholderPhotoConversion },
-                new Employee { ID = 2, FullName = "Jane Smith", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 15.0m },
-                new Employee { ID = 3, FullName = "Alice Johnson", SubdivisionID = 3, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 12.0m },
-                new Employee { ID = 4, FullName = "Bob Brown", SubdivisionID = 4, PositionID = 4, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 8.0m },
-                new Employee { ID = 5, FullName = "Charlie Davis", SubdivisionID = 1, PositionID = 2, StatusID = 2, PeoplePartnerID = 3, OutOfOfficeBalance = 20.0m },
-                new Employee { ID = 6, FullName = "Diana Evans", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 18.0m }
-            );
+            new Employee { ID = 1, FullName = "John Doe", SubdivisionID = 1, PositionID = 1, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 10.0m, Photo = placeholderPhotoConversion },
+            new Employee { ID = 2, FullName = "Jane Smith", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 15.0m },
+            new Employee { ID = 3, FullName = "Alice Johnson", SubdivisionID = 3, PositionID = 1, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 12.0m },
+            new Employee { ID = 4, FullName = "Bob Brown", SubdivisionID = 4, PositionID = 4, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 8.0m },
+            new Employee { ID = 5, FullName = "Charlie Davis", SubdivisionID = 1, PositionID = 2, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 20.0m },
+            new Employee { ID = 6, FullName = "Diana Evans", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 2, OutOfOfficeBalance = 18.0m }
+);
 
             // Seed data for users
             modelBuilder.Entity<User>().HasData(
@@ -115,7 +115,7 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new User { ID = 2, EmployeeID = 2, Username = "jane.smith", PasswordHash = GetMd5Hash("password2"), RoleID = (int)UserRole.Administrator },
                 new User { ID = 3, EmployeeID = 3, Username = "alice.johnson", PasswordHash = GetMd5Hash("password3"), RoleID = (int)UserRole.ProjectManager },
                 new User { ID = 4, EmployeeID = 4, Username = "bob.brown", PasswordHash = GetMd5Hash("password4"), RoleID = (int)UserRole.Employee },
-                new User { ID = 5, EmployeeID = 5, Username = "charlie.davis", PasswordHash = GetMd5Hash("password5"), RoleID = (int)UserRole.Employee },
+                new User { ID = 5, EmployeeID = 5, Username = "charlie.davis", PasswordHash = GetMd5Hash("password5"), RoleID = (int)UserRole.HRManager },
                 new User { ID = 6, EmployeeID = 6, Username = "diana.evans", PasswordHash = GetMd5Hash("password6"), RoleID = (int)UserRole.Employee }
             );
 

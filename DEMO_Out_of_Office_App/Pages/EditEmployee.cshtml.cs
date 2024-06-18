@@ -39,7 +39,7 @@ namespace DEMOOutOfOfficeApp.Pages
 			Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
 			Roles = (await _dataLoaderHelper.LoadRolesAsync()).ToList();
 			Positions = (await _dataLoaderHelper.LoadPositionsAsync()).ToList();
-			Statuses = await _dataLoaderHelper.LoadStatusesAsync();
+			Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
             return Page();
 		}
 

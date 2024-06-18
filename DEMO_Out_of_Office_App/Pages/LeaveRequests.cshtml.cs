@@ -2,6 +2,7 @@ using DEMOOutOfOfficeApp.Common.Interfaces;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.DTOS;
 using DEMOOutOfOfficeApp.Helpers;
+using DEMOOutOfOfficeApp.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,12 +13,12 @@ namespace DEMOOutOfOfficeApp.Pages
     [Authorize(Policy = "EmployeeHRPMAdminPolicy")]
     public class LeaveRequestsModel : PageModel
     {
-        private readonly DataLoaderHelper _dataLoaderHelper;
+        private readonly IDataLoaderHelper _dataLoaderHelper;
 
         [BindProperty(SupportsGet =true)]
         public List<LeaveRequestDTO> LeaveRequests { get; set; }
 
-        public LeaveRequestsModel(DataLoaderHelper dataLoaderHelper)
+        public LeaveRequestsModel(IDataLoaderHelper dataLoaderHelper)
         {
             _dataLoaderHelper = dataLoaderHelper;
         }
@@ -25,7 +26,7 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             int employeeId = GetEmployeeIdFromClaims();
 
-            LeaveRequests = await _dataLoaderHelper.LoadLeaveRequestsDTOAsync(employeeId);
+            LeaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync(employeeId)).ToList();
         }
 
         private int GetEmployeeIdFromClaims()
@@ -48,6 +49,11 @@ namespace DEMOOutOfOfficeApp.Pages
         public IActionResult OnPostEditLeaveRequest(int id)
         {
             return RedirectToPage("/EditLeaveRequest", new { id = id });
+        }
+
+        public IActionResult OnPostAddLeaveRequest(int id)
+        {
+            return RedirectToPage("/AddLeaveRequest", new { id = id });
         }
     }
 }

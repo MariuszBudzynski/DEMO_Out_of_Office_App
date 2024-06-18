@@ -1,6 +1,6 @@
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers;
+using DEMOOutOfOfficeApp.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,12 +11,12 @@ namespace DEMOOutOfOfficeApp.Pages
     [Authorize(Policy = "EmployeeHRPMAdminPolicy")]
     public class ProjectsModel : PageModel
     {
-        private readonly DataLoaderHelper _dataLoaderHelper;
+        private readonly IDataLoaderHelper _dataLoaderHelper;
 
         [BindProperty(SupportsGet = true)]
         public List<ProjectDTO> Projects { get; set; }
 
-        public ProjectsModel(DataLoaderHelper dataLoaderHelper)
+        public ProjectsModel(IDataLoaderHelper dataLoaderHelper)
         {
             _dataLoaderHelper = dataLoaderHelper;
         }
@@ -25,7 +25,7 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             int employeeId = GetEmployeeIdFromClaims();
 
-            Projects = await _dataLoaderHelper.LoadProjectsDTOAsync(employeeId);
+            Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync(employeeId)).ToList();
         }
 
         private int GetEmployeeIdFromClaims()
