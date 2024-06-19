@@ -25,7 +25,16 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             int employeeId = GetEmployeeIdFromClaims();
 
-            Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).ToList();
+            if (employeeId == 0)
+            {
+                Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).ToList();
+            }
+            else
+            {
+                Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).Where(ep=>ep.EmployeeId == employeeId).ToList();
+            }
+
+            
         }
 
         private int GetEmployeeIdFromClaims()

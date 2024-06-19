@@ -111,6 +111,7 @@ namespace DEMOOutOfOfficeApp.Helpers
                         projectEmpl.Project.StartDate,
                         projectEmpl.Project.EndDate,
                         projectEmpl.Employee.FullName ?? String.Empty,
+                        projectEmpl.EmployeeID,
                         projectEmpl.Project.ProjectManager.FullName ?? String.Empty,
                         projectEmpl.Project.Comment,
                         projectEmpl.Project.ProjectStatus.StatusType.ToString()
