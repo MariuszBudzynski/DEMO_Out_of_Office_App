@@ -59,7 +59,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task LoadLeaveRequest()
         {
-            var leaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync()).FirstOrDefault(e=>e.Id==_id);
+            var leaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync()).FirstOrDefault(e=>e.EmployeeId ==_id);
             LeaveRequestDTO = leaveRequests;
 
         }

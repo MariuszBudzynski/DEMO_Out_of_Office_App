@@ -80,7 +80,6 @@ namespace DEMOOutOfOfficeApp.Helpers
 
             return await _getEmployeeProjectsUseCase.ExecuteAsync();
         }
-
         public async Task<IEnumerable<Project>> LoadEmpoloyeeProjects(int employeeId)
         {
             var projects = await _getProjectsUseCase.ExecuteAsync();

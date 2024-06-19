@@ -23,11 +23,11 @@ namespace DEMOOutOfOfficeApp.Core.Repository
             return data;
         }
 
-        public async Task SaveData<T>(T data) where T : class, IEntityId
+        public async Task SaveLeaveRequestData(LeaveRequest leaveRequest)
         {
-            if (data != null)
+            if (leaveRequest != null)
             {
-                await _appDbContext.Set<T>().AddAsync(data);
+                await _appDbContext.LeaveRequests.AddAsync(leaveRequest);
                 await _appDbContext.SaveChangesAsync();
             }
         }
@@ -98,7 +98,11 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 var data = await GetDataById<LeaveRequest>(leaveRequest.ID);
                 if (data != null)
                 {
-                    _appDbContext.Update(leaveRequest);
+                    data.AbsenceReasonID = leaveRequest.AbsenceReasonID;
+                    data.StartDate = leaveRequest.StartDate;
+                    data.EndDate = leaveRequest.EndDate;
+                    data.Comment = leaveRequest.Comment;
+                    data.StatusType =  data.StatusType;
                     await _appDbContext.SaveChangesAsync();
                 }
             }
