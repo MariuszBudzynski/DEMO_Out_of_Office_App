@@ -15,6 +15,7 @@
                 <th>Select Reason</th>
                 <td>
                     <select asp-for="LeaveRequest.AbsenceReasonID" class="form-control" required>
+                        <option value="">Select Leave Reason</option>
                         @foreach (var reason in Model.AbsenceReasons)
                         {
                             <option value="@reason.ID">@reason.Name</option>

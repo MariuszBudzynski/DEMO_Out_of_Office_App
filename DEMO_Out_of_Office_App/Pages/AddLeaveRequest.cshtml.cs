@@ -14,12 +14,11 @@ namespace DEMOOutOfOfficeApp.Pages
 {
     public class AddLeaveRequestModel : PageModel,ILeaveRequestFormModel
     {
-        private int _id;
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
-        //private readonly ISaveDataUseCase _saveDataUseCase;
+        private readonly ISaveLeaveRequestDataUseCase _saveLeaveRequestDataUseCase;
 
-
+        [BindProperty(SupportsGet = true)]
         public LeaveRequest LeaveRequest { get; set; }
 
         public List<AbsenceReason> AbsenceReasons { get; set; }
@@ -28,30 +27,37 @@ namespace DEMOOutOfOfficeApp.Pages
         public string Status { get; set; }
 
 
-        public AddLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IGetDataByIdUseCase getDataByIdUseCase)
+        public AddLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IGetDataByIdUseCase getDataByIdUseCase, ISaveLeaveRequestDataUseCase saveLeaveRequestDataUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _getDataByIdUseCase = getDataByIdUseCase;
-            //_saveDataUseCase = _saveDataUseCase;
+            _saveLeaveRequestDataUseCase = saveLeaveRequestDataUseCase;
         }
         public async Task OnGet(int id)
         {
             AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
-            LeaveRequest = new LeaveRequest() { StatusType = LeaveRequestsStatusType.New };
+            LeaveRequest = new LeaveRequest() { EmployeeID = id, StatusType = LeaveRequestsStatusType.New ,StartDate = DateTime.Now,EndDate = DateTime.Now};
             FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
         }
 
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
+        public async Task<IActionResult> OnPostAsync()
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return Page();
+            //}
 
-        //    await CreateAndSaveLeaveRequestAsync();
+            //var leaveRequest = new LeaveRequest()
+            //{
 
-        //    return RedirectToPage("/LeaveRequests");
-        //}
+            //};
+       
+            LeaveRequest.StatusType = LeaveRequestsStatusType.New;
+
+            await _saveLeaveRequestDataUseCase.ExecuteAsync(LeaveRequest);
+
+            return RedirectToPage("/LeaveRequests");
+        }
 
         //private async Task CreateAndSaveLeaveRequestAsync()
         //{

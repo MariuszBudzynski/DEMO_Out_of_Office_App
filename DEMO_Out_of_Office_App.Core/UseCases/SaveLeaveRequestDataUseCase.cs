@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DEMOOutOfOfficeApp.Core.UseCases
 {
-    public class SaveLeaveRequestDataUseCase : Interfaces.ISaveLeaveRequestDataUseCase
+    public class SaveLeaveRequestDataUseCase : ISaveLeaveRequestDataUseCase
     {
         private readonly IRepository _repository;
 
