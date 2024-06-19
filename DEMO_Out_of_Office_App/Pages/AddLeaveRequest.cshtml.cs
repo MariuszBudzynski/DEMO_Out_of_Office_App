@@ -72,16 +72,12 @@ namespace DEMOOutOfOfficeApp.Pages
 
         private async Task<ApprovalRequest> CreateNewApprovalRequest()
         {
-            //var aproverid = (await _dataLoaderHelper.LoadEmpoloyeeProjects()).ToList().Where(e=>);
-
-            //var aproverId = _dataLoaderHelper.
-            //the random aprover id is just for demonstration purposes
-            //var randomApproverId = GetRandomApproverIdAsync().Result;
+            var leaveRequestId = await GetLastLeaveRequestIdAsync();
+            
 
             return new ApprovalRequest()
             {
-                //ApproverID = aproverId.
-                //LeaveRequestID = await GetLastLeaveRequestIdAsync()
+                
 
             };
         }
@@ -91,25 +87,6 @@ namespace DEMOOutOfOfficeApp.Pages
             var lastLeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).LastOrDefault();
             return lastLeaveRequest?.ID ?? 0;
         }
-
-        //private async Task<int> GetRandomApproverIdAsync()
-        //{
-        //    var employees = (await _dataLoaderHelper.LoadAllEmployeesAsync()).ToList();
-
-        //    if (employees == null || employees.Count == 0)
-        //    {
-        //        throw new InvalidOperationException("No employees found.");
-        //    }
-
-        //    // Generate a random index within the range of employees list
-        //    var random = new Random();
-        //    int randomIndex = random.Next(0, employees.Count);
-
-        //    // Get the ID of the employee at the randomly chosen index
-        //    int randomApproverId = employees[randomIndex].ID;
-
-        //    return randomApproverId;
-        //}
 
 
 

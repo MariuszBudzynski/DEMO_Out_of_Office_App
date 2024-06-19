@@ -23,7 +23,7 @@ namespace DEMOOutOfOfficeApp.Core.Context
         public DbSet<ApprovalRequest> ApprovalRequests { get; set; }
         public DbSet<AbsenceReason> AbsenceReasons { get; set; }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<ApprovalRequestExtended> ApprovalRequestsExtended { get; set; }
         public DbSet<ProjectEmployee> ProjectEmployee { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -199,9 +199,19 @@ namespace DEMOOutOfOfficeApp.Core.Context
 	        new ProjectEmployee { ID = 8, ProjectID = 4, EmployeeID = 5 },
 	        new ProjectEmployee { ID = 9, ProjectID = 5, EmployeeID = 5 },
 	        new ProjectEmployee { ID = 10, ProjectID = 5, EmployeeID = 6 }
-);
+            );
 
-		}
+            modelBuilder.Entity<ApprovalRequestExtended>().HasData(
+            new ApprovalRequestExtended { ID = 1, ApprovalRequestID = 1, EmployeeId = 1, HrManager = 1, PmManager = 2, ApprovedHr = true, ApprovedPm = false },
+            new ApprovalRequestExtended { ID = 2, ApprovalRequestID = 2, EmployeeId = 2, HrManager = 2, PmManager = 3, ApprovedHr = false, ApprovedPm = true },
+            new ApprovalRequestExtended { ID = 3, ApprovalRequestID = 3, EmployeeId = 3, HrManager = 1, PmManager = 3, ApprovedHr = true, ApprovedPm = true },
+            new ApprovalRequestExtended { ID = 4, ApprovalRequestID = 4, EmployeeId = 4, HrManager = 2, PmManager = 1, ApprovedHr = false, ApprovedPm = false }
+             );
+
+
+        }
+
+
 
 		private string GetMd5Hash(string input)
         {

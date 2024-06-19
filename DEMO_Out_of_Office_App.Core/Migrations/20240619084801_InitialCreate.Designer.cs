@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240619075257_InitialCreate")]
+    [Migration("20240619084801_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -127,6 +127,81 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             Comment = "Rejected due to conflicting schedule",
                             LeaveRequestID = 4,
                             StatusID = 3
+                        });
+                });
+
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestExtended", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("ApprovalRequestID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ApprovedHr")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ApprovedPm")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HrManager")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PmManager")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ApprovalRequestID");
+
+                    b.ToTable("ApprovalRequestsExtended");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            ApprovalRequestID = 1,
+                            ApprovedHr = true,
+                            ApprovedPm = false,
+                            EmployeeId = 1,
+                            HrManager = 1,
+                            PmManager = 2
+                        },
+                        new
+                        {
+                            ID = 2,
+                            ApprovalRequestID = 2,
+                            ApprovedHr = false,
+                            ApprovedPm = true,
+                            EmployeeId = 2,
+                            HrManager = 2,
+                            PmManager = 3
+                        },
+                        new
+                        {
+                            ID = 3,
+                            ApprovalRequestID = 3,
+                            ApprovedHr = true,
+                            ApprovedPm = true,
+                            EmployeeId = 3,
+                            HrManager = 1,
+                            PmManager = 3
+                        },
+                        new
+                        {
+                            ID = 4,
+                            ApprovalRequestID = 4,
+                            ApprovedHr = false,
+                            ApprovedPm = false,
+                            EmployeeId = 4,
+                            HrManager = 2,
+                            PmManager = 1
                         });
                 });
 
@@ -894,6 +969,17 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Navigation("Approver");
 
                     b.Navigation("LeaveRequest");
+                });
+
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestExtended", b =>
+                {
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", "ApprovalRequest")
+                        .WithMany()
+                        .HasForeignKey("ApprovalRequestID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApprovalRequest");
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Employee", b =>
