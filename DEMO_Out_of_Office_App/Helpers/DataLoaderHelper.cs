@@ -75,6 +75,12 @@ namespace DEMOOutOfOfficeApp.Helpers
             return await _getDataByIdUseCase.ExecuteAsync<Employee>(id);
         }
 
+        public async Task<IEnumerable<ProjectEmployee>> LoadEmployeeProjects()
+        {
+
+            return await _getEmployeeProjectsUseCase.ExecuteAsync();
+        }
+
         public async Task<IEnumerable<Project>> LoadEmpoloyeeProjects(int employeeId)
         {
             var projects = await _getProjectsUseCase.ExecuteAsync();
@@ -135,6 +141,7 @@ namespace DEMOOutOfOfficeApp.Helpers
 
             var projectsDTO = projects.Select(e => new LeaveRequestDTO(
                 e.ID,
+                e.Employee.PeoplePartnerID,
                 e.Employee.FullName,
                 e.AbsenceReason.Name,
                 e.StartDate,
@@ -153,6 +160,7 @@ namespace DEMOOutOfOfficeApp.Helpers
 
             var projectsDTO = projects.Select(e => new LeaveRequestDTO(
                 e.ID,
+                e.Employee.PeoplePartnerID,
                 e.Employee.FullName,
                 e.AbsenceReason.Name,
                 e.StartDate,

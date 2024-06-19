@@ -36,7 +36,8 @@ namespace DEMOOutOfOfficeApp.Core.Repository
         {
             var empProjects = await _appDbContext.ProjectEmployee
                 .Include(e => e.Employee)
-                .Include(p => p.Project).ToListAsync();
+                .Include(p => p.Project)
+                .ToListAsync();
                 return empProjects;
         }
 
@@ -159,5 +160,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
             return projects;
         }
+
     }
 }

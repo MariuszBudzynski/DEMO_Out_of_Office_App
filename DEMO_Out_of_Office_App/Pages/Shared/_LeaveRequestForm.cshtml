@@ -1,7 +1,7 @@
 ﻿@using DEMOOutOfOfficeApp.Models
 @model IEditLeaveRequestFormModel
 
-<form id="leaverequestform" method="post" enctype="multipart/form-data">
+<form id="leaveRequestForm" method="post" enctype="multipart/form-data">
     <input type="hidden" id="EmployeeId" name="LeaveRequestDTO.Id" value="@Model.LeaveRequestDTO.Id" />
 
     <table class="table table-bordered">
@@ -51,4 +51,9 @@
             </tr>
         </tbody>
     </table>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-page="/LeaveRequests" class="btn btn-secondary">Back</a>
+    </div>
 </form>

@@ -37,10 +37,6 @@
                         <input type="hidden" name="id" value="@leaveRequest.Id" />
                         <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Open</button>
                     </form>
-                    <form asp-page-handler="AddLeaveRequest" method="post">
-                        <input type="hidden" name="id" value="@leaveRequest.Id" />
-                        <button type="submit" class="btn btn-secondary btn-sm equal-width-btn">Add</button>
-                    </form>
                     <form asp-page-handler="EditLeaveRequest" method="post">
                         <input type="hidden" name="id" value="@leaveRequest.Id" />
                         <button type="submit" class="btn btn-warning btn-sm equal-width-btn">Edit</button>
@@ -50,6 +46,11 @@
         }
     </tbody>
 </table>
+
+<form asp-page-handler="AddLeaveRequest" method="post">
+    <input type="hidden" name="id" value="@Model.LeaveRequests.FirstOrDefault()?.Id" />
+    <button type="submit" class="btn btn-secondary btn-sm">Add Leave Request</button>
+</form>
 
 @section Scripts {
     <script type="text/javascript">

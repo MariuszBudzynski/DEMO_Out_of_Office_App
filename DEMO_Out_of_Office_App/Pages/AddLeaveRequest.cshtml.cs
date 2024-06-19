@@ -1,3 +1,4 @@
+using Azure.Core;
 using DEMOOutOfOfficeApp.Common.Enums;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases;
@@ -16,7 +17,7 @@ namespace DEMOOutOfOfficeApp.Pages
         private int _id;
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
-        private readonly ISaveDataUseCase saveDataUse;
+        private readonly ISaveDataUseCase _saveDataUseCase;
 
         [BindProperty(SupportsGet = true)]
         public LeaveRequestDTO? LeaveRequestDTO { get; set; }
@@ -27,7 +28,7 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             _dataLoaderHelper = dataLoaderHelper;
             _getDataByIdUseCase = getDataByIdUseCase;
-            this.saveDataUse = saveDataUse;
+            _saveDataUseCase = _saveDataUseCase;
         }
         public async Task OnGet(int id)
         {
@@ -36,16 +37,29 @@ namespace DEMOOutOfOfficeApp.Pages
             LeaveRequestDTO = await CreateNewLeaveRequestDTOAsync(id);
         }
 
-        private async Task OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
+            await CreateAndSaveLeaveRequestAsync();
+
+            return RedirectToPage("/LeaveRequests");
+        }
+
+        private async Task CreateAndSaveLeaveRequestAsync()
+        {
+            var newLeaveRequest = CreateNewLeaveRequest();
+            await _saveDataUseCase.ExecuteAsync(newLeaveRequest);
         }
 
         private async Task<LeaveRequestDTO> CreateNewLeaveRequestDTOAsync(int id)
         {
-            var employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(id);
+            var employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(_id);
 
-            return new LeaveRequestDTO(_id, employee.FullName, String.Empty, DateTime.Now, DateTime.Now, String.Empty, LeaveRequestsStatusType.New.ToString());
+            return new LeaveRequestDTO(_id,employee.PeoplePartnerID ,employee.FullName, String.Empty, DateTime.Now, DateTime.Now, String.Empty, LeaveRequestsStatusType.New.ToString());
         }
 
         private LeaveRequest CreateNewLeaveRequest()
@@ -70,9 +84,14 @@ namespace DEMOOutOfOfficeApp.Pages
             };
         }
 
-        private async Task<ApprovalRequest> CreateNewApprovalRequest()
+        private async Task<ApprovalRequest> CreateNewApprovalRequestHR()
         {
+            List<ApprovalRequest> ApprovalRequests = new();
+
             var leaveRequestId = await GetLastLeaveRequestIdAsync();
+
+            var employeeProjects = (await _dataLoaderHelper.LoadEmployeeProjects()).Select(e => e.Project.ProjectManagerID);
+
             
 
             return new ApprovalRequest()
