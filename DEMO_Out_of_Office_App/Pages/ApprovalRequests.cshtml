@@ -9,8 +9,9 @@
 <table id="aprovalltable" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Approver</th>
-            <th>Leave Request ID</th>
+            <th>HR Approver</th>
+            <th>PM Approver</th>
+            <td>Leave Request ID</td>
             <th>Status</th>
             <th>Comment</th>
             <th>Actions</th>
@@ -20,7 +21,8 @@
         @foreach (var request in Model.ApprovalRequests)
         {
             <tr>
-                <td>@request.Aprover</td>
+                <td>HR Approver - to do</td>
+                <td>PM Approver - to do</td>
                 <td>@request.LeaveRequestId</td>
                 <td>@request.Status</td>
                 <td>@request.Comment</td>
