@@ -24,6 +24,8 @@ namespace DEMOOutOfOfficeApp.Core.Context
         public DbSet<AbsenceReason> AbsenceReasons { get; set; }
         public DbSet<User> Users { get; set; }
 
+        public DbSet<ProjectEmployee> ProjectEmployee { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

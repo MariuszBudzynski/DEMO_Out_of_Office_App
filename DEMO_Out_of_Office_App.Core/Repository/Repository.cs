@@ -3,6 +3,7 @@ using DEMOOutOfOfficeApp.Core.Context;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DEMOOutOfOfficeApp.Core.Repository
 {
@@ -33,6 +34,15 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 await _appDbContext.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<ProjectEmployee>> GetEmployeeProjects()
+        {
+            var empProjects = await _appDbContext.ProjectEmployee
+                .Include(e => e.Employee)
+                .Include(p => p.Project).ToListAsync();
+                return empProjects;
+        }
+
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {

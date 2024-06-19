@@ -18,6 +18,7 @@ namespace DEMOOutOfOfficeApp.Helpers
         private readonly IGetProjectsUseCase _getProjectsUseCase;
         private readonly IGetLeaveRequestsUseCase _getLeaveRequestsUseCase;
         private readonly IGetDataUseCase _getDataUseCase;
+        private readonly IGetEmployeeProjectsUseCase _getEmployeeProjectsUseCase;
 
         public DataLoaderHelper(IGetAllSubdivisionsUseCase getAllSubdivisionsUseCase,
                                 IGetAllRolesUseCase getAllRolesUse,
@@ -25,7 +26,8 @@ namespace DEMOOutOfOfficeApp.Helpers
                                 IGetDataByIdUseCase getDataByIdUseCase,
                                 IGetProjectsUseCase getProjectsUseCase,
                                 IGetLeaveRequestsUseCase getLeaveRequestsUseCase,
-                                IGetDataUseCase getDataUseCase
+                                IGetDataUseCase getDataUseCase,
+                                IGetEmployeeProjectsUseCase getEmployeeProjectsUseCase
                                 )
         {
             _getAllSubdivisionsUseCase = getAllSubdivisionsUseCase;
@@ -35,6 +37,7 @@ namespace DEMOOutOfOfficeApp.Helpers
             _getProjectsUseCase = getProjectsUseCase;
             _getLeaveRequestsUseCase = getLeaveRequestsUseCase;
             _getDataUseCase = getDataUseCase;
+            _getEmployeeProjectsUseCase = getEmployeeProjectsUseCase;
         }
 
         public async Task<IEnumerable<Subdivision>> LoadSubdivisionsAsync()
@@ -89,26 +92,35 @@ namespace DEMOOutOfOfficeApp.Helpers
             return await _getDataUseCase.ExecuteAsync<AbsenceReason>();
         }
 
-        public async Task<IEnumerable<ProjectDTO>> LoadProjectsDTOAsync(int employeeId)
+        public async Task<IEnumerable<ProjectDTO>> LoadProjectsDTOAsync()
         {
+            List<ProjectDTO> projectDTOs = new List<ProjectDTO>();
+
+            var employeeprojects = await _getEmployeeProjectsUseCase.ExecuteAsync();
+
             var projects = await _getProjectsUseCase.ExecuteAsync();
 
-            if (employeeId != 0)
+            if (employeeprojects != null)
             {
-                projects = projects.Where(p => p.ProjectManagerID == employeeId).ToList();
+                foreach (var projectEmpl in employeeprojects)
+                {
+                    var projectDTO = new ProjectDTO(
+
+                        projectEmpl.ProjectID,
+                        projectEmpl.Project.ProjectType.Name,
+                        projectEmpl.Project.StartDate,
+                        projectEmpl.Project.EndDate,
+                        projectEmpl.Employee.FullName ?? String.Empty,
+                        projectEmpl.Project.ProjectManager.FullName ?? String.Empty,
+                        projectEmpl.Project.Comment,
+                        projectEmpl.Project.ProjectStatus.StatusType.ToString()
+
+                        );
+                    projectDTOs.Add(projectDTO);
+                }
             }
 
-            var projectsDTO = projects.Select(e => new ProjectDTO(
-                e.ID,
-                e.ProjectType.Name,
-                e.StartDate,
-                e.EndDate,
-                e.ProjectManager.FullName,
-                e.Comment,
-                e.ProjectStatus.StatusType.ToString()
-            )).ToList();
-
-            return projectsDTO;
+            return projectDTOs;
         }
 
         public async Task<IEnumerable<LeaveRequestDTO>> LoadLeaveRequestsDTOAsync(int employeeId)

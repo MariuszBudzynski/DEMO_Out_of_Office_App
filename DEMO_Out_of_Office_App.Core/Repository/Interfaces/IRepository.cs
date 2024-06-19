@@ -17,5 +17,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository.Interfaces
         Task UpdateLeaveRequest(LeaveRequest leaveRequest);
         Task UpdateApprovalRequest(ApprovalRequest approvalRequest);
         Task SaveData<T>(T data) where T : class, IEntityId;
+        Task<IEnumerable<ProjectEmployee>> GetEmployeeProjects();
     }
 }

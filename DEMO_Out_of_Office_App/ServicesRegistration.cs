@@ -69,6 +69,7 @@ namespace DEMOOutOfOfficeApp
 			services.AddScoped<IUpdateAprovalRequestUseCase, UpdateAprovalRequestUseCase>();
 			services.AddScoped<IDataLoaderHelper,DataLoaderHelper>();
 			services.AddScoped<ISaveDataUseCase, SaveDataUseCase>();
+			services.AddScoped<IGetEmployeeProjectsUseCase, GetEmployeeProjectsUseCase>();
         }
 	}
 }

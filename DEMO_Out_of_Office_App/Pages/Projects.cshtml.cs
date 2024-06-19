@@ -14,7 +14,7 @@ namespace DEMOOutOfOfficeApp.Pages
         private readonly IDataLoaderHelper _dataLoaderHelper;
 
         [BindProperty(SupportsGet = true)]
-        public List<ProjectDTO> Projects { get; set; }
+        public List<ProjectDTO> Projects { get; set; } = new List<ProjectDTO>();
 
         public ProjectsModel(IDataLoaderHelper dataLoaderHelper)
         {
@@ -25,7 +25,7 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             int employeeId = GetEmployeeIdFromClaims();
 
-            Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync(employeeId)).ToList();
+            Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).ToList();
         }
 
         private int GetEmployeeIdFromClaims()

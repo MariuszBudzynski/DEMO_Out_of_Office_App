@@ -11,7 +11,7 @@ namespace DEMOOutOfOfficeApp.Helpers.Interfaces
         Task<Employee> LoadEmpoloyeeAsync(int id);
         Task<IEnumerable<LeaveRequestDTO>> LoadLeaveRequestsDTOAsync();
         Task<IEnumerable<LeaveRequestDTO>> LoadLeaveRequestsDTOAsync(int employeeId);
-        Task<IEnumerable<ProjectDTO>> LoadProjectsDTOAsync(int employeeId);
+        Task<IEnumerable<ProjectDTO>> LoadProjectsDTOAsync();
         Task<IEnumerable<Role>> LoadRolesAsync();
         Task<IEnumerable<EmployeeStatus>> LoadStatusesAsync();
         Task<IEnumerable<Subdivision>> LoadSubdivisionsAsync();
