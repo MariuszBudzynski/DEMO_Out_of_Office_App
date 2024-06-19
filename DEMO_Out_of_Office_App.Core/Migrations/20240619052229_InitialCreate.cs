@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class InitailCreate4 : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,19 +50,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LeaveRequestsStatuses", x => x.StatusType);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Positions",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Positions", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -151,9 +138,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 {
                     table.PrimaryKey("PK_Employees", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Employees_Positions_PositionID",
+                        name: "FK_Employees_Roles_PositionID",
                         column: x => x.PositionID,
-                        principalTable: "Positions",
+                        principalTable: "Roles",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -249,6 +236,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeID = table.Column<int>(type: "int", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     RoleID = table.Column<int>(type: "int", nullable: false)
@@ -304,6 +292,32 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProjectEmployee",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectID = table.Column<int>(type: "int", nullable: false),
+                    EmployeeID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectEmployee", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ProjectEmployee_Employees_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalTable: "Employees",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectEmployee_Projects_ProjectID",
+                        column: x => x.ProjectID,
+                        principalTable: "Projects",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AbsenceReasons",
                 columns: new[] { "ID", "Name" },
@@ -335,17 +349,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     { 2, "Approved" },
                     { 3, "Rejected" },
                     { 4, "Cancelled" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Positions",
-                columns: new[] { "ID", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Software Engineer" },
-                    { 2, "Project Manager" },
-                    { 3, "HR Specialist" },
-                    { 4, "Marketing Coordinator" }
                 });
 
             migrationBuilder.InsertData(
@@ -427,26 +430,26 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 columns: new[] { "ID", "Comment", "EndDate", "ProjectManagerID", "ProjectTypeID", "StartDate", "StatusID" },
                 values: new object[,]
                 {
-                    { 1, "Internal project for HR system", null, 2, 1, new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 1, "Internal project for HR system", null, 3, 1, new DateTime(2023, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
                     { 2, "Client project for ABC Inc.", null, 3, 2, new DateTime(2023, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 3, "Research project", null, 4, 1, new DateTime(2023, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 4, "Marketing campaign", null, 1, 2, new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 5, "IT infrastructure upgrade", null, 2, 1, new DateTime(2023, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 3, "Research project", null, 3, 1, new DateTime(2023, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 4, "Marketing campaign", null, 3, 2, new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 5, "IT infrastructure upgrade", null, 3, 1, new DateTime(2023, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
                     { 6, "Client project for XYZ Corp.", null, 3, 2, new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 7, "Research and development", null, 4, 1, new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
+                    { 7, "Research and development", null, 3, 1, new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "ID", "EmployeeID", "PasswordHash", "RoleID", "Username" },
+                columns: new[] { "ID", "EmployeeID", "FullName", "PasswordHash", "RoleID", "Username" },
                 values: new object[,]
                 {
-                    { 1, 1, "7C6A180B36896A0A8C02787EEAFB0E4C", 2, "john.doe" },
-                    { 2, 2, "6CB75F652A9B52798EB6CF2201057C73", 4, "jane.smith" },
-                    { 3, 3, "819B0643D6B89DC9B579FDFC9094F28E", 3, "alice.johnson" },
-                    { 4, 4, "34CC93ECE0BA9E3F6F235D4AF979B16C", 1, "bob.brown" },
-                    { 5, 5, "DB0EDD04AAAC4506F7EDAB03AC855D56", 2, "charlie.davis" },
-                    { 6, 6, "218DD27AEBECCECAE69AD8408D9A36BF", 1, "diana.evans" }
+                    { 1, 1, "John Doe", "7C6A180B36896A0A8C02787EEAFB0E4C", 2, "john.doe" },
+                    { 2, 2, "Jane Smith", "6CB75F652A9B52798EB6CF2201057C73", 4, "jane.smith" },
+                    { 3, 3, "Alice Johnson", "819B0643D6B89DC9B579FDFC9094F28E", 3, "alice.johnson" },
+                    { 4, 4, "Bob Brown", "34CC93ECE0BA9E3F6F235D4AF979B16C", 1, "bob.brown" },
+                    { 5, 5, "Charlie Davis", "DB0EDD04AAAC4506F7EDAB03AC855D56", 2, "charlie.davis" },
+                    { 6, 6, "Diana Evans", "218DD27AEBECCECAE69AD8408D9A36BF", 1, "diana.evans" }
                 });
 
             migrationBuilder.InsertData(
@@ -458,6 +461,23 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     { 2, 3, "Pending review", 2, 2 },
                     { 3, 4, "Approved for family event", 3, 1 },
                     { 4, 2, "Rejected due to conflicting schedule", 4, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProjectEmployee",
+                columns: new[] { "ID", "EmployeeID", "ProjectID" },
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 2, 1 },
+                    { 3, 2, 2 },
+                    { 4, 3, 2 },
+                    { 5, 3, 3 },
+                    { 6, 4, 3 },
+                    { 7, 4, 4 },
+                    { 8, 5, 4 },
+                    { 9, 5, 5 },
+                    { 10, 6, 5 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -506,6 +526,16 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 column: "StatusType");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProjectEmployee_EmployeeID",
+                table: "ProjectEmployee",
+                column: "EmployeeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectEmployee_ProjectID",
+                table: "ProjectEmployee",
+                column: "ProjectID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Projects_ProjectManagerID",
                 table: "Projects",
                 column: "ProjectManagerID");
@@ -539,7 +569,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 name: "ApprovalRequests");
 
             migrationBuilder.DropTable(
-                name: "Projects");
+                name: "ProjectEmployee");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -551,6 +581,18 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 name: "LeaveRequests");
 
             migrationBuilder.DropTable(
+                name: "Projects");
+
+            migrationBuilder.DropTable(
+                name: "AbsenceReasons");
+
+            migrationBuilder.DropTable(
+                name: "LeaveRequestsStatuses");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
+
+            migrationBuilder.DropTable(
                 name: "ProjectStatuses");
 
             migrationBuilder.DropTable(
@@ -558,18 +600,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "AbsenceReasons");
-
-            migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "LeaveRequestsStatuses");
-
-            migrationBuilder.DropTable(
-                name: "Positions");
 
             migrationBuilder.DropTable(
                 name: "Statuses");

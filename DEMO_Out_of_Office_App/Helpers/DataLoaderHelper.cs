@@ -12,7 +12,6 @@ namespace DEMOOutOfOfficeApp.Helpers
     public class DataLoaderHelper : IDataLoaderHelper
     {
         private readonly IGetAllSubdivisionsUseCase _getAllSubdivisionsUseCase;
-        private readonly IGetAllPositionsUseCase _getAllPositionsUseCase;
         private readonly IGetAllRolesUseCase _getAllRolesUse;
         private readonly IGetAllStatusesUseCase _getAllStatusesUseCase;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
@@ -21,7 +20,6 @@ namespace DEMOOutOfOfficeApp.Helpers
         private readonly IGetDataUseCase _getDataUseCase;
 
         public DataLoaderHelper(IGetAllSubdivisionsUseCase getAllSubdivisionsUseCase,
-                                IGetAllPositionsUseCase getAllPositionsUseCase,
                                 IGetAllRolesUseCase getAllRolesUse,
                                 IGetAllStatusesUseCase getAllStatusesUseCase,
                                 IGetDataByIdUseCase getDataByIdUseCase,
@@ -31,7 +29,6 @@ namespace DEMOOutOfOfficeApp.Helpers
                                 )
         {
             _getAllSubdivisionsUseCase = getAllSubdivisionsUseCase;
-            _getAllPositionsUseCase = getAllPositionsUseCase;
             _getAllRolesUse = getAllRolesUse;
             _getAllStatusesUseCase = getAllStatusesUseCase;
             _getDataByIdUseCase = getDataByIdUseCase;
@@ -63,11 +60,6 @@ namespace DEMOOutOfOfficeApp.Helpers
         public async Task<IEnumerable<Role>> LoadRolesAsync()
         {
             return (await _getAllRolesUse.ExecuteAsync()).ToList();
-        }
-
-        public async Task<IEnumerable<Position>> LoadPositionsAsync()
-        {
-            return (await _getAllPositionsUseCase.ExecuteAsync()).ToList();
         }
 
         public async Task<IEnumerable<EmployeeStatus>> LoadStatusesAsync()

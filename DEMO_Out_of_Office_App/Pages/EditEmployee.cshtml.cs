@@ -27,9 +27,8 @@ namespace DEMOOutOfOfficeApp.Pages
 		public IFormFile Photo { get; set; }
         public int ID { get; set; }
         public List<Subdivision> Subdivisions { get; set; } = new List<Subdivision>();
-		public List<Position> Positions { get; set; } = new List<Position>();
 		public List<EmployeeStatus> Statuses { get; set; } = new List<EmployeeStatus>();
-
+		public List<Role> Roles { get; set; } = new List<Role>();
 		public List<PeoplePartnerDTO> PeoplePartner { get; set; } = new();
 
         public EditEmployeeModel(IDataLoaderHelper dataLoaderHelper,
@@ -44,9 +43,9 @@ namespace DEMOOutOfOfficeApp.Pages
 		{
 			Employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(id);
 			Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
-			Positions = (await _dataLoaderHelper.LoadPositionsAsync()).ToList();
 			Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
 			PeoplePartner = (await _dataLoaderHelper.GetListOfPeoplePartner()).ToList();
+			Roles = (await _dataLoaderHelper.LoadRolesAsync()).ToList();
             return Page();
 		}
 
@@ -77,5 +76,6 @@ namespace DEMOOutOfOfficeApp.Pages
 
 
         }
+
     }
 }

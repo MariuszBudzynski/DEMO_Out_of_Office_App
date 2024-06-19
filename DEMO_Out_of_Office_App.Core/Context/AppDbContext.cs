@@ -17,7 +17,6 @@ namespace DEMOOutOfOfficeApp.Core.Context
         public DbSet<ProjectType> ProjectTypes { get; set; }
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<Position> Positions { get; set; }
         public DbSet<LeaveRequestsStatus> LeaveRequestsStatuses { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<ApprovalRequestStatus> ApprovalRequestStatuses { get; set; }
@@ -68,8 +67,20 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 .HasForeignKey(u => u.RoleID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Seed data for roles
-            modelBuilder.Entity<Role>().HasData(
+			modelBuilder.Entity<ProjectEmployee>()
+		       .HasOne(pe => pe.Project)
+		       .WithMany(p => p.ProjectEmployees)
+		       .HasForeignKey(pe => pe.ProjectID)
+		       .OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<ProjectEmployee>()
+				.HasOne(pe => pe.Employee)
+				.WithMany(e => e.ProjectEmployees)
+				.HasForeignKey(pe => pe.EmployeeID)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			// Seed data for roles
+			modelBuilder.Entity<Role>().HasData(
                 new Role { ID = 1, UserRole = UserRole.Employee, UserRoleDescription = UserRole.Employee.ToString(), DescriptionOfMainTasks = "Creates a leave request" },
                 new Role { ID = 2, UserRole = UserRole.HRManager, UserRoleDescription = UserRole.HRManager.ToString(), DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests" },
                 new Role { ID = 3, UserRole = UserRole.ProjectManager, UserRoleDescription = UserRole.ProjectManager.ToString(), DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests" },
@@ -84,13 +95,6 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new Subdivision { ID = 4, Name = "Marketing" }
             );
 
-            // Seed data for positions
-            modelBuilder.Entity<Position>().HasData(
-                new Position { ID = 1, Name = "Software Engineer" },
-                new Position { ID = 2, Name = "Project Manager" },
-                new Position { ID = 3, Name = "HR Specialist" },
-                new Position { ID = 4, Name = "Marketing Coordinator" }
-            );
 
             // Seed data for employee statuses
             modelBuilder.Entity<EmployeeStatus>().HasData(
@@ -181,9 +185,23 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new Project { ID = 6, ProjectTypeID = 2, StartDate = new DateTime(2023, 6, 15), ProjectManagerID = 3, Comment = "Client project for XYZ Corp.", StatusID = 1 },
                 new Project { ID = 7, ProjectTypeID = 1, StartDate = new DateTime(2023, 7, 20), ProjectManagerID = 3, Comment = "Research and development", StatusID = 1 }
             );
-        }
 
-        private string GetMd5Hash(string input)
+			modelBuilder.Entity<ProjectEmployee>().HasData(
+	        new ProjectEmployee { ID = 1, ProjectID = 1, EmployeeID = 1 },
+	        new ProjectEmployee { ID = 2, ProjectID = 1, EmployeeID = 2 },
+	        new ProjectEmployee { ID = 3, ProjectID = 2, EmployeeID = 2 },
+	        new ProjectEmployee { ID = 4, ProjectID = 2, EmployeeID = 3 },
+	        new ProjectEmployee { ID = 5, ProjectID = 3, EmployeeID = 3 },
+	        new ProjectEmployee { ID = 6, ProjectID = 3, EmployeeID = 4 },
+	        new ProjectEmployee { ID = 7, ProjectID = 4, EmployeeID = 4 },
+	        new ProjectEmployee { ID = 8, ProjectID = 4, EmployeeID = 5 },
+	        new ProjectEmployee { ID = 9, ProjectID = 5, EmployeeID = 5 },
+	        new ProjectEmployee { ID = 10, ProjectID = 5, EmployeeID = 6 }
+);
+
+		}
+
+		private string GetMd5Hash(string input)
         {
             using (var md5 = MD5.Create())
             {

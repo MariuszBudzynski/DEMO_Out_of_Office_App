@@ -32,12 +32,12 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		public byte[]? Photo { get; set; }
 
 		public  Subdivision? Subdivision { get; set; }
-		public  Position? Position { get; set; }
+		public  Role? Position { get; set; }
 		public EmployeeStatus? Status { get; set; }
 		public  ICollection<ApprovalRequest>? ApprovalRequests { get; set; }
 		public  ICollection<LeaveRequest>? LeaveRequests { get; set; }
-
-        public virtual User? User { get; set; }
+		public virtual ICollection<ProjectEmployee> ProjectEmployees { get; set; }
+		public virtual User? User { get; set; }
 
     }
 }

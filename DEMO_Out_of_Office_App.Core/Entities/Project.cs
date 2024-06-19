@@ -31,5 +31,6 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         public virtual ProjectType ProjectType { get; set; }
         public virtual ProjectStatus ProjectStatus { get; set; }
         public virtual Employee ProjectManager { get; set; }
+		public virtual ICollection<ProjectEmployee> ProjectEmployees { get; set; }
 	}
 }

@@ -35,9 +35,9 @@
             <td>
                 <select id="Position" name="Employee.PositionID" class="form-control" asp-for="Employee.PositionID" required>
                     <option value="">Select Position</option>
-                    @foreach (var option in Model.Positions)
+                    @foreach (var option in Model.Roles)
                     {
-                        <option value="@option.ID">@option.Name</option>
+                        <option value="@option.ID">@option.UserRoleDescription</option>
                     }
                 </select>
                 <span asp-validation-for="Employee.PositionID" class="text-danger"></span>

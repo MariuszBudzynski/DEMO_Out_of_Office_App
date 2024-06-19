@@ -77,11 +77,12 @@ namespace DEMOOutOfOfficeApp.Pages
                     employee.ID,
                     employee.FullName,
                     employee.Subdivision.Name,
-                    employee.Position.Name,
+                    employee.Position.UserRoleDescription,
                     employee.Status.StatusDescription,
                     peoplePartner,
                     employee.OutOfOfficeBalance,
-                    employee.Photo
+                    employee.Photo,
+                    employee.Position.ID
                 );
 
                 Employees.Add(employeeDTO);
@@ -98,12 +99,9 @@ namespace DEMOOutOfOfficeApp.Pages
             return data.FullName;
         }
 
-
-
-        private async Task<Employee> ConvertToEmployee(EmployeeDTO employeeDTO)
+		private async Task<Employee> ConvertToEmployee(EmployeeDTO employeeDTO)
         {
             var subdivision = await _getDataByIdUseCase.ExecuteAsync<Subdivision>(employeeDTO.ID);
-            var position = await _getDataByIdUseCase.ExecuteAsync<Position>(employeeDTO.ID);
             var status = await _getDataByIdUseCase.ExecuteAsync<EmployeeStatus>(employeeDTO.ID);
             var role = await _getDataByIdUseCase.ExecuteAsync<Role>(employeeDTO.ID);
 
@@ -114,7 +112,7 @@ namespace DEMOOutOfOfficeApp.Pages
                 ID = employeeDTO.ID,
                 FullName = employeeDTO.FullName,
                 SubdivisionID = subdivision.ID,
-                PositionID = position.ID,
+                PositionID = employeeDTO.rolePositionId,
                 StatusID = status.ID,
                 PeoplePartnerID = role.ID,
                 OutOfOfficeBalance = employeeDTO.OutOfOfficeBalance

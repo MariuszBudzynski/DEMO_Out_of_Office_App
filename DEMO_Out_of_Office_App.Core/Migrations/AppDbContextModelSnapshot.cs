@@ -433,45 +433,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Position", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Positions");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Name = "Software Engineer"
-                        },
-                        new
-                        {
-                            ID = 2,
-                            Name = "Project Manager"
-                        },
-                        new
-                        {
-                            ID = 3,
-                            Name = "HR Specialist"
-                        },
-                        new
-                        {
-                            ID = 4,
-                            Name = "Marketing Coordinator"
-                        });
-                });
-
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Project", b =>
                 {
                     b.Property<int>("ID")
@@ -572,6 +533,91 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                             ProjectTypeID = 1,
                             StartDate = new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StatusID = 1
+                        });
+                });
+
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ProjectEmployee", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.HasIndex("ProjectID");
+
+                    b.ToTable("ProjectEmployee");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            EmployeeID = 1,
+                            ProjectID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            EmployeeID = 2,
+                            ProjectID = 1
+                        },
+                        new
+                        {
+                            ID = 3,
+                            EmployeeID = 2,
+                            ProjectID = 2
+                        },
+                        new
+                        {
+                            ID = 4,
+                            EmployeeID = 3,
+                            ProjectID = 2
+                        },
+                        new
+                        {
+                            ID = 5,
+                            EmployeeID = 3,
+                            ProjectID = 3
+                        },
+                        new
+                        {
+                            ID = 6,
+                            EmployeeID = 4,
+                            ProjectID = 3
+                        },
+                        new
+                        {
+                            ID = 7,
+                            EmployeeID = 4,
+                            ProjectID = 4
+                        },
+                        new
+                        {
+                            ID = 8,
+                            EmployeeID = 5,
+                            ProjectID = 4
+                        },
+                        new
+                        {
+                            ID = 9,
+                            EmployeeID = 5,
+                            ProjectID = 5
+                        },
+                        new
+                        {
+                            ID = 10,
+                            EmployeeID = 6,
+                            ProjectID = 5
                         });
                 });
 
@@ -849,8 +895,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Employee", b =>
                 {
-                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Position", "Position")
-                        .WithMany("Employees")
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Role", "Position")
+                        .WithMany()
                         .HasForeignKey("PositionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -928,6 +974,25 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Navigation("ProjectType");
                 });
 
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ProjectEmployee", b =>
+                {
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Employee", "Employee")
+                        .WithMany("ProjectEmployees")
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Project", "Project")
+                        .WithMany("ProjectEmployees")
+                        .HasForeignKey("ProjectID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.User", b =>
                 {
                     b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Employee", "Employee")
@@ -963,6 +1028,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.Navigation("LeaveRequests");
 
+                    b.Navigation("ProjectEmployees");
+
                     b.Navigation("User");
                 });
 
@@ -976,9 +1043,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Navigation("LeaveRequests");
                 });
 
-            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Position", b =>
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Project", b =>
                 {
-                    b.Navigation("Employees");
+                    b.Navigation("ProjectEmployees");
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ProjectStatus", b =>
