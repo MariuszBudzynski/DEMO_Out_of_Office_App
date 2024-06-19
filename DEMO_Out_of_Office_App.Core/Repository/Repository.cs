@@ -19,10 +19,7 @@ namespace DEMOOutOfOfficeApp.Core.Repository
         public async Task<IEnumerable<T>> GetData<T>() where T : class, IEntityId
         {
             var data = await _appDbContext.Set<T>().ToListAsync();
-            if (data == null || !data.Any())
-            {
-                return Enumerable.Empty<T>();
-            }
+
             return data;
         }
 
@@ -51,24 +48,14 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 .Include(u => u.Role)
                 .ToListAsync();
 
-            if (users == null || !users.Any())
-            {
-                return Enumerable.Empty<User>();
-            }
             return users;
         }
 
         public async Task<T> GetDataById<T>(int id) where T : class, IEntityId
         {
-            if (id > 0)
-            {
                 var data = await _appDbContext.Set<T>().FirstOrDefaultAsync(e => e.ID == id);
-                if (data != null)
-                {
+ 
                     return data;
-                }
-            }
-            return null;
         }
 
         public async Task SaveEmployeeData(Employee employee)
@@ -137,25 +124,17 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 .Include(e => e.Status)
                 .ToListAsync();
 
-            if (employees == null || !employees.Any())
-            {
-                return Enumerable.Empty<Employee>();
-            }
             return employees;
         }
 
         public async Task<IEnumerable<ApprovalRequest>> GetEmpAprovalRequestsAsync()
         {
+
             var approvalRequests = await _appDbContext.ApprovalRequests
-                .Include(ar => ar.Approver)
-                .Include(ar => ar.LeaveRequest)
-                .Include(ar => ar.ApprovalRequestStatus)
+                .Include(ars => ars.ApprovalRequestStatus)
+                .Include(ar => ar.ApprovalRequestExtended)
                 .ToListAsync();
 
-            if (approvalRequests == null || !approvalRequests.Any())
-            {
-                return Enumerable.Empty<ApprovalRequest>();
-            }
             return approvalRequests;
         }
 
@@ -167,10 +146,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 .Include(lr => lr.LeaveRequestsStatus)
                 .ToListAsync();
 
-            if (leaveRequests == null || !leaveRequests.Any())
-            {
-                return Enumerable.Empty<LeaveRequest>();
-            }
             return leaveRequests;
         }
 
@@ -182,10 +157,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                 .Include(p => p.ProjectManager)
                 .ToListAsync();
 
-            if (projects == null || !projects.Any())
-            {
-                return Enumerable.Empty<Project>();
-            }
             return projects;
         }
     }

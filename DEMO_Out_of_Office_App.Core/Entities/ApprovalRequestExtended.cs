@@ -19,9 +19,9 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 
         public int EmployeeId { get; set; }
 
-        public int HrManager { get; set; }
+        public int HrManagerId { get; set; }
 
-        public int PmManager { get; set; }
+        public int PmManagerId { get; set; }
 
         public bool ApprovedHr { get; set; }
 

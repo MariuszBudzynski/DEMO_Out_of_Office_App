@@ -26,5 +26,6 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         public virtual LeaveRequest LeaveRequest { get; set; }
         public virtual ApprovalRequestStatus ApprovalRequestStatus { get; set; }
         public virtual Employee Approver { get; set; }
+        public virtual ApprovalRequestExtended ApprovalRequestExtended { get; set; }
     }
 }

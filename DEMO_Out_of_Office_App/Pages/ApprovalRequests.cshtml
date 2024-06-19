@@ -21,8 +21,8 @@
         @foreach (var request in Model.ApprovalRequests)
         {
             <tr>
-                <td>HR Approver - to do</td>
-                <td>PM Approver - to do</td>
+                <td>@request.HrManager</td>
+                <td>@request.PmManager</td>
                 <td>@request.LeaveRequestId</td>
                 <td>@request.Status</td>
                 <td>@request.Comment</td>

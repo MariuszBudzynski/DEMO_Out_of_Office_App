@@ -202,10 +202,10 @@ namespace DEMOOutOfOfficeApp.Core.Context
             );
 
             modelBuilder.Entity<ApprovalRequestExtended>().HasData(
-            new ApprovalRequestExtended { ID = 1, ApprovalRequestID = 1, EmployeeId = 1, HrManager = 1, PmManager = 2, ApprovedHr = true, ApprovedPm = false },
-            new ApprovalRequestExtended { ID = 2, ApprovalRequestID = 2, EmployeeId = 2, HrManager = 2, PmManager = 3, ApprovedHr = false, ApprovedPm = true },
-            new ApprovalRequestExtended { ID = 3, ApprovalRequestID = 3, EmployeeId = 3, HrManager = 1, PmManager = 3, ApprovedHr = true, ApprovedPm = true },
-            new ApprovalRequestExtended { ID = 4, ApprovalRequestID = 4, EmployeeId = 4, HrManager = 2, PmManager = 1, ApprovedHr = false, ApprovedPm = false }
+            new ApprovalRequestExtended { ID = 1, ApprovalRequestID = 1, EmployeeId = 1, HrManagerId = 1, PmManagerId = 2, ApprovedHr = true, ApprovedPm = false },
+            new ApprovalRequestExtended { ID = 2, ApprovalRequestID = 2, EmployeeId = 2, HrManagerId = 2, PmManagerId = 3, ApprovedHr = false, ApprovedPm = true },
+            new ApprovalRequestExtended { ID = 3, ApprovalRequestID = 3, EmployeeId = 3, HrManagerId = 1, PmManagerId = 3, ApprovedHr = true, ApprovedPm = true },
+            new ApprovalRequestExtended { ID = 4, ApprovalRequestID = 4, EmployeeId = 4, HrManagerId = 2, PmManagerId = 1, ApprovedHr = false, ApprovedPm = false }
              );
 
 
