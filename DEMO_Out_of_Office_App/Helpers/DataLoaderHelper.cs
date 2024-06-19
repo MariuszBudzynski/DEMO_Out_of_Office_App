@@ -80,6 +80,13 @@ namespace DEMOOutOfOfficeApp.Helpers
 
             return await _getEmployeeProjectsUseCase.ExecuteAsync();
         }
+
+        public async Task<string> LoadLeaveRequestStatusAsync(int id)
+        {
+            var leaveRequest = await _getDataByIdUseCase.ExecuteAsync<LeaveRequest>(id);
+            return leaveRequest?.StatusType.ToString();
+        }
+
         public async Task<IEnumerable<Project>> LoadEmpoloyeeProjects(int employeeId)
         {
             var projects = await _getProjectsUseCase.ExecuteAsync();

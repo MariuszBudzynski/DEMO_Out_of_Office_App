@@ -12,17 +12,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
-    public class AddLeaveRequestModel : PageModel
+    public class AddLeaveRequestModel : PageModel,ILeaveRequestFormModel
     {
         private int _id;
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         //private readonly ISaveDataUseCase _saveDataUseCase;
 
-        [BindProperty(SupportsGet = true)]
-        public LeaveRequestDTO? LeaveRequestDTO { get; set; }
 
-        public List<AbsenceReason> AbsenceReasons { get; set; } = new List<AbsenceReason>();
+        public LeaveRequest LeaveRequest { get; set; }
+
+        public List<AbsenceReason> AbsenceReasons { get; set; }
+
+        public string FullName { get; set; }
+        public string Status { get; set; }
+
 
         public AddLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IGetDataByIdUseCase getDataByIdUseCase)
         {
@@ -32,9 +36,9 @@ namespace DEMOOutOfOfficeApp.Pages
         }
         public async Task OnGet(int id)
         {
-            _id = id;
             AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
-            LeaveRequestDTO = await CreateNewLeaveRequestDTOAsync(id);
+            LeaveRequest = new LeaveRequest() { StatusType = LeaveRequestsStatusType.New };
+            FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
         }
 
         //public async Task<IActionResult> OnPostAsync()
@@ -55,12 +59,12 @@ namespace DEMOOutOfOfficeApp.Pages
         //    await _saveDataUseCase.ExecuteAsync(newLeaveRequest);
         //}
 
-        private async Task<LeaveRequestDTO> CreateNewLeaveRequestDTOAsync(int id)
-        {
-            var employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(_id);
+        //private async Task<LeaveRequestDTO> CreateNewLeaveRequestDTOAsync(int id)
+        //{
+        //    var employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(_id);
 
-            return new LeaveRequestDTO(_id,employee.PeoplePartnerID ,employee.FullName, String.Empty, DateTime.Now, DateTime.Now, String.Empty, LeaveRequestsStatusType.New.ToString());
-        }
+        //    return new LeaveRequestDTO(_id,employee.PeoplePartnerID ,employee.FullName, String.Empty, DateTime.Now, DateTime.Now, String.Empty, LeaveRequestsStatusType.New.ToString());
+        //}
 
         //private LeaveRequest CreateNewLeaveRequest()
         //{
@@ -84,28 +88,28 @@ namespace DEMOOutOfOfficeApp.Pages
         //    };
         //}
 
-        private async Task<ApprovalRequest> CreateNewApprovalRequestHR()
-        {
-            List<ApprovalRequest> ApprovalRequests = new();
+        //private async Task<ApprovalRequest> CreateNewApprovalRequestHR()
+        //{
+        //    List<ApprovalRequest> ApprovalRequests = new();
 
-            var leaveRequestId = await GetLastLeaveRequestIdAsync();
+        //    var leaveRequestId = await GetLastLeaveRequestIdAsync();
 
-            var employeeProjects = (await _dataLoaderHelper.LoadEmployeeProjects()).Select(e => e.Project.ProjectManagerID);
+        //    var employeeProjects = (await _dataLoaderHelper.LoadEmployeeProjects()).Select(e => e.Project.ProjectManagerID);
 
-            
 
-            return new ApprovalRequest()
-            {
-                
 
-            };
-        }
+        //    return new ApprovalRequest()
+        //    {
 
-        private async Task<int> GetLastLeaveRequestIdAsync()
-        {
-            var lastLeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).LastOrDefault();
-            return lastLeaveRequest?.ID ?? 0;
-        }
+
+        //    };
+        //}
+
+        //private async Task<int> GetLastLeaveRequestIdAsync()
+        //{
+        //    var lastLeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).LastOrDefault();
+        //    return lastLeaveRequest?.ID ?? 0;
+        //}
 
 
 

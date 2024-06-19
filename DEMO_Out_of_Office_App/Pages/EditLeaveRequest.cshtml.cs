@@ -11,16 +11,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
-    public class EditLeaveRequestModel : PageModel
+    public class EditLeaveRequestModel : PageModel , ILeaveRequestFormModel
     {
-        private int _id;
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IUpdateLeaveRequestUseCase _updateLeaveRequestUseCase;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly IGetLeaveRequestsUseCase _getLeaveRequestsUseCase;
 
-        //[BindProperty(SupportsGet = true)]
-        //public LeaveRequestDTO? LeaveRequestDTO { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public LeaveRequest LeaveRequest { get; set; }
@@ -31,13 +28,11 @@ namespace DEMOOutOfOfficeApp.Pages
         public string Status { get; set; }
 
         public EditLeaveRequestModel(IDataLoaderHelper dataLoaderHelper,
-                                    IUpdateLeaveRequestUseCase updateLeaveRequestUseCase,
-                                    IGetDataByIdUseCase getDataByIdUseCase,
+                                    IUpdateLeaveRequestUseCase updateLeaveRequestUseCase,                                   
                                     IGetLeaveRequestsUseCase getLeaveRequestsUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _updateLeaveRequestUseCase = updateLeaveRequestUseCase;
-            _getDataByIdUseCase = getDataByIdUseCase;
             _getLeaveRequestsUseCase = getLeaveRequestsUseCase;
         }
 
@@ -46,7 +41,7 @@ namespace DEMOOutOfOfficeApp.Pages
             LeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.EmployeeID == id);
             AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
             FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
-            Status = (await _getLeaveRequestsUseCase.ExecuteAsync()).FirstOrDefault(e=> e.ID == id).StatusType.ToString();
+            Status = await _dataLoaderHelper.LoadLeaveRequestStatusAsync(id);
 
         }
 
