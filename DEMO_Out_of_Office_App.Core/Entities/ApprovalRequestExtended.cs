@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DEMOOutOfOfficeApp.Common.Interfaces;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-    public class ApprovalRequestExtended
+    public class ApprovalRequestExtended : IEntityId
     {
         [Key]
         public int ID { get; set; }

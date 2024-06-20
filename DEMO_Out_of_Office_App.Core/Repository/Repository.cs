@@ -165,5 +165,19 @@ namespace DEMOOutOfOfficeApp.Core.Repository
             return projects;
         }
 
+
+
+        public async Task SaveListOfObjectsToDatabase<T>(IEnumerable<T> objectList) where T : class , IEntityId 
+        {
+            await _appDbContext.Set<T>().AddRangeAsync(objectList);
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task SaveListOfApprovalRequestExtendedToDatabase(IEnumerable<ApprovalRequestExtended> approvalRequestExtendedList)
+        {
+            await _appDbContext.ApprovalRequestsExtended.AddRangeAsync(approvalRequestExtendedList);
+            await _appDbContext.SaveChangesAsync();
+        }
+
     }
 }
