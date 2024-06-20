@@ -28,5 +28,12 @@ namespace DEMOOutOfOfficeApp.Pages
             Project = (await _dataLoaderHelper.LoadProjectsDTOAsync()).FirstOrDefault(p => p.Id == id);
             ProjectTypes = (await _dataLoaderHelper.LoadProjectTypesAsync()).ToList();
         }
+
+        public IActionResult OnPostDeactivateProject(int projectId)
+        {
+           
+
+            return RedirectToPage("/Projects");
+        }
     }
 }
