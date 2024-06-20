@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240619084801_InitialCreate")]
+    [Migration("20240620100116_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -64,6 +64,43 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Approval", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("ApprovalRequestExtendedID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ApprovalRequestExtendedID1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ApprovalRequestID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ApprovalRequestID1")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ApprovalRequestExtendedID");
+
+                    b.HasIndex("ApprovalRequestExtendedID1")
+                        .IsUnique()
+                        .HasFilter("[ApprovalRequestExtendedID1] IS NOT NULL");
+
+                    b.HasIndex("ApprovalRequestID");
+
+                    b.HasIndex("ApprovalRequestID1")
+                        .IsUnique()
+                        .HasFilter("[ApprovalRequestID1] IS NOT NULL");
+
+                    b.ToTable("Approvals");
+                });
+
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
                 {
                     b.Property<int>("ID")
@@ -72,12 +109,12 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("ApproverID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EmployeeID")
+                        .HasColumnType("int");
 
                     b.Property<int>("LeaveRequestID")
                         .HasColumnType("int");
@@ -87,47 +124,13 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ApproverID");
+                    b.HasIndex("EmployeeID");
 
                     b.HasIndex("LeaveRequestID");
 
                     b.HasIndex("StatusID");
 
                     b.ToTable("ApprovalRequests");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            ApproverID = 2,
-                            Comment = "Approved",
-                            LeaveRequestID = 1,
-                            StatusID = 1
-                        },
-                        new
-                        {
-                            ID = 2,
-                            ApproverID = 3,
-                            Comment = "Pending review",
-                            LeaveRequestID = 2,
-                            StatusID = 2
-                        },
-                        new
-                        {
-                            ID = 3,
-                            ApproverID = 4,
-                            Comment = "Approved for family event",
-                            LeaveRequestID = 3,
-                            StatusID = 1
-                        },
-                        new
-                        {
-                            ID = 4,
-                            ApproverID = 2,
-                            Comment = "Rejected due to conflicting schedule",
-                            LeaveRequestID = 4,
-                            StatusID = 3
-                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestExtended", b =>
@@ -150,59 +153,18 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HrManager")
+                    b.Property<int>("HrManagerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PmManager")
+                    b.Property<int>("PmManagerId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ApprovalRequestID");
+                    b.HasIndex("ApprovalRequestID")
+                        .IsUnique();
 
                     b.ToTable("ApprovalRequestsExtended");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            ApprovalRequestID = 1,
-                            ApprovedHr = true,
-                            ApprovedPm = false,
-                            EmployeeId = 1,
-                            HrManager = 1,
-                            PmManager = 2
-                        },
-                        new
-                        {
-                            ID = 2,
-                            ApprovalRequestID = 2,
-                            ApprovedHr = false,
-                            ApprovedPm = true,
-                            EmployeeId = 2,
-                            HrManager = 2,
-                            PmManager = 3
-                        },
-                        new
-                        {
-                            ID = 3,
-                            ApprovalRequestID = 3,
-                            ApprovedHr = true,
-                            ApprovedPm = true,
-                            EmployeeId = 3,
-                            HrManager = 1,
-                            PmManager = 3
-                        },
-                        new
-                        {
-                            ID = 4,
-                            ApprovalRequestID = 4,
-                            ApprovedHr = false,
-                            ApprovedPm = false,
-                            EmployeeId = 4,
-                            HrManager = 2,
-                            PmManager = 1
-                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestStatus", b =>
@@ -944,13 +906,38 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Approval", b =>
                 {
-                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Employee", "Approver")
-                        .WithMany("ApprovalRequests")
-                        .HasForeignKey("ApproverID")
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestExtended", "ApprovalRequestExtended")
+                        .WithMany()
+                        .HasForeignKey("ApprovalRequestExtendedID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestExtended", null)
+                        .WithOne("Approvals")
+                        .HasForeignKey("DEMOOutOfOfficeApp.Core.Entities.Approval", "ApprovalRequestExtendedID1");
+
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", "ApprovalRequest")
+                        .WithMany()
+                        .HasForeignKey("ApprovalRequestID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", null)
+                        .WithOne("Approvals")
+                        .HasForeignKey("DEMOOutOfOfficeApp.Core.Entities.Approval", "ApprovalRequestID1");
+
+                    b.Navigation("ApprovalRequest");
+
+                    b.Navigation("ApprovalRequestExtended");
+                });
+
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
+                {
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Employee", null)
+                        .WithMany("ApprovalRequests")
+                        .HasForeignKey("EmployeeID");
 
                     b.HasOne("DEMOOutOfOfficeApp.Core.Entities.LeaveRequest", "LeaveRequest")
                         .WithMany()
@@ -966,20 +953,16 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     b.Navigation("ApprovalRequestStatus");
 
-                    b.Navigation("Approver");
-
                     b.Navigation("LeaveRequest");
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestExtended", b =>
                 {
-                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", "ApprovalRequest")
-                        .WithMany()
-                        .HasForeignKey("ApprovalRequestID")
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", null)
+                        .WithOne("ApprovalRequestExtended")
+                        .HasForeignKey("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestExtended", "ApprovalRequestID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ApprovalRequest");
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.Employee", b =>
@@ -1104,6 +1087,21 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.AbsenceReason", b =>
                 {
                     b.Navigation("LeaveRequests");
+                });
+
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
+                {
+                    b.Navigation("ApprovalRequestExtended")
+                        .IsRequired();
+
+                    b.Navigation("Approvals")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestExtended", b =>
+                {
+                    b.Navigation("Approvals")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestStatus", b =>

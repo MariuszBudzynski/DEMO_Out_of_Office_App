@@ -9,12 +9,10 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         [Key]
         public int ID { get; set; }
 
-        [Required]
-        [ForeignKey("Approver")]
-        public int ApproverID { get; set; }
+        //[Required]
+        //[ForeignKey("Approver")]
+        //public int ApproverID { get; set; }
 
-        [Required]
-        [ForeignKey("LeaveRequest")]
         public int LeaveRequestID { get; set; }
 
         [Required]
@@ -25,7 +23,9 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 
         public virtual LeaveRequest LeaveRequest { get; set; }
         public virtual ApprovalRequestStatus ApprovalRequestStatus { get; set; }
-        public virtual Employee Approver { get; set; }
+        //public virtual Employee Approver { get; set; }
         public virtual ApprovalRequestExtended ApprovalRequestExtended { get; set; }
+
+        public virtual Approval Approvals { get; set; }
     }
 }

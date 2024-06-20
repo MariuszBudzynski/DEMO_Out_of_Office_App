@@ -27,7 +27,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task OnGetAsync()
         {
-            ApprovalRequests = await FetchApprovalRequestsAsync();
+            //ApprovalRequests = await FetchApprovalRequestsAsync();
         }
 
         public IActionResult OnPostOpen()
@@ -35,40 +35,40 @@ namespace DEMOOutOfOfficeApp.Pages
             return RedirectToPage("OpenApprovalRequest");
         }
 
-        private async Task<List<AprovalRequestDTO>> FetchApprovalRequestsAsync() // move to DataLoaded 
-        {
-            List<AprovalRequestDTO> AprovalRequestsDTO = new();
+        //private async Task<List<AprovalRequestDTO>> FetchApprovalRequestsAsync() // move to DataLoaded 
+        //{
+        //    List<AprovalRequestDTO> AprovalRequestsDTO = new();
 
-            var approvalRequests = await _getAprovalRequestsUseCase.ExecuteAsync();
+        //    var approvalRequests = await _getAprovalRequestsUseCase.ExecuteAsync();
 
-            var users = await  _dataLoaderHelper.LoadAllUsersAsync();
+        //    var users = await  _dataLoaderHelper.LoadAllUsersAsync();
 
-            foreach (var request in approvalRequests)
-            {
-                var HrUser = users.FirstOrDefault(u => u.EmployeeID == request.ApprovalRequestExtended.HrManagerId);
-                var PmUser = users.FirstOrDefault(u => u.EmployeeID == request.ApprovalRequestExtended.PmManagerId);
+        //    foreach (var request in approvalRequests)
+        //    {
+        //        var HrUser = users.FirstOrDefault(u => u.EmployeeID == request.ApprovalRequestExtended.HrManagerId);
+        //        var PmUser = users.FirstOrDefault(u => u.EmployeeID == request.ApprovalRequestExtended.PmManagerId);
 
 
-                var AprovalRequessDTO =  new AprovalRequestDTO(
-                    request.ID,
-                    request.ApproverID,
-                    request.LeaveRequestID,
-                    request.ApprovalRequestExtended.EmployeeId,
-                    HrUser.EmployeeID,
-                    HrUser.FullName,
-                    PmUser.EmployeeID,
-                    PmUser.FullName,
-                    request.ApprovalRequestStatus.Description,
-                    request.Comment
-                    );
+        //        var AprovalRequessDTO =  new AprovalRequestDTO(
+        //            request.ID,
+        //            request.ApproverID,
+        //            request.LeaveRequestID,
+        //            request.ApprovalRequestExtended.EmployeeId,
+        //            HrUser.EmployeeID,
+        //            HrUser.FullName,
+        //            PmUser.EmployeeID,
+        //            PmUser.FullName,
+        //            request.ApprovalRequestStatus.Description,
+        //            request.Comment
+        //            );
 
-                AprovalRequestsDTO.Add(AprovalRequessDTO);
+        //        AprovalRequestsDTO.Add(AprovalRequessDTO);
 
-            }
+        //    }
 
-            return AprovalRequestsDTO;
+        //    return AprovalRequestsDTO;
 
             
-        }
+        //}
     }
 }

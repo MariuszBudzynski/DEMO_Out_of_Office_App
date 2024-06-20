@@ -25,6 +25,7 @@ namespace DEMOOutOfOfficeApp.Core.Context
         public DbSet<User> Users { get; set; }
         public DbSet<ApprovalRequestExtended> ApprovalRequestsExtended { get; set; }
         public DbSet<ProjectEmployee> ProjectEmployee { get; set; }
+        public DbSet<Approval> Approvals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,12 +53,6 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ApprovalRequest>()
-               .HasOne(ar => ar.Approver)
-               .WithMany(e => e.ApprovalRequests)
-               .HasForeignKey(ar => ar.ApproverID)
-               .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<ApprovalRequest>()
                 .HasOne(ar => ar.ApprovalRequestStatus)
                 .WithMany(ars => ars.ApprovalRequests)
                 .HasForeignKey(ar => ar.StatusID)
@@ -81,8 +76,21 @@ namespace DEMOOutOfOfficeApp.Core.Context
 				.HasForeignKey(pe => pe.EmployeeID)
 				.OnDelete(DeleteBehavior.Restrict);
 
-			// Seed data for roles
-			modelBuilder.Entity<Role>().HasData(
+
+            modelBuilder.Entity<Approval>()
+               .HasOne(a => a.ApprovalRequest)
+               .WithMany()
+               .HasForeignKey(a => a.ApprovalRequestID)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Approval>()
+                .HasOne(a => a.ApprovalRequestExtended)
+                .WithMany()
+                .HasForeignKey(a => a.ApprovalRequestExtendedID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Seed data for roles
+            modelBuilder.Entity<Role>().HasData(
                 new Role { ID = 1, UserRole = UserRole.Employee, UserRoleDescription = UserRole.Employee.ToString(), DescriptionOfMainTasks = "Creates a leave request" },
                 new Role { ID = 2, UserRole = UserRole.HRManager, UserRoleDescription = UserRole.HRManager.ToString(), DescriptionOfMainTasks = "Manages the list of employees\n Approves/rejects requests" },
                 new Role { ID = 3, UserRole = UserRole.ProjectManager, UserRoleDescription = UserRole.ProjectManager.ToString(), DescriptionOfMainTasks = "Manages the list of projects\n Approves/rejects requests" },
@@ -157,14 +165,6 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new ApprovalRequestStatus { ID = 4, StatusType = ApprovalRequestStatusType.Cancelled, Description = ApprovalRequestStatusType.Cancelled.ToString() }
             );
 
-            // Seed data for approval requests
-            modelBuilder.Entity<ApprovalRequest>().HasData(
-                new ApprovalRequest { ID = 1, ApproverID = 2, LeaveRequestID = 1, StatusID = 1, Comment = "Approved" },
-                new ApprovalRequest { ID = 2, ApproverID = 3, LeaveRequestID = 2, StatusID = 2, Comment = "Pending review" },
-                new ApprovalRequest { ID = 3, ApproverID = 4, LeaveRequestID = 3, StatusID = 1, Comment = "Approved for family event" },
-                new ApprovalRequest { ID = 4, ApproverID = 2, LeaveRequestID = 4, StatusID = 3, Comment = "Rejected due to conflicting schedule" }
-            );
-
             // Seed data for project types
             modelBuilder.Entity<ProjectType>().HasData(
                 new ProjectType { ID = 1, Name = "Internal" },
@@ -201,19 +201,11 @@ namespace DEMOOutOfOfficeApp.Core.Context
 	        new ProjectEmployee { ID = 10, ProjectID = 5, EmployeeID = 6 }
             );
 
-            modelBuilder.Entity<ApprovalRequestExtended>().HasData(
-            new ApprovalRequestExtended { ID = 1, ApprovalRequestID = 1, EmployeeId = 1, HrManagerId = 1, PmManagerId = 2, ApprovedHr = true, ApprovedPm = false },
-            new ApprovalRequestExtended { ID = 2, ApprovalRequestID = 2, EmployeeId = 2, HrManagerId = 2, PmManagerId = 3, ApprovedHr = false, ApprovedPm = true },
-            new ApprovalRequestExtended { ID = 3, ApprovalRequestID = 3, EmployeeId = 3, HrManagerId = 1, PmManagerId = 3, ApprovedHr = true, ApprovedPm = true },
-            new ApprovalRequestExtended { ID = 4, ApprovalRequestID = 4, EmployeeId = 4, HrManagerId = 2, PmManagerId = 1, ApprovedHr = false, ApprovedPm = false }
-             );
-
-
         }
 
 
 
-		private string GetMd5Hash(string input)
+        private string GetMd5Hash(string input)
         {
             using (var md5 = MD5.Create())
             {

@@ -4,6 +4,7 @@ using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Runtime.Intrinsics.X86;
 
 namespace DEMOOutOfOfficeApp.Core.Repository
 {
@@ -134,6 +135,8 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         public async Task<IEnumerable<ApprovalRequest>> GetEmpAprovalRequestsAsync()
         {
+
+
 
             var approvalRequests = await _appDbContext.ApprovalRequests
                 .Include(ars => ars.ApprovalRequestStatus)
