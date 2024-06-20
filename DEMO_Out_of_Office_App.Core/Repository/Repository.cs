@@ -60,6 +60,21 @@ namespace DEMOOutOfOfficeApp.Core.Repository
                     return data;
         }
 
+        public async Task UpdateProjectData(Project project)
+        {
+            if (project != null)
+            {
+                var data = await GetDataById<Project>(project.ID);
+
+                if (data != null)
+                {
+                    _appDbContext.Update(project);
+                    await _appDbContext.SaveChangesAsync();
+                }
+               
+            }
+        }
+
         public async Task SaveEmployeeData(Employee employee)
         {
             if (employee != null)

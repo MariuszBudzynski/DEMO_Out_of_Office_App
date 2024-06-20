@@ -40,6 +40,11 @@ namespace DEMOOutOfOfficeApp.Helpers
             _getEmployeeProjectsUseCase = getEmployeeProjectsUseCase;
         }
 
+        public async Task<Project> LoadProjectByIDAsync(int projectID)
+        {
+            return (await _getDataByIdUseCase.ExecuteAsync<Project>(projectID));
+        }
+
         public async Task<IEnumerable<Subdivision>> LoadSubdivisionsAsync()
         {
             return (await _getAllSubdivisionsUseCase.ExecuteAsync()).ToList();

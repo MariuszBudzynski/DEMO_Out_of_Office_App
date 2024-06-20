@@ -19,5 +19,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository.Interfaces
         Task SaveLeaveRequestData(LeaveRequest leaveRequest);
         Task<IEnumerable<ProjectEmployee>> GetEmployeeProjects();
         Task SaveListOfObjectsToDatabase<T>(IEnumerable<T> objectList) where T : class, IEntityId;
+        Task UpdateProjectData(Project project);
     }
 }

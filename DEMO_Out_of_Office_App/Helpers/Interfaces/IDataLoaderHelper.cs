@@ -21,5 +21,6 @@ namespace DEMOOutOfOfficeApp.Helpers.Interfaces
         Task<IEnumerable<ProjectEmployee>> LoadEmployeeProjects();
         Task<string> LoadLeaveRequestStatusAsync(int id);
         Task<IEnumerable<ProjectType>> LoadProjectTypesAsync();
+        Task<Project> LoadProjectByIDAsync(int projectID);
     }
 }
