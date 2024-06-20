@@ -190,7 +190,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         column: x => x.StatusType,
                         principalTable: "LeaveRequestsStatuses",
                         principalColumn: "StatusType",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -264,10 +264,15 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LeaveRequestID = table.Column<int>(type: "int", nullable: false),
+                    LeaveRequestID = table.Column<int>(type: "int", nullable: true),
                     StatusID = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmployeeID = table.Column<int>(type: "int", nullable: true)
+                    ApprovalRequestID = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    HrManagerId = table.Column<int>(type: "int", nullable: false),
+                    PmManagerId = table.Column<int>(type: "int", nullable: false),
+                    ApprovedHr = table.Column<bool>(type: "bit", nullable: false),
+                    ApprovedPm = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -277,18 +282,18 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         column: x => x.StatusID,
                         principalTable: "ApprovalRequestStatuses",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApprovalRequests_Employees_EmployeeID",
-                        column: x => x.EmployeeID,
+                        name: "FK_ApprovalRequests_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ApprovalRequests_LeaveRequests_LeaveRequestID",
                         column: x => x.LeaveRequestID,
                         principalTable: "LeaveRequests",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -315,68 +320,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         principalTable: "Projects",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApprovalRequestsExtended",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApprovalRequestID = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    HrManagerId = table.Column<int>(type: "int", nullable: false),
-                    PmManagerId = table.Column<int>(type: "int", nullable: false),
-                    ApprovedHr = table.Column<bool>(type: "bit", nullable: false),
-                    ApprovedPm = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApprovalRequestsExtended", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_ApprovalRequestsExtended_ApprovalRequests_ApprovalRequestID",
-                        column: x => x.ApprovalRequestID,
-                        principalTable: "ApprovalRequests",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Approvals",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApprovalRequestID = table.Column<int>(type: "int", nullable: false),
-                    ApprovalRequestExtendedID = table.Column<int>(type: "int", nullable: false),
-                    ApprovalRequestExtendedID1 = table.Column<int>(type: "int", nullable: true),
-                    ApprovalRequestID1 = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Approvals", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Approvals_ApprovalRequestsExtended_ApprovalRequestExtendedID",
-                        column: x => x.ApprovalRequestExtendedID,
-                        principalTable: "ApprovalRequestsExtended",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Approvals_ApprovalRequestsExtended_ApprovalRequestExtendedID1",
-                        column: x => x.ApprovalRequestExtendedID1,
-                        principalTable: "ApprovalRequestsExtended",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Approvals_ApprovalRequests_ApprovalRequestID",
-                        column: x => x.ApprovalRequestID,
-                        principalTable: "ApprovalRequests",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Approvals_ApprovalRequests_ApprovalRequestID1",
-                        column: x => x.ApprovalRequestID1,
-                        principalTable: "ApprovalRequests",
-                        principalColumn: "ID");
                 });
 
             migrationBuilder.InsertData(
@@ -531,9 +474,9 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApprovalRequests_EmployeeID",
+                name: "IX_ApprovalRequests_EmployeeId",
                 table: "ApprovalRequests",
-                column: "EmployeeID");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApprovalRequests_LeaveRequestID",
@@ -544,36 +487,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 name: "IX_ApprovalRequests_StatusID",
                 table: "ApprovalRequests",
                 column: "StatusID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApprovalRequestsExtended_ApprovalRequestID",
-                table: "ApprovalRequestsExtended",
-                column: "ApprovalRequestID",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Approvals_ApprovalRequestExtendedID",
-                table: "Approvals",
-                column: "ApprovalRequestExtendedID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Approvals_ApprovalRequestExtendedID1",
-                table: "Approvals",
-                column: "ApprovalRequestExtendedID1",
-                unique: true,
-                filter: "[ApprovalRequestExtendedID1] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Approvals_ApprovalRequestID",
-                table: "Approvals",
-                column: "ApprovalRequestID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Approvals_ApprovalRequestID1",
-                table: "Approvals",
-                column: "ApprovalRequestID1",
-                unique: true,
-                filter: "[ApprovalRequestID1] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_PositionID",
@@ -646,7 +559,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Approvals");
+                name: "ApprovalRequests");
 
             migrationBuilder.DropTable(
                 name: "ProjectEmployee");
@@ -655,34 +568,28 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "ApprovalRequestsExtended");
-
-            migrationBuilder.DropTable(
-                name: "Projects");
-
-            migrationBuilder.DropTable(
-                name: "ApprovalRequests");
-
-            migrationBuilder.DropTable(
-                name: "ProjectStatuses");
-
-            migrationBuilder.DropTable(
-                name: "ProjectTypes");
-
-            migrationBuilder.DropTable(
                 name: "ApprovalRequestStatuses");
 
             migrationBuilder.DropTable(
                 name: "LeaveRequests");
 
             migrationBuilder.DropTable(
+                name: "Projects");
+
+            migrationBuilder.DropTable(
                 name: "AbsenceReasons");
+
+            migrationBuilder.DropTable(
+                name: "LeaveRequestsStatuses");
 
             migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "LeaveRequestsStatuses");
+                name: "ProjectStatuses");
+
+            migrationBuilder.DropTable(
+                name: "ProjectTypes");
 
             migrationBuilder.DropTable(
                 name: "Roles");

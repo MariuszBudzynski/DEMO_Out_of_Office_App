@@ -14,13 +14,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DEMOOutOfOfficeApp.Pages
 {
-    public class AddLeaveRequestModel : PageModel,ILeaveRequestFormModel
+    public class AddLeaveRequestModel : PageModel, ILeaveRequestFormModel
     {
         private readonly IDataLoaderHelper _dataLoaderHelper;
-        private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly ISaveLeaveRequestDataUseCase _saveLeaveRequestDataUseCase;
         private readonly IGetEmployeeProjectsUseCase _getEmployeeProjectsUseCase;
-        private readonly IRepository repository;
+        private readonly ISaveListOfObjectsToDatabaseUseCase _saveListOfObjectsToDatabaseUseCase;
 
         [BindProperty(SupportsGet = true)]
         public LeaveRequest LeaveRequest { get; set; }
@@ -30,122 +29,71 @@ namespace DEMOOutOfOfficeApp.Pages
         public string FullName { get; set; }
         public string Status { get; set; }
         public ApprovalRequest ApprovalRequest { get; set; }
-        public List<ApprovalRequestExtended> ApprovalsRequestExtended { get; set; } = new();
-
         public List<ApprovalRequest> ApprovalsRequest { get; set; } = new();
 
-        //public List<int> EmployeeProjectManagerIds { get; set; } = new();
-
-
-        public AddLeaveRequestModel(IDataLoaderHelper dataLoaderHelper, IGetDataByIdUseCase getDataByIdUseCase,
+        public AddLeaveRequestModel(IDataLoaderHelper dataLoaderHelper,
                                     ISaveLeaveRequestDataUseCase saveLeaveRequestDataUseCase,
-                                    IGetEmployeeProjectsUseCase getEmployeeProjectsUseCase,
-                                    IRepository repository)
+                                    ISaveListOfObjectsToDatabaseUseCase saveListOfObjectsToDatabaseUseCase
+                                   )
         {
             _dataLoaderHelper = dataLoaderHelper;
-            _getDataByIdUseCase = getDataByIdUseCase;
             _saveLeaveRequestDataUseCase = saveLeaveRequestDataUseCase;
-            _getEmployeeProjectsUseCase = getEmployeeProjectsUseCase;
-            this.repository = repository;
+            _saveListOfObjectsToDatabaseUseCase = saveListOfObjectsToDatabaseUseCase;
         }
         public async Task OnGet(int id)
         {
 
             AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
 
-            LeaveRequest = new LeaveRequest() { EmployeeID = id, StatusType = LeaveRequestsStatusType.New ,StartDate = DateTime.Now,EndDate = DateTime.Now};
+            LeaveRequest = new LeaveRequest() { EmployeeID = id, StatusType = LeaveRequestsStatusType.New, StartDate = DateTime.Now, EndDate = DateTime.Now };
 
             FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
 
-            
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
+
             LeaveRequest.StatusType = LeaveRequestsStatusType.New;
 
             await _saveLeaveRequestDataUseCase.ExecuteAsync(LeaveRequest);
 
             ApprovalsRequest = await CreateNewApprovalRequestList(LeaveRequest.ID);
 
-            await repository.SaveListOfObjectsToDatabase(ApprovalsRequest);
-
-
-            ApprovalsRequestExtended = await CreateApprovalRequestExtended(LeaveRequest.EmployeeID, ApprovalsRequest);
-
-            await repository.SaveListOfObjectsToDatabase(ApprovalsRequestExtended);
-
+            await _saveListOfObjectsToDatabaseUseCase.ExecuteAsync(ApprovalsRequest);
 
             return RedirectToPage("/LeaveRequests");
         }
 
         private async Task<List<ApprovalRequest>> CreateNewApprovalRequestList(int id)
         {
-            var aprovalList = new List<ApprovalRequest>();
+            var approvalList = new List<ApprovalRequest>();
 
-            var employeeprojects = (await _getEmployeeProjectsUseCase.ExecuteAsync()).Where(pe => pe.EmployeeID == id).ToList();
+            var employeeProjects = (await _dataLoaderHelper.LoadEmployeeProjects()).Where(pe => pe.EmployeeID == id).ToList();
 
-            var projectManagerIds = new List<int>();
-
-            foreach (var ids in employeeprojects)
-            {
-                projectManagerIds.Add(ids.Project.ProjectManagerID);
-            }
-
-           
-            foreach (var pm in projectManagerIds)
-            {
-                var aproval = new ApprovalRequest()
-                {
-                    LeaveRequestID = LeaveRequest.ID,
-                    StatusID = 1,
-                    Comment = LeaveRequest.Comment
-                };
-
-                aprovalList.Add(aproval);
-            }
-
-            return aprovalList;
-
-        }
-
-        private async Task<List<ApprovalRequestExtended>> CreateApprovalRequestExtended(int id, List<ApprovalRequest> approvalRequests)
-        {
-            var approvalExtendedList = new List<ApprovalRequestExtended>();
-
-            var employeeProjects = (await _getEmployeeProjectsUseCase.ExecuteAsync()).Where(pe => pe.EmployeeID == id).ToList();
+            var projectManagerIds = employeeProjects.Select(ep => ep.Project.ProjectManagerID).Distinct().ToList();
 
             var employeeHRApproverId = (await _dataLoaderHelper.LoadEmpoloyeeAsync(id)).PeoplePartnerID;
 
-            foreach (var approvalRequest in approvalRequests)
+            foreach (var pm in projectManagerIds)
             {
-                var approvalExtended = new ApprovalRequestExtended()
+                var approvalRequest = new ApprovalRequest()
                 {
-                    ApprovalRequestID = approvalRequest.ID,
+                    LeaveRequestID = LeaveRequest.ID,
+                    StatusID = 1,
+                    Comment = LeaveRequest.Comment,
                     EmployeeId = id,
                     HrManagerId = employeeHRApproverId,
+                    PmManagerId = pm,
                     ApprovedHr = false,
                     ApprovedPm = false
                 };
 
-                foreach (var project in employeeProjects)
-                {
-                    approvalExtended.PmManagerId = project.Project.ProjectManagerID;
-                    approvalExtendedList.Add(approvalExtended);
-                }
+                approvalList.Add(approvalRequest);
             }
 
-            return approvalExtendedList;
+            return approvalList;
         }
-
-        //private async Task<int> GetLastLeaveRequestIdAsync()
-        //{
-        //    var lastLeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).LastOrDefault();
-        //    return lastLeaveRequest?.ID ?? 0;
-        //}
-
-
 
     }
 }

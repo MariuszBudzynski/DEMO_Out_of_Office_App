@@ -23,9 +23,7 @@ namespace DEMOOutOfOfficeApp.Core.Context
         public DbSet<ApprovalRequest> ApprovalRequests { get; set; }
         public DbSet<AbsenceReason> AbsenceReasons { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<ApprovalRequestExtended> ApprovalRequestsExtended { get; set; }
         public DbSet<ProjectEmployee> ProjectEmployee { get; set; }
-        public DbSet<Approval> Approvals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,12 +31,6 @@ namespace DEMOOutOfOfficeApp.Core.Context
 
             var placeholderPhoto = "wwwroot/images/Test.jpg";
             byte[] placeholderPhotoConversion = File.Exists(placeholderPhoto) ? File.ReadAllBytes(placeholderPhoto) : new byte[0];
-
-            modelBuilder.Entity<LeaveRequest>()
-              .HasOne(lr => lr.LeaveRequestsStatus)
-              .WithMany(ls => ls.LeaveRequests)
-              .HasForeignKey(lr => lr.StatusType)
-              .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.ProjectStatus)
@@ -52,41 +44,22 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 .HasForeignKey(p => p.ProjectTypeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<ApprovalRequest>()
-                .HasOne(ar => ar.ApprovalRequestStatus)
-                .WithMany(ars => ars.ApprovalRequests)
-                .HasForeignKey(ar => ar.StatusID)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Role)
                 .WithMany()
                 .HasForeignKey(u => u.RoleID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<ProjectEmployee>()
-		       .HasOne(pe => pe.Project)
-		       .WithMany(p => p.ProjectEmployees)
-		       .HasForeignKey(pe => pe.ProjectID)
-		       .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ProjectEmployee>()
+                .HasOne(pe => pe.Project)
+                .WithMany(p => p.ProjectEmployees)
+                .HasForeignKey(pe => pe.ProjectID)
+                .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<ProjectEmployee>()
-				.HasOne(pe => pe.Employee)
-				.WithMany(e => e.ProjectEmployees)
-				.HasForeignKey(pe => pe.EmployeeID)
-				.OnDelete(DeleteBehavior.Restrict);
-
-
-            modelBuilder.Entity<Approval>()
-               .HasOne(a => a.ApprovalRequest)
-               .WithMany()
-               .HasForeignKey(a => a.ApprovalRequestID)
-               .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Approval>()
-                .HasOne(a => a.ApprovalRequestExtended)
-                .WithMany()
-                .HasForeignKey(a => a.ApprovalRequestExtendedID)
+            modelBuilder.Entity<ProjectEmployee>()
+                .HasOne(pe => pe.Employee)
+                .WithMany(e => e.ProjectEmployees)
+                .HasForeignKey(pe => pe.EmployeeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Seed data for roles
@@ -105,32 +78,31 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new Subdivision { ID = 4, Name = "Marketing" }
             );
 
-
             // Seed data for employee statuses
             modelBuilder.Entity<EmployeeStatus>().HasData(
-               new EmployeeStatus { ID = 1, StatusId = Status.New, StatusDescription = Status.New.ToString() },
-               new EmployeeStatus { ID = 2, StatusId = Status.Active, StatusDescription = Status.Active.ToString() },
-               new EmployeeStatus { ID = 3, StatusId = Status.Inactive, StatusDescription = Status.Inactive.ToString() }
-           );
+                new EmployeeStatus { ID = 1, StatusId = Status.New, StatusDescription = Status.New.ToString() },
+                new EmployeeStatus { ID = 2, StatusId = Status.Active, StatusDescription = Status.Active.ToString() },
+                new EmployeeStatus { ID = 3, StatusId = Status.Inactive, StatusDescription = Status.Inactive.ToString() }
+            );
 
             // Seed data for employees
             modelBuilder.Entity<Employee>().HasData(
-            new Employee { ID = 1, FullName = "John Doe", SubdivisionID = 1, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 10.0m, Photo = placeholderPhotoConversion },
-            new Employee { ID = 2, FullName = "Jane Smith", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 5, OutOfOfficeBalance = 15.0m },
-            new Employee { ID = 3, FullName = "Alice Johnson", SubdivisionID = 3, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 12.0m },
-            new Employee { ID = 4, FullName = "Bob Brown", SubdivisionID = 4, PositionID = 4, StatusID = 2, PeoplePartnerID = 5, OutOfOfficeBalance = 8.0m },
-            new Employee { ID = 5, FullName = "Charlie Davis", SubdivisionID = 1, PositionID = 2, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 20.0m },
-            new Employee { ID = 6, FullName = "Diana Evans", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 5, OutOfOfficeBalance = 18.0m }
-);
+                new Employee { ID = 1, FullName = "John Doe", SubdivisionID = 1, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 10.0m, Photo = placeholderPhotoConversion },
+                new Employee { ID = 2, FullName = "Jane Smith", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 5, OutOfOfficeBalance = 15.0m },
+                new Employee { ID = 3, FullName = "Alice Johnson", SubdivisionID = 3, PositionID = 1, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 12.0m },
+                new Employee { ID = 4, FullName = "Bob Brown", SubdivisionID = 4, PositionID = 4, StatusID = 2, PeoplePartnerID = 5, OutOfOfficeBalance = 8.0m },
+                new Employee { ID = 5, FullName = "Charlie Davis", SubdivisionID = 1, PositionID = 2, StatusID = 2, PeoplePartnerID = 1, OutOfOfficeBalance = 20.0m },
+                new Employee { ID = 6, FullName = "Diana Evans", SubdivisionID = 2, PositionID = 3, StatusID = 2, PeoplePartnerID = 5, OutOfOfficeBalance = 18.0m }
+            );
 
             // Seed data for users
             modelBuilder.Entity<User>().HasData(
-                new User { ID = 1, EmployeeID = 1,FullName= "John Doe", Username = "john.doe", PasswordHash = GetMd5Hash("password1"), RoleID = (int)UserRole.HRManager },
-                new User { ID = 2, EmployeeID = 2,FullName = "Jane Smith", Username = "jane.smith", PasswordHash = GetMd5Hash("password2"), RoleID = (int)UserRole.Administrator },
-                new User { ID = 3, EmployeeID = 3,FullName = "Alice Johnson", Username = "alice.johnson", PasswordHash = GetMd5Hash("password3"), RoleID = (int)UserRole.ProjectManager },
-                new User { ID = 4, EmployeeID = 4,FullName = "Bob Brown", Username = "bob.brown", PasswordHash = GetMd5Hash("password4"), RoleID = (int)UserRole.Employee },
-                new User { ID = 5, EmployeeID = 5,FullName = "Charlie Davis", Username = "charlie.davis", PasswordHash = GetMd5Hash("password5"), RoleID = (int)UserRole.HRManager },
-                new User { ID = 6, EmployeeID = 6,FullName = "Diana Evans", Username = "diana.evans", PasswordHash = GetMd5Hash("password6"), RoleID = (int)UserRole.Employee }
+                new User { ID = 1, EmployeeID = 1, FullName = "John Doe", Username = "john.doe", PasswordHash = GetMd5Hash("password1"), RoleID = (int)UserRole.HRManager },
+                new User { ID = 2, EmployeeID = 2, FullName = "Jane Smith", Username = "jane.smith", PasswordHash = GetMd5Hash("password2"), RoleID = (int)UserRole.Administrator },
+                new User { ID = 3, EmployeeID = 3, FullName = "Alice Johnson", Username = "alice.johnson", PasswordHash = GetMd5Hash("password3"), RoleID = (int)UserRole.ProjectManager },
+                new User { ID = 4, EmployeeID = 4, FullName = "Bob Brown", Username = "bob.brown", PasswordHash = GetMd5Hash("password4"), RoleID = (int)UserRole.Employee },
+                new User { ID = 5, EmployeeID = 5, FullName = "Charlie Davis", Username = "charlie.davis", PasswordHash = GetMd5Hash("password5"), RoleID = (int)UserRole.HRManager },
+                new User { ID = 6, EmployeeID = 6, FullName = "Diana Evans", Username = "diana.evans", PasswordHash = GetMd5Hash("password6"), RoleID = (int)UserRole.Employee }
             );
 
             // Seed data for leave requests statuses
@@ -188,22 +160,19 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new Project { ID = 7, ProjectTypeID = 1, StartDate = new DateTime(2023, 7, 20), ProjectManagerID = 3, Comment = "Research and development", StatusID = 1 }
             );
 
-			modelBuilder.Entity<ProjectEmployee>().HasData(
-	        new ProjectEmployee { ID = 1, ProjectID = 1, EmployeeID = 1 },
-	        new ProjectEmployee { ID = 2, ProjectID = 1, EmployeeID = 2 },
-	        new ProjectEmployee { ID = 3, ProjectID = 2, EmployeeID = 2 },
-	        new ProjectEmployee { ID = 4, ProjectID = 2, EmployeeID = 3 },
-	        new ProjectEmployee { ID = 5, ProjectID = 3, EmployeeID = 3 },
-	        new ProjectEmployee { ID = 6, ProjectID = 3, EmployeeID = 4 },
-	        new ProjectEmployee { ID = 7, ProjectID = 4, EmployeeID = 4 },
-	        new ProjectEmployee { ID = 8, ProjectID = 4, EmployeeID = 5 },
-	        new ProjectEmployee { ID = 9, ProjectID = 5, EmployeeID = 5 },
-	        new ProjectEmployee { ID = 10, ProjectID = 5, EmployeeID = 6 }
+            modelBuilder.Entity<ProjectEmployee>().HasData(
+                new ProjectEmployee { ID = 1, ProjectID = 1, EmployeeID = 1 },
+                new ProjectEmployee { ID = 2, ProjectID = 1, EmployeeID = 2 },
+                new ProjectEmployee { ID = 3, ProjectID = 2, EmployeeID = 2 },
+                new ProjectEmployee { ID = 4, ProjectID = 2, EmployeeID = 3 },
+                new ProjectEmployee { ID = 5, ProjectID = 3, EmployeeID = 3 },
+                new ProjectEmployee { ID = 6, ProjectID = 3, EmployeeID = 4 },
+                new ProjectEmployee { ID = 7, ProjectID = 4, EmployeeID = 4 },
+                new ProjectEmployee { ID = 8, ProjectID = 4, EmployeeID = 5 },
+                new ProjectEmployee { ID = 9, ProjectID = 5, EmployeeID = 5 },
+                new ProjectEmployee { ID = 10, ProjectID = 5, EmployeeID = 6 }
             );
-
         }
-
-
 
         private string GetMd5Hash(string input)
         {
@@ -215,7 +184,7 @@ namespace DEMOOutOfOfficeApp.Core.Context
             }
         }
 
-        //Loading custom artibute enum names
+        // Loading custom attribute enum names
         public static string GetDisplayName(Enum value)
         {
             var type = value.GetType();
@@ -228,7 +197,7 @@ namespace DEMOOutOfOfficeApp.Core.Context
                     return ((EnumDisplayNameAttribute)attributes[0]).DisplayName;
                 }
             }
-            return value.ToString(); 
+            return value.ToString();
         }
     }
 }

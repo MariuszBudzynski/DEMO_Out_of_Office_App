@@ -70,6 +70,7 @@ namespace DEMOOutOfOfficeApp
 			services.AddScoped<IDataLoaderHelper,DataLoaderHelper>();
 			services.AddScoped<ISaveLeaveRequestDataUseCase, SaveLeaveRequestDataUseCase>();
 			services.AddScoped<IGetEmployeeProjectsUseCase, GetEmployeeProjectsUseCase>();
+			services.AddScoped<ISaveListOfObjectsToDatabaseUseCase, SaveListOfObjectsToDatabaseUseCase>();
         }
 	}
 }

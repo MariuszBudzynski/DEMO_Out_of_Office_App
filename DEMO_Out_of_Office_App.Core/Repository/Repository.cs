@@ -140,7 +140,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
             var approvalRequests = await _appDbContext.ApprovalRequests
                 .Include(ars => ars.ApprovalRequestStatus)
-                .Include(ar => ar.ApprovalRequestExtended)
                 .ToListAsync();
 
             return approvalRequests;
@@ -175,12 +174,5 @@ namespace DEMOOutOfOfficeApp.Core.Repository
             await _appDbContext.Set<T>().AddRangeAsync(objectList);
             await _appDbContext.SaveChangesAsync();
         }
-
-        //public async Task SaveListOfApprovalRequestExtendedToDatabase(IEnumerable<ApprovalRequestExtended> approvalRequestExtendedList)
-        //{
-        //    await _appDbContext.ApprovalRequestsExtended.AddRangeAsync(approvalRequestExtendedList);
-        //    await _appDbContext.SaveChangesAsync();
-        //}
-
     }
 }
