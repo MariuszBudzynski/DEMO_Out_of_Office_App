@@ -69,9 +69,12 @@ namespace DEMOOutOfOfficeApp.Pages
 
             ApprovalsRequest = await CreateNewApprovalRequestList(LeaveRequest.ID);
 
-            //ApprovalRequestExtended = await CreateApprovalRequestExtended(LeaveRequest.EmployeeID);
-
             await repository.SaveListOfObjectsToDatabase(ApprovalsRequest);
+
+
+            ApprovalsRequestExtended = await CreateApprovalRequestExtended(LeaveRequest.EmployeeID, ApprovalsRequest);
+
+            await repository.SaveListOfObjectsToDatabase(ApprovalsRequestExtended);
 
 
             return RedirectToPage("/LeaveRequests");
@@ -107,30 +110,34 @@ namespace DEMOOutOfOfficeApp.Pages
 
         }
 
-        //private async Task<List<ApprovalRequestExtended>> CreateApprovalRequestExtended(int id)
-        //{
-        //    var aprovalList = new List<ApprovalRequestExtended>();
+        private async Task<List<ApprovalRequestExtended>> CreateApprovalRequestExtended(int id, List<ApprovalRequest> approvalRequests)
+        {
+            var approvalExtendedList = new List<ApprovalRequestExtended>();
 
-        //    var employeeprojects = (await _getEmployeeProjectsUseCase.ExecuteAsync()).Where(pe => pe.EmployeeID == id).ToList();
+            var employeeProjects = (await _getEmployeeProjectsUseCase.ExecuteAsync()).Where(pe => pe.EmployeeID == id).ToList();
 
-        //    var projectManagerIds = new List<int>();
+            var employeeHRApproverId = (await _dataLoaderHelper.LoadEmpoloyeeAsync(id)).PeoplePartnerID;
 
-        //    foreach (var ids in employeeprojects)
-        //    {
-        //        projectManagerIds.Add(ids.Project.ProjectManagerID);
-        //    }
+            foreach (var approvalRequest in approvalRequests)
+            {
+                var approvalExtended = new ApprovalRequestExtended()
+                {
+                    ApprovalRequestID = approvalRequest.ID,
+                    EmployeeId = id,
+                    HrManagerId = employeeHRApproverId,
+                    ApprovedHr = false,
+                    ApprovedPm = false
+                };
 
-        //    var employeeHRaproverid = (await _dataLoaderHelper.LoadEmpoloyeeAsync(id)).PeoplePartnerID;
+                foreach (var project in employeeProjects)
+                {
+                    approvalExtended.PmManagerId = project.Project.ProjectManagerID;
+                    approvalExtendedList.Add(approvalExtended);
+                }
+            }
 
-        //    foreach (var pm in projectManagerIds)
-        //    {
-        //        var aproval = new ApprovalRequestExtended() {  EmployeeId = id, HrManagerId = employeeHRaproverid, ApprovedHr = false , PmManagerId = pm , ApprovedPm = false};
-
-        //        aprovalList.Add(aproval);
-        //    }
-
-        //    return aprovalList;
-        //}
+            return approvalExtendedList;
+        }
 
         //private async Task<int> GetLastLeaveRequestIdAsync()
         //{

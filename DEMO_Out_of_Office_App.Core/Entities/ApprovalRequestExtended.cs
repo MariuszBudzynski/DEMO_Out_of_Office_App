@@ -14,7 +14,6 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         [Key]
         public int ID { get; set; }
 
-        [Required]
         [ForeignKey("ApprovalRequest")]
         public int ApprovalRequestID { get; set; }
 
