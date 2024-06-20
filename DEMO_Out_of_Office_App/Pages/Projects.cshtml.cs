@@ -34,7 +34,11 @@ namespace DEMOOutOfOfficeApp.Pages
                 Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).Where(ep=>ep.EmployeeId == employeeId).ToList();
             }
 
-            
+        }
+
+        public IActionResult OnPostOpenProject(int projectID)
+        {
+            return RedirectToPage("/OpenProject", new { id = projectID });
         }
 
         private int GetEmployeeIdFromClaims()

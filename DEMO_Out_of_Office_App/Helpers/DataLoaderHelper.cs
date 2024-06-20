@@ -45,6 +45,11 @@ namespace DEMOOutOfOfficeApp.Helpers
             return (await _getAllSubdivisionsUseCase.ExecuteAsync()).ToList();
         }
 
+        public async Task<IEnumerable<ProjectType>> LoadProjectTypesAsync()
+        {
+            return (await _getDataUseCase.ExecuteAsync<ProjectType>()).ToList();
+        }
+
         public async Task<IEnumerable<Employee>> LoadAllEmployeesAsync()
         {
             return (await _getDataUseCase.ExecuteAsync<Employee>()).ToList();

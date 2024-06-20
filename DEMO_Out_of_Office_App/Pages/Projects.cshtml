@@ -39,15 +39,14 @@
                 @if (!User.IsInRole("Employee"))
                 {
                     <td>
-                        @* buttons will go here *@
-                        @* <form method="post" asp-page-handler="Deactivate">
-                <input type="hidden" name="employeeID" value="@employee.ID" />
-                <button type="submit" class="btn btn-danger btn-sm equal-width-btn">Deactivate</button>
-                </form>
-                <form method="post" asp-page-handler="Edit">
+                        <form method="post" asp-page-handler="OpenProject">
+                            <input type="hidden" name="projectID" value="@project.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm equal-width-btn">Open</button>
+                        </form>
+              @*   <form method="post" asp-page-handler="Edit">
                 <input type="hidden" name="employeeID" value="@employee.ID" />
                 <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
-                </form> *@
+                </form>  *@
                     </td>
                 }
                
