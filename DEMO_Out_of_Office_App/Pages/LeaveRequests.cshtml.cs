@@ -18,6 +18,8 @@ namespace DEMOOutOfOfficeApp.Pages
         [BindProperty(SupportsGet =true)]
         public List<LeaveRequestDTO> LeaveRequests { get; set; }
 
+        public int EmployeeId { get; set; }
+
         public LeaveRequestsModel(IDataLoaderHelper dataLoaderHelper)
         {
             _dataLoaderHelper = dataLoaderHelper;
@@ -25,7 +27,7 @@ namespace DEMOOutOfOfficeApp.Pages
         public async Task OnGetAsync()
         {
             int employeeId = GetEmployeeIdFromClaims();
-
+            EmployeeId = employeeId;
             LeaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync(employeeId)).ToList();
         }
 

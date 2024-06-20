@@ -28,7 +28,7 @@
                     </select>
                 </td>
                 <td>
-                    <select asp-for="ApprovalRequest.LeaveRequestId" class="form-control">
+                    <select asp-for="ApprovalRequest.LeaveRequestID" class="form-control">
                         @foreach (var leaveRequest in Model.LeaveRequests)
                         {
                             <option value="@leaveRequest.ID">@leaveRequest.ID</option>

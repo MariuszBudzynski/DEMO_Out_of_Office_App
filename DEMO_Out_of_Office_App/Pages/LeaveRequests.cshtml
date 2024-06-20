@@ -6,7 +6,6 @@
 @{
     ViewData["Title"] = "Leave Requests";
 }
-
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
 <table id="projectstable" class="display">
@@ -48,7 +47,7 @@
 </table>
 
 <form asp-page-handler="AddLeaveRequest" method="post">
-    <input type="hidden" name="id" value="@Model.LeaveRequests.FirstOrDefault()?.EmployeeId" />
+    <input type="hidden" name="id" value="@Model.EmployeeId" />
     <button type="submit" class="btn btn-secondary btn-sm">Add Leave Request</button>
 </form>
 
