@@ -9,7 +9,7 @@ using DEMOOutOfOfficeApp.Common.Interfaces;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-    public class User : IEntityId, IEmployeeID, IUsername, IPasswordHash
+    public class User : IEntityId
     {
         [Key]
         public int ID { get; set; }

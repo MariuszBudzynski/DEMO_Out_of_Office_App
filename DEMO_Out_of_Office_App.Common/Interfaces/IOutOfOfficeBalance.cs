@@ -9,6 +9,6 @@ namespace DEMOOutOfOfficeApp.Common.Interfaces
 {
     public interface IOutOfOfficeBalance
     {
-        public decimal OutOfOfficeBalance { get; set; }
+        public int OutOfOfficeBalance { get; set; }
     }
 }

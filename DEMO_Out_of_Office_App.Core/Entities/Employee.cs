@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DEMOOutOfOfficeApp.Core.Entities
 {
-    public class Employee : IEntityId,IFullName, ISubdivision, IPosition, IStatus, IPeoplePartner, IOutOfOfficeBalance, IPhoto
+    public class Employee : IEntityId
     {
 		[Key]
 		public int ID { get; set; }
@@ -27,7 +27,7 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		public int PeoplePartnerID { get; set; }
 
 		[Required]
-		public decimal OutOfOfficeBalance { get; set; }
+		public int OutOfOfficeBalance { get; set; }
 
 		public byte[]? Photo { get; set; }
 
