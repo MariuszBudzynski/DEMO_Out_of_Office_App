@@ -39,6 +39,7 @@ namespace DEMOOutOfOfficeApp.Pages
 			Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
 			Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
             PeoplePartner = (await _dataLoaderHelper.GetListOfPeoplePartner()).ToList();
+            Roles = (await _dataLoaderHelper.LoadRolesAsync()).ToList();
 
         }
 

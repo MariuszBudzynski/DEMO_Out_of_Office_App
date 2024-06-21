@@ -42,18 +42,22 @@ namespace DEMOOutOfOfficeApp.Pages
 
             var approvalRequests = await _getAprovalRequestsUseCase.ExecuteAsync();
 
-            var users = await _dataLoaderHelper.LoadAllUsersAsync();
-
+           
+          
             foreach (var request in approvalRequests)
             {
+                var absenceReason = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).FirstOrDefault(ar => ar.ID == request.LeaveRequestID);
+
+                var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == request.LeaveRequestID);
 
 
                 var AprovalRequessDTO = new AprovalRequestDTO(
-                    request.ID,
-                    request.LeaveRequestID ?? 0,
-                    request.ApprovalRequestStatus.Description,
-                    request.Comment,
-                    request.ApproverID
+                request.ID,
+                request.ApprovalRequestStatus.Description,
+                request.Comment,
+                request.ApproverID ?? 0,
+                request.LeaveRequestID ?? 0
+
                     );
 
                 AprovalRequestsDTO.Add(AprovalRequessDTO);

@@ -169,6 +169,7 @@ namespace DEMOOutOfOfficeApp.Core.Repository
         public async Task<IEnumerable<ApprovalRequest>> GetEmpAprovalRequestsAsync()
         {
             var approvalRequests = await _appDbContext.ApprovalRequests
+                .Include(lrs => lrs.LeaveRequest)
                 .Include(ars => ars.ApprovalRequestStatus)
                 .ToListAsync();
 

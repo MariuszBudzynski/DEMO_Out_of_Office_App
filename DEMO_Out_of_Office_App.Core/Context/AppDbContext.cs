@@ -128,14 +128,6 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new AbsenceReason { ID = (int)AbsenceReasonType.PersonalLeave, Name = GetDisplayName(AbsenceReasonType.PersonalLeave) }
             );
 
-            // Seed data for leave requests
-            modelBuilder.Entity<LeaveRequest>().HasData(
-                new LeaveRequest { ID = 1, EmployeeID = 1, AbsenceReasonID = 4, StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023, 6, 15), Comment = "Vacation", StatusType = LeaveRequestsStatusType.New },
-                new LeaveRequest { ID = 2, EmployeeID = 2, AbsenceReasonID = 2, StartDate = new DateTime(2023, 7, 10), EndDate = new DateTime(2023, 7, 20), Comment = "Medical leave", StatusType = LeaveRequestsStatusType.Approved },
-                new LeaveRequest { ID = 3, EmployeeID = 3, AbsenceReasonID = 1, StartDate = new DateTime(2023, 8, 5), EndDate = new DateTime(2023, 8, 15), Comment = "Family event", StatusType = LeaveRequestsStatusType.Rejected },
-                new LeaveRequest { ID = 4, EmployeeID = 4, AbsenceReasonID = 3, StartDate = new DateTime(2023, 9, 1), EndDate = new DateTime(2023, 9, 10), Comment = "Business trip", StatusType = LeaveRequestsStatusType.New }
-            );
-
             // Seed data for approval requests statuses
             modelBuilder.Entity<ApprovalRequestStatus>().HasData(
                 new ApprovalRequestStatus { ID = 1, StatusType = ApprovalRequestStatusType.New, Description = ApprovalRequestStatusType.New.ToString() },
@@ -179,17 +171,6 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new ProjectEmployee { ID = 9, ProjectID = 5, EmployeeID = 5 },
                 new ProjectEmployee { ID = 10, ProjectID = 5, EmployeeID = 6 }
             );
-
-            // Seed data for approval requests
-            modelBuilder.Entity<ApprovalRequest>().HasData(
-                new ApprovalRequest { ID = 1, LeaveRequestID = 1, StatusID = 1, Comment = "Initial approval request", EmployeeId = 1, ApproverID = 5 },
-                new ApprovalRequest { ID = 2, LeaveRequestID = 2, StatusID = 2, Comment = "Approved by HR", EmployeeId = 2, ApproverID = 1 },
-                new ApprovalRequest { ID = 3, LeaveRequestID = 3, StatusID = 3, Comment = "Rejected by PM", EmployeeId = 3, ApproverID = 3 },
-                new ApprovalRequest { ID = 4, LeaveRequestID = 4, StatusID = 1, Comment = "Initial approval request", EmployeeId = 4, ApproverID = 5 },
-                new ApprovalRequest { ID = 5, LeaveRequestID = 1, StatusID = 2, Comment = "Approved by HR", EmployeeId = 5, ApproverID = 1 },
-                new ApprovalRequest { ID = 6, LeaveRequestID = 2, StatusID = 3, Comment = "Rejected by PM", EmployeeId = 6, ApproverID = 3 }
-            );
-
 
         }
 

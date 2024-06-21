@@ -18,9 +18,8 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         public string Comment { get; set; }
 
         public int EmployeeId { get; set; }
-        [Required]
-        [ForeignKey("Aprover")]
-        public int ApproverID { get; set; }
+        
+        public int? ApproverID { get; set; }
 
         public virtual LeaveRequest LeaveRequest { get; set; }
         public virtual ApprovalRequestStatus ApprovalRequestStatus { get; set; }

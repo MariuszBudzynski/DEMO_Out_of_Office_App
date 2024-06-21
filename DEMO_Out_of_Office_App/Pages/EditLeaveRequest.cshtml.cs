@@ -15,7 +15,6 @@ namespace DEMOOutOfOfficeApp.Pages
     {
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IUpdateLeaveRequestUseCase _updateLeaveRequestUseCase;
-        private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly IGetLeaveRequestsUseCase _getLeaveRequestsUseCase;
 
 
@@ -38,7 +37,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task OnGet(int id)
         {
-            LeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.EmployeeID == id);
+            LeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == id);
             AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
             FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
             Status = await _dataLoaderHelper.LoadLeaveRequestStatusAsync(id);

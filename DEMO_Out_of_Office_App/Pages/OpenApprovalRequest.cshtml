@@ -12,8 +12,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Approved by</th>
-                <th>Leave Request ID</th>
+                <th>Absence Reason</th>
+                <th>Absence Reason Comment</th>
                 <th>Status</th>
                 <th>Comment</th>
                 <th>Actions</th>
@@ -22,10 +22,10 @@
         <tbody>
             <tr>
                 <td>
-                    <input type="text" value="@Model.ApprovalRequest.ApproverName" class="form-control" readonly />
+                    <input type="text" value="@Model.ApprovalRequest.AbsenceReason" class="form-control" readonly />
                 </td>
                 <td>
-                    <input type="text" value="@Model.ApprovalRequest.LeaveRequestID" class="form-control" readonly />
+                <input type="text" value="@Model.ApprovalRequest.AbsenceReasonComment" class="form-control" readonly />
                 </td>
                 <td>
                     <input type="text" value="@Model.ApprovalRequest.Status" class="form-control" readonly />

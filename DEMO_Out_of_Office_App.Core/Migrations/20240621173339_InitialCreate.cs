@@ -294,8 +294,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     StatusID = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    ApproverID = table.Column<int>(type: "int", nullable: false),
-                    RequestAproved = table.Column<bool>(type: "bit", nullable: false)
+                    ApproverID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -422,17 +421,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "LeaveRequests",
-                columns: new[] { "ID", "AbsenceReasonID", "Comment", "EmployeeID", "EndDate", "StartDate", "StatusType" },
-                values: new object[,]
-                {
-                    { 1, 4, "Vacation", 1, new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 2, 2, "Medical leave", 2, new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 3, 1, "Family event", 3, new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 4, 3, "Business trip", 4, new DateTime(2023, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Projects",
                 columns: new[] { "ID", "Comment", "EndDate", "ProjectManagerID", "ProjectTypeID", "StartDate", "StatusID" },
                 values: new object[,]
@@ -457,19 +445,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     { 4, 4, "Bob Brown", "34CC93ECE0BA9E3F6F235D4AF979B16C", 1, "bob.brown" },
                     { 5, 5, "Charlie Davis", "DB0EDD04AAAC4506F7EDAB03AC855D56", 2, "charlie.davis" },
                     { 6, 6, "Diana Evans", "218DD27AEBECCECAE69AD8408D9A36BF", 1, "diana.evans" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ApprovalRequests",
-                columns: new[] { "ID", "ApproverID", "Comment", "EmployeeId", "LeaveRequestID", "RequestAproved", "StatusID" },
-                values: new object[,]
-                {
-                    { 1, 5, "Initial approval request", 1, 1, false, 1 },
-                    { 2, 1, "Approved by HR", 2, 2, true, 2 },
-                    { 3, 3, "Rejected by PM", 3, 3, false, 3 },
-                    { 4, 5, "Initial approval request", 4, 4, false, 1 },
-                    { 5, 1, "Approved by HR", 5, 1, true, 2 },
-                    { 6, 3, "Rejected by PM", 6, 2, false, 3 }
                 });
 
             migrationBuilder.InsertData(

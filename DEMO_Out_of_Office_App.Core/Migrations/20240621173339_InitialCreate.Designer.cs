@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240621165130_ChangedEntity")]
-    partial class ChangedEntity
+    [Migration("20240621173339_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,62 +99,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasIndex("StatusID");
 
                     b.ToTable("ApprovalRequests");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            ApproverID = 5,
-                            Comment = "Initial approval request",
-                            EmployeeId = 1,
-                            LeaveRequestID = 1,
-                            StatusID = 1
-                        },
-                        new
-                        {
-                            ID = 2,
-                            ApproverID = 1,
-                            Comment = "Approved by HR",
-                            EmployeeId = 2,
-                            LeaveRequestID = 2,
-                            StatusID = 2
-                        },
-                        new
-                        {
-                            ID = 3,
-                            ApproverID = 3,
-                            Comment = "Rejected by PM",
-                            EmployeeId = 3,
-                            LeaveRequestID = 3,
-                            StatusID = 3
-                        },
-                        new
-                        {
-                            ID = 4,
-                            ApproverID = 5,
-                            Comment = "Initial approval request",
-                            EmployeeId = 4,
-                            LeaveRequestID = 4,
-                            StatusID = 1
-                        },
-                        new
-                        {
-                            ID = 5,
-                            ApproverID = 1,
-                            Comment = "Approved by HR",
-                            EmployeeId = 5,
-                            LeaveRequestID = 1,
-                            StatusID = 2
-                        },
-                        new
-                        {
-                            ID = 6,
-                            ApproverID = 3,
-                            Comment = "Rejected by PM",
-                            EmployeeId = 6,
-                            LeaveRequestID = 2,
-                            StatusID = 3
-                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestStatus", b =>
@@ -383,48 +327,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasIndex("StatusType");
 
                     b.ToTable("LeaveRequests");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            AbsenceReasonID = 4,
-                            Comment = "Vacation",
-                            EmployeeID = 1,
-                            EndDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StatusType = 1
-                        },
-                        new
-                        {
-                            ID = 2,
-                            AbsenceReasonID = 2,
-                            Comment = "Medical leave",
-                            EmployeeID = 2,
-                            EndDate = new DateTime(2023, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2023, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StatusType = 2
-                        },
-                        new
-                        {
-                            ID = 3,
-                            AbsenceReasonID = 1,
-                            Comment = "Family event",
-                            EmployeeID = 3,
-                            EndDate = new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2023, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StatusType = 3
-                        },
-                        new
-                        {
-                            ID = 4,
-                            AbsenceReasonID = 3,
-                            Comment = "Business trip",
-                            EmployeeID = 4,
-                            EndDate = new DateTime(2023, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StatusType = 1
-                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.LeaveRequestsStatus", b =>

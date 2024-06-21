@@ -69,6 +69,25 @@ namespace DEMOOutOfOfficeApp.Pages
 
         private async Task UpdateApprovalRequestAsync(ApprovalRequest approvalRequest)
         {
+            var employeeIdInt = 0;
+
+            var claims = HttpContext.User.Claims.ToList();
+
+            var employeeIdClaim = claims.FirstOrDefault(c => c.Type == "EmployeeID");
+
+            if (employeeIdClaim != null)
+            {
+                string employeeId = employeeIdClaim.Value;
+                employeeIdInt = int.Parse(employeeId);
+                approvalRequest.ApproverID = employeeIdInt;
+            }
+            else
+            {
+                approvalRequest.ApproverID = 0; 
+            }
+
+            var fullAproverName = (await _dataLoaderHelper.LoadAllUsersAsync()).FirstOrDefault(u=> u.EmployeeID == employeeIdInt).FullName;
+
             approvalRequest.StatusID = (int)GetApprovalStatusType(AprovalType);
             approvalRequest.Comment = ApprovalRequest.Comment;
 
@@ -90,18 +109,22 @@ namespace DEMOOutOfOfficeApp.Pages
 
         private async Task<AprovalRequestDTO> CreateAprovalResultAsync(int id)
         {
+
             var aprovalRequest = await LoadApprovalRequestByIdAsync(id);
 
+            var absenceReason = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).FirstOrDefault(ar=> ar.ID == aprovalRequest.LeaveRequestID);
+
+            var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr=> lr.ID == aprovalRequest.LeaveRequestID);
 
             var aprovalRequestDTO = new AprovalRequestDTO(
 
                 aprovalRequest.ID,
-                aprovalRequest.LeaveRequestID ?? 0,
                 aprovalRequest.ApprovalRequestStatus.Description,
-                aprovalRequest.Comment,
-                aprovalRequest.ApproverID,
-                aprovalRequest.Aprover.FullName
-
+                leaveRequest.Comment,
+                0,
+                leaveRequest.ID,
+                absenceReason.Name,
+                leaveRequest.Comment
              );
 
             return aprovalRequestDTO;
