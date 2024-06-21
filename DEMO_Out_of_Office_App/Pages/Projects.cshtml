@@ -41,7 +41,7 @@
                     <td>
                         <form method="post" asp-page-handler="OpenProject">
                             <input type="hidden" name="projectID" value="@project.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm equal-width-btn">Open</button>
+                            <button type="submit" class="btn btn-info btn-sm equal-width-btn">Open</button>
                         </form>
                     </td>
                 }
@@ -51,7 +51,7 @@
     </tbody>
 </table>
 
-<a asp-page="/AddProject" class="btn btn-secondary">AddProject</a>
+<a asp-page="/AddProject" class="btn btn-success">AddProject</a>
 
 @section Scripts {
     <script type="text/javascript">

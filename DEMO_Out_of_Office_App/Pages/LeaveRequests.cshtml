@@ -34,11 +34,11 @@
                 <td>
                     <form asp-page-handler="OpenLeaveRequest" method="post">
                         <input type="hidden" name="id" value="@leaveRequest.EmployeeId" />
-                        <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Open</button>
+                        <button type="submit" class="btn btn-info btn-sm equal-width-btn">Open</button>
                     </form>
                     <form asp-page-handler="EditLeaveRequest" method="post">
                         <input type="hidden" name="id" value="@leaveRequest.EmployeeId" />
-                        <button type="submit" class="btn btn-warning btn-sm equal-width-btn">Edit</button>
+                        <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
                     </form>
                 </td>
             </tr>
@@ -48,7 +48,7 @@
 
 <form asp-page-handler="AddLeaveRequest" method="post">
     <input type="hidden" name="id" value="@Model.EmployeeId" />
-    <button type="submit" class="btn btn-secondary btn-sm">Add Leave Request</button>
+    <button type="submit" class="btn btn-success btn-sm">Add Leave Request</button>
 </form>
 
 @section Scripts {

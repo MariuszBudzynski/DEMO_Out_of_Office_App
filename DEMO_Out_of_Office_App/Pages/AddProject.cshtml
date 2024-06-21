@@ -7,7 +7,7 @@
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
 
-<form id="employeeForm" method="post" enctype="multipart/form-data" asp-page-handler="DeactivateProject">
+<form id="projectForm" method="post" enctype="multipart/form-data" asp-page-handler="DeactivateProject">
 
     <table class="table table-bordered">
         <tr>
@@ -66,8 +66,6 @@
         </tr>
     </table>
 
-
-    @*  <a asp-page="/Projects" class="btn btn-secondary">Back</a>
-    <input type="hidden" name="projectId" value="@Model.Project.Id" />
-    <button type="submit" class="btn btn-secondary btn-danger">Deactivate</button> *@
+     <a asp-page="/Projects" class="btn btn-secondary">Back</a>
+    <button type="submit" class="btn btn-secondary btn-success">Save project</button>
 </form>
