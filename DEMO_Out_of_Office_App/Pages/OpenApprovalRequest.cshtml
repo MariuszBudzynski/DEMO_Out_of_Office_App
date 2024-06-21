@@ -6,7 +6,8 @@
 
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
-<input type="hidden" name="id" value="@Model.AprovalRequestID" />
+<form method="post">
+
 
     <table class="table">
         <thead>
@@ -15,46 +16,36 @@
                 <th>Leave Request ID</th>
                 <th>Status</th>
                 <th>Comment</th>
-                <th></th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                <input type="text" value="@Model.ApprovalRequest.ApproverName" class="form-control" readonly />
-            </td>
-                <td>
-                   @*  <select asp-for="ApprovalRequest.LeaveRequestID" class="form-control">
-                        @foreach (var leaveRequest in Model.LeaveRequests)
-                        {
-                            <option value="@leaveRequest.ID">@leaveRequest.ID</option>
-                        }
-                    </select> *@
+                    <input type="text" value="@Model.ApprovalRequest.ApproverName" class="form-control" readonly />
                 </td>
                 <td>
-                    @* <select asp-for="ApprovalRequest.Status" class="form-control">
-                        @foreach (var status in Model.LeaveRequestsStatuses)
-                        {
-                            <option value="@status.ID">@status.D</option>
-                        }
-                    </select> *@
+                    <input type="text" value="@Model.ApprovalRequest.LeaveRequestID" class="form-control" readonly />
                 </td>
                 <td>
-                    @* <input asp-for="Comment" class="form-control" /> *@
+                    <input type="text" value="@Model.ApprovalRequest.Status" class="form-control" readonly />
                 </td>
                 <td>
-                <form method="post" asp-page-handler="Approve">
-                    <button type="submit" class="btn btn-success">Approve</button>
-                </form>
-
-                <form method="post" asp-page-handler="Reject">
-                    <button type="submit" class="btn btn-warning">Reject</button>
-                </form>
+                    <input asp-for="ApprovalRequest.Comment" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="AprovalRequestID" type="hidden" />
+                    <button asp-page-handler="Approve" type="submit" class="btn btn-success" name="AprovalType" value="Approve">Approve</button>
+                    <button asp-page-handler="Reject" type="submit" class="btn btn-warning" name="AprovalType" value="Reject">Reject</button>
 
                 </td>
             </tr>
         </tbody>
     </table>
+</form>
+
+
+ 
 
 <a asp-page="/ApprovalRequests" class="btn btn-secondary">
     <button type="button" class="btn btn-secondary">Back</button>
