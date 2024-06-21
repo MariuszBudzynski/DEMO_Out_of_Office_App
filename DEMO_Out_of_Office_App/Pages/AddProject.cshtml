@@ -13,13 +13,14 @@
         <tr>
             <th>Project Type</th>
             <td>
-                <select asp-for="Project.ProjectName" class="form-control" required>
+                <select asp-for="ProjectTypeID" class="form-control" required>
+                    <option value="">Select Project Type</option>
                     @foreach (var project in Model.ProjectTypes)
                     {
                         <option value="@project.ID">@project.Name</option>
                     }
                 </select>
-                <span asp-validation-for="Project.ProjectName" class="text-danger"></span>
+                <span asp-validation-for="ProjectTypeID" class="text-danger"></span>
             </td>
         </tr>
         <tr>
@@ -37,33 +38,34 @@
             </td>
         </tr>
         <tr>
-
             <th>Project Manager</th>
-@*             <td>
-                <input asp-for="Project.Projectmanager" class="form-control" required readonly />
-                <span asp-validation-for="Project.Projectmanager" class="text-danger"></span>
-            </td> *@
+            <td>
+                <select asp-for="Project.EmployeeId" class="form-control" required>
+                    <option value="">Select Project Manager</option>
+                    @foreach (var manager in Model.ProjectManagers)
+                    {
+                        <option value="@manager.EmployeeID">@manager.FullName</option>
+                    }
+                </select>
+                <span asp-validation-for="Project.EmployeeId" class="text-danger"></span>
+            </td>
         </tr>
-
         <tr>
-
             <th>Comment</th>
             <td>
                 <input asp-for="Project.Comment" class="form-control" required />
                 <span asp-validation-for="Project.Comment" class="text-danger"></span>
             </td>
-
         </tr>
-
         <tr>
-
-            <th>ProjectStatus</th>
-          @*   <td>
+            <th>Project Status</th>
+            <td>
                 <input asp-for="Project.ProjectStatus" class="form-control" required readonly />
                 <span asp-validation-for="Project.ProjectStatus" class="text-danger"></span>
             </td>
-        </tr> *@
+        </tr>
     </table>
+
 
     @*  <a asp-page="/Projects" class="btn btn-secondary">Back</a>
     <input type="hidden" name="projectId" value="@Model.Project.Id" />

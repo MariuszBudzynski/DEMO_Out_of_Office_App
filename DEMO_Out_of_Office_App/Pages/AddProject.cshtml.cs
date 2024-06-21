@@ -1,3 +1,4 @@
+using DEMOOutOfOfficeApp.Common.Enums;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.DTOS;
 using DEMOOutOfOfficeApp.Helpers.Interfaces;
@@ -15,7 +16,14 @@ namespace DEMOOutOfOfficeApp.Pages
 
         [BindProperty(SupportsGet = true)]
         public List<ProjectType> ProjectTypes { get; set; } = new();
+        [BindProperty(SupportsGet = true)]
+        public int ProjectTypeID { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public int ProjectManagerId { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public List<User> ProjectManagers { get; set; }
         public AddProjectModel(IDataLoaderHelper dataLoaderHelper)
         {
                 _dataLoaderHelper = dataLoaderHelper;
@@ -23,8 +31,9 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task OnGetAsync(int id)
         {
-            Project = (await _dataLoaderHelper.LoadProjectsDTOAsync()).FirstOrDefault(p => p.Id == id);
             ProjectTypes = (await _dataLoaderHelper.LoadProjectTypesAsync()).ToList();
+            Project = new ProjectDTO(id = 0,"",DateTime.Now,DateTime.Now,"",0,"","","New");
+            ProjectManagers = (await _dataLoaderHelper.LoadAllUsersAsync()).Where(pm => pm.RoleID == (int)UserRole.ProjectManager).ToList();
         }
     }
 }
