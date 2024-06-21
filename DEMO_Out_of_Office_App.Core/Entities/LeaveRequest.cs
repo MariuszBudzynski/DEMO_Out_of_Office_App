@@ -20,8 +20,9 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         public int AbsenceReasonID { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
-
+        [DataType(DataType.Date)]
         [Required]
         public DateTime EndDate { get; set; }
 

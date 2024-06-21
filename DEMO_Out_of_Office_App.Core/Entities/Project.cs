@@ -14,9 +14,10 @@ namespace DEMOOutOfOfficeApp.Core.Entities
 		public int ProjectTypeID { get; set; }
 
 		[Required]
-		public DateTime StartDate { get; set; }
-
-		public DateTime? EndDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime StartDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? EndDate { get; set; }
 
 		[Required]
 		[ForeignKey("Employee")]

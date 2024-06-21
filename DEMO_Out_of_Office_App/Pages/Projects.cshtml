@@ -29,8 +29,8 @@
         {
             <tr>
                 <td>@project.ProjectName</td>
-                <td>@project.StartDate</td>
-                <td>@project.EndDate</td>
+                <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@(project.EndDate.HasValue ? project.EndDate.Value.ToString("yyyy-MM-dd") : "No end date")</td>
                 <td>@project.Employee</td>
                 <td>@project.Projectmanager</td>
                 <td>@project.Comment</td>
