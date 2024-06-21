@@ -164,7 +164,8 @@ namespace DEMOOutOfOfficeApp.Pages
         private async Task<int> DaysToSubstract(ApprovalRequest aprovalRequest)
         {
             var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr=>lr.ID == aprovalRequest.ID);
-             int days = (leaveRequest.EndDate - leaveRequest.StartDate).Days;
+
+             int days = (leaveRequest.EndDate - leaveRequest.StartDate).Days < 0 ? 0 : (leaveRequest.EndDate - leaveRequest.StartDate).Days;
             return days;
         }
     }
