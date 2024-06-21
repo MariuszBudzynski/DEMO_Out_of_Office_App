@@ -1,13 +1,14 @@
 ﻿@page
-@model DEMOOutOfOfficeApp.Pages.OpenProjectModel
+@model DEMOOutOfOfficeApp.Pages.AddProjectModel
 @{
-    ViewData["Title"] = "Project";
+    ViewData["Title"] = "Add Project";
 }
 
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
+
 <form id="employeeForm" method="post" enctype="multipart/form-data" asp-page-handler="DeactivateProject">
-  
+
     <table class="table table-bordered">
         <tr>
             <th>Project Type</th>
@@ -23,48 +24,48 @@
         </tr>
         <tr>
             <th>Start Date</th>
-                <td>
+            <td>
                 <input asp-for="Project.StartDate" type="date" class="form-control" required />
                 <span asp-validation-for="Project.StartDate" class="text-danger"></span>
-                </td>
+            </td>
         </tr>
         <tr>
             <th>End Date</th>
             <td>
-                <input asp-for="Project.EndDate" type="date" class="form-control" />
+                <input asp-for="Project.EndDate" type="date" class="form-control" required />
                 <span asp-validation-for="Project.EndDate" class="text-danger"></span>
             </td>
         </tr>
         <tr>
-            
+
             <th>Project Manager</th>
-            <td>
+@*             <td>
                 <input asp-for="Project.Projectmanager" class="form-control" required readonly />
                 <span asp-validation-for="Project.Projectmanager" class="text-danger"></span>
-            </td>
+            </td> *@
         </tr>
 
         <tr>
-  
+
             <th>Comment</th>
             <td>
-                <input asp-for="Project.Comment" class="form-control" required/>
+                <input asp-for="Project.Comment" class="form-control" required />
                 <span asp-validation-for="Project.Comment" class="text-danger"></span>
             </td>
 
         </tr>
 
         <tr>
-        
+
             <th>ProjectStatus</th>
-            <td>
+          @*   <td>
                 <input asp-for="Project.ProjectStatus" class="form-control" required readonly />
                 <span asp-validation-for="Project.ProjectStatus" class="text-danger"></span>
             </td>
-        </tr>
+        </tr> *@
     </table>
-    
-    <a asp-page="/Projects" class="btn btn-secondary">Back</a>
+
+    @*  <a asp-page="/Projects" class="btn btn-secondary">Back</a>
     <input type="hidden" name="projectId" value="@Model.Project.Id" />
-    <button type="submit" class="btn btn-secondary btn-danger">Deactivate</button>
+    <button type="submit" class="btn btn-secondary btn-danger">Deactivate</button> *@
 </form>
