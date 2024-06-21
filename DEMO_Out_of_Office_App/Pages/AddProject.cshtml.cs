@@ -1,6 +1,7 @@
 using DEMOOutOfOfficeApp.Common.Enums;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
+using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.DTOS;
 using DEMOOutOfOfficeApp.Helpers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ namespace DEMOOutOfOfficeApp.Pages
     public class AddProjectModel : PageModel
     {
         private readonly IDataLoaderHelper _dataLoaderHelper;
-		private readonly IRepository repository;
+        private readonly ISaveDataUseCase _saveDataUseCase;
 
-		[BindProperty(SupportsGet = true)]
+        [BindProperty(SupportsGet = true)]
         public ProjectDTO Project { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -26,11 +27,11 @@ namespace DEMOOutOfOfficeApp.Pages
 
         [BindProperty(SupportsGet = true)]
         public List<User> ProjectManagers { get; set; }
-        public AddProjectModel(IDataLoaderHelper dataLoaderHelper, IRepository repository)
+        public AddProjectModel(IDataLoaderHelper dataLoaderHelper, ISaveDataUseCase saveDataUseCase)
         {
                 _dataLoaderHelper = dataLoaderHelper;
-			this.repository = repository;
-		}
+            _saveDataUseCase = saveDataUseCase;
+        }
 
         public async Task OnGetAsync(int id)
         {
@@ -60,7 +61,7 @@ namespace DEMOOutOfOfficeApp.Pages
                 StatusID = 1
             };
 
-            await repository.SaveData<Project>(project);
+            await _saveDataUseCase.ExecuteAsync<Project>(project);
         }    
 	}
 }
