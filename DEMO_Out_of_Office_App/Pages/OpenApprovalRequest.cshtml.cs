@@ -15,6 +15,7 @@ namespace DEMOOutOfOfficeApp.Pages
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IUpdateAprovalRequestUseCase _updateAprovalRequestUseCase;
         private readonly IUpdateEmployeeUseCase _updateEmployeeUseCase;
+        private readonly IUpdateLeaveRequestUseCase _updateLeaveRequestUseCase;
 
         [BindProperty(SupportsGet =true)]
         public AprovalRequestDTO ApprovalRequest { get; set; }
@@ -27,12 +28,14 @@ namespace DEMOOutOfOfficeApp.Pages
    
         public OpenApprovalRequestModel(IDataLoaderHelper dataLoaderHelper,
                                         IUpdateAprovalRequestUseCase updateAprovalRequestUseCase,
-                                        IUpdateEmployeeUseCase updateEmployeeUseCase)
+                                        IUpdateEmployeeUseCase updateEmployeeUseCase,
+                                        IUpdateLeaveRequestUseCase updateLeaveRequestUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
 
             _updateAprovalRequestUseCase = updateAprovalRequestUseCase;
             _updateEmployeeUseCase = updateEmployeeUseCase;
+            _updateLeaveRequestUseCase = updateLeaveRequestUseCase;
         }
 
         public async Task OnGetAsync(int id)
@@ -52,6 +55,12 @@ namespace DEMOOutOfOfficeApp.Pages
 
            await UpdateOutOfOfficeBallanceForEmployee(aprovalRequest);
 
+            var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == aprovalRequest.LeaveRequestID);
+
+            leaveRequest.StatusType = LeaveRequestsStatusType.Approved;
+
+            await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
+
             return RedirectToPage("/ApprovalRequests");
         }
 
@@ -62,6 +71,12 @@ namespace DEMOOutOfOfficeApp.Pages
             await UpdateApprovalRequestAsync(aprovalRequest);
 
             AprovalType = String.Empty;
+
+            var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == aprovalRequest.LeaveRequestID);
+
+            leaveRequest.StatusType = LeaveRequestsStatusType.Rejected;
+
+            await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
 
             return RedirectToPage("/ApprovalRequests");
         }
