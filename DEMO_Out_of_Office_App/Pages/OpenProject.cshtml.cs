@@ -18,6 +18,9 @@ namespace DEMOOutOfOfficeApp.Pages
         [BindProperty(SupportsGet = true)]
         public List<ProjectType> ProjectTypes { get; set; } = new ();
 
+        [BindProperty(SupportsGet = true)]
+        public int ProjectTypeID { get; set; }
+
         public OpenProjectModel(IDataLoaderHelper dataLoaderHelper,
                                 IUpdateProjectDataUseCase updateProjectDataUseCase
             )
@@ -33,16 +36,62 @@ namespace DEMOOutOfOfficeApp.Pages
             ProjectTypes = (await _dataLoaderHelper.LoadProjectTypesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostDeactivateProject(int projectId)
+        public async Task<IActionResult> OnPostHandleForm(string submitType, int projectId)
         {
-            var projectToDeactivate = await _dataLoaderHelper.LoadProjectByIDAsync(projectId);
-
-            projectToDeactivate.StatusID = 2;
-
-            await _updateProjectDataUseCase.ExecuteAsync(projectToDeactivate);
-
+            if (submitType == "Deactivate")
+            {
+                var projectToDeactivate = await _dataLoaderHelper.LoadProjectByIDAsync(projectId);
+                projectToDeactivate.StatusID = 2;
+                await _updateProjectDataUseCase.ExecuteAsync(projectToDeactivate);
+            }
+            else if (submitType == "Save")
+            {
+                await CreateAndUpdateProject(projectId);
+            }
 
             return RedirectToPage("/Projects");
         }
+
+
+
+
+        //public async Task<IActionResult> OnPostDeactivateProject(int projectId)
+        //{
+        //    var projectToDeactivate = await _dataLoaderHelper.LoadProjectByIDAsync(projectId);
+
+        //    projectToDeactivate.StatusID = 2;
+
+        //    await _updateProjectDataUseCase.ExecuteAsync(projectToDeactivate);
+
+
+        //    return RedirectToPage("/Projects");
+        //}
+
+
+        //public async Task<IActionResult> OnPostSaveProject(int projectId)
+        //{
+        //    await CreateAndUpdateProject(projectId);
+        //    return RedirectToPage("/Projects");
+        //}
+
+        private async Task CreateAndUpdateProject(int projectId)
+        {
+            //Project = (await _dataLoaderHelper.LoadProjectsDTOAsync()).FirstOrDefault(p => p.Id == projectId);
+            var pmId = (await _dataLoaderHelper.LoadAllUsersAsync()).FirstOrDefault(u => u.FullName == Project.Projectmanager).ID;
+
+            var project = new Project()
+            {
+                ID = projectId,
+                ProjectTypeID = ProjectTypeID,
+                StartDate = Project.StartDate,
+                EndDate = Project.EndDate,
+                ProjectManagerID = pmId,
+                Comment = Project.Comment,
+                StatusID = 1
+            };
+
+            await _updateProjectDataUseCase.ExecuteAsync(project);
+        }
+
     }
 }

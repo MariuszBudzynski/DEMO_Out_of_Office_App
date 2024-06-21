@@ -1,20 +1,29 @@
 ﻿@page
 @model DEMOOutOfOfficeApp.Pages.OpenProjectModel
-@{
+
+
+@if (User.IsInRole("ProjectManager"))
+{
+    ViewData["Title"] = "Edit Project";
+}
+else
+{
     ViewData["Title"] = "Project";
 }
 
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
-<form id="employeeForm" method="post" enctype="multipart/form-data" asp-page-handler="DeactivateProject">
+<form id="employeeForm" method="post" enctype="multipart/form-data" asp-page-handler="HandleForm">
   
+   @*  <input type="hidden" name="projectId" value="@Model.Project.Id" /> *@
+
     <table class="table table-bordered">
         <tr>
             <th>Project Type</th>
             <td>
                 @if (User.IsInRole("ProjectManager"))
                 {
-                    <select asp-for="Project.ProjectName" class="form-control" required>
+                    <select asp-for="ProjectTypeID" class="form-control" required>
                         @foreach (var project in Model.ProjectTypes)
                         {
                             <option value="@project.ID">@project.Name</option>
@@ -104,7 +113,19 @@
     @if (User.IsInRole("ProjectManager"))
     {
         <input type="hidden" name="projectId" value="@Model.Project.Id" />
-        <button type="submit" class="btn btn-secondary btn-warning">Deactivate</button>
+        <button type="submit" name="submitType" value="Deactivate" class="btn btn-secondary btn-warning">Deactivate</button>
+        <button type="submit" name="submitType" value="Save" class="btn btn-success">Save</button>
 
     }
 </form>
+
+@* @if (User.IsInRole("ProjectManager"))
+{
+    <form id="editProject" method="post" asp-page-handler="SaveProject">
+        <input type="hidden" name="projectId" value="@Model.Project.Id" />
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+}
+ *@
+
+

@@ -79,7 +79,16 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
                 if (data != null)
                 {
-                    _appDbContext.Update(project);
+                    data.ID = project.ID;
+                    data.ProjectType = project.ProjectType;
+                    data.StartDate = project.StartDate;
+                    data.EndDate = project.EndDate;
+                    data.ProjectManager = project.ProjectManager;
+                    data.Comment = project.Comment;
+                    data.StatusID = project.StatusID;
+
+
+                    _appDbContext.Update(data);
                     await _appDbContext.SaveChangesAsync();
                 }
                
