@@ -21,6 +21,7 @@ namespace DEMOOutOfOfficeApp.Core.Repository.Interfaces
         Task SaveListOfObjectsToDatabase<T>(IEnumerable<T> objectList) where T : class, IEntityId;
         Task UpdateProjectData(Project project);
         Task SaveData<T>(T data) where T : class, IEntityId;
+        Task<ApprovalRequest> GetAprovalRequestsByIdAsync(int id);
 
-	}
+    }
 }

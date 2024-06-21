@@ -175,6 +175,17 @@ namespace DEMOOutOfOfficeApp.Core.Repository
             return approvalRequests;
         }
 
+        public async Task<ApprovalRequest> GetAprovalRequestsByIdAsync(int id)
+        {
+            var approvalRequests = await _appDbContext.ApprovalRequests
+                .Include(ars => ars.ApprovalRequestStatus)
+                .Include(apr => apr.Aprover)
+                .FirstOrDefaultAsync(aprv => aprv.ID == id);
+
+            return approvalRequests;
+        }
+
+
         public async Task<IEnumerable<LeaveRequest>> GetLeaveRequestsAsync()
         {
             var leaveRequests = await _appDbContext.LeaveRequests

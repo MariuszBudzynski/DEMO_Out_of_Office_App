@@ -19,6 +19,7 @@ namespace DEMOOutOfOfficeApp.Helpers
         private readonly IGetLeaveRequestsUseCase _getLeaveRequestsUseCase;
         private readonly IGetDataUseCase _getDataUseCase;
         private readonly IGetEmployeeProjectsUseCase _getEmployeeProjectsUseCase;
+        private readonly IGetAprovalRequestsByIdUseCase _getAprovalRequestsByIdUseCase;
 
         public DataLoaderHelper(IGetAllSubdivisionsUseCase getAllSubdivisionsUseCase,
                                 IGetAllRolesUseCase getAllRolesUse,
@@ -27,7 +28,8 @@ namespace DEMOOutOfOfficeApp.Helpers
                                 IGetProjectsUseCase getProjectsUseCase,
                                 IGetLeaveRequestsUseCase getLeaveRequestsUseCase,
                                 IGetDataUseCase getDataUseCase,
-                                IGetEmployeeProjectsUseCase getEmployeeProjectsUseCase
+                                IGetEmployeeProjectsUseCase getEmployeeProjectsUseCase,
+                                IGetAprovalRequestsByIdUseCase getAprovalRequestsByIdUseCase
                                 )
         {
             _getAllSubdivisionsUseCase = getAllSubdivisionsUseCase;
@@ -38,11 +40,17 @@ namespace DEMOOutOfOfficeApp.Helpers
             _getLeaveRequestsUseCase = getLeaveRequestsUseCase;
             _getDataUseCase = getDataUseCase;
             _getEmployeeProjectsUseCase = getEmployeeProjectsUseCase;
+            _getAprovalRequestsByIdUseCase = getAprovalRequestsByIdUseCase;
         }
 
         public async Task<Project> LoadProjectByIDAsync(int projectID)
         {
             return (await _getDataByIdUseCase.ExecuteAsync<Project>(projectID));
+        }
+
+        public async Task<ApprovalRequest> LoadAprovalRequestAsync(int id)
+        {
+            return (await _getAprovalRequestsByIdUseCase.ExecuteAsync(id));
         }
 
         public async Task<IEnumerable<Subdivision>> LoadSubdivisionsAsync()

@@ -6,11 +6,12 @@
 
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
-<form method="post">
+<input type="hidden" name="id" value="@Model.AprovalRequestID" />
+
     <table class="table">
         <thead>
             <tr>
-                <th>Approver</th>
+                <th>Approved by</th>
                 <th>Leave Request ID</th>
                 <th>Status</th>
                 <th>Comment</th>
@@ -20,13 +21,8 @@
         <tbody>
             <tr>
                 <td>
-                    @* <select asp-for="ApprovalRequest.id" class="form-control">
-                        @foreach (var employee in Model.Employees)
-                        {
-                            <option value="@employee.ID">@employee.FullName</option>
-                        }
-                    </select> *@
-                </td>
+                <input type="text" value="@Model.ApprovalRequest.ApproverName" class="form-control" readonly />
+            </td>
                 <td>
                    @*  <select asp-for="ApprovalRequest.LeaveRequestID" class="form-control">
                         @foreach (var leaveRequest in Model.LeaveRequests)
@@ -47,10 +43,19 @@
                     @* <input asp-for="Comment" class="form-control" /> *@
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                    <a asp-action="Index" class="btn btn-secondary">Back</a>
+                <form method="post" asp-page-handler="Approve">
+                    <button type="submit" class="btn btn-success">Approve</button>
+                </form>
+
+                <form method="post" asp-page-handler="Reject">
+                    <button type="submit" class="btn btn-warning">Reject</button>
+                </form>
+
                 </td>
             </tr>
         </tbody>
     </table>
-</form>
+
+<a asp-page="/ApprovalRequests" class="btn btn-secondary">
+    <button type="button" class="btn btn-secondary">Back</button>
+</a>
