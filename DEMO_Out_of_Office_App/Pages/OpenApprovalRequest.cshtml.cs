@@ -14,6 +14,7 @@ namespace DEMOOutOfOfficeApp.Pages
 	{
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IUpdateAprovalRequestUseCase _updateAprovalRequestUseCase;
+        private readonly IUpdateEmployeeUseCase _updateEmployeeUseCase;
 
         [BindProperty(SupportsGet =true)]
         public AprovalRequestDTO ApprovalRequest { get; set; }
@@ -25,11 +26,13 @@ namespace DEMOOutOfOfficeApp.Pages
         public string AprovalType { get; set; }
    
         public OpenApprovalRequestModel(IDataLoaderHelper dataLoaderHelper,
-                                        IUpdateAprovalRequestUseCase updateAprovalRequestUseCase)
+                                        IUpdateAprovalRequestUseCase updateAprovalRequestUseCase,
+                                        IUpdateEmployeeUseCase updateEmployeeUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
 
             _updateAprovalRequestUseCase = updateAprovalRequestUseCase;
+            _updateEmployeeUseCase = updateEmployeeUseCase;
         }
 
         public async Task OnGetAsync(int id)
@@ -46,6 +49,8 @@ namespace DEMOOutOfOfficeApp.Pages
            await  UpdateApprovalRequestAsync(aprovalRequest);
 
             AprovalType = String.Empty;
+
+           await UpdateOutOfOfficeBallanceForEmployee(aprovalRequest);
 
             return RedirectToPage("/ApprovalRequests");
         }
@@ -130,10 +135,16 @@ namespace DEMOOutOfOfficeApp.Pages
             return aprovalRequestDTO;
         }
 
-        private async Task UpdateOutOfOficeBallanceForEmployee(ApprovalRequest aprovalRequest)
+
+        private async Task UpdateOutOfOfficeBallanceForEmployee(ApprovalRequest approvalRequest)
         {
-            var employeeData = (await _dataLoaderHelper.LoadEmpoloyeeAsync(aprovalRequest.EmployeeId));
+            var employeeData = await _dataLoaderHelper.LoadEmpoloyeeAsync(approvalRequest.EmployeeId);
+
+            employeeData.OutOfOfficeBalance -= await DaysToSubstract(approvalRequest);
+
+            await _updateEmployeeUseCase.ExecuteAsync(employeeData);
         }
+
 
         private async Task<int> DaysToSubstract(ApprovalRequest aprovalRequest)
         {
