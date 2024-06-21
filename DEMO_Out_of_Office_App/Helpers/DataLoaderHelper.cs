@@ -119,26 +119,33 @@ namespace DEMOOutOfOfficeApp.Helpers
             List<ProjectDTO> projectDTOs = new List<ProjectDTO>();
 
             var employeeprojects = await _getEmployeeProjectsUseCase.ExecuteAsync();
-
             var projects = await _getProjectsUseCase.ExecuteAsync();
 
-            if (employeeprojects != null)
+            if (projects != null)
             {
-                foreach (var projectEmpl in employeeprojects)
+                foreach (var project in projects)
                 {
+                    string employeeName = "No Employee Assigned";
+
+                    // Sprawdź, czy projekt ma przypisanego pracownika
+                    var projectEmployee = employeeprojects.FirstOrDefault(ep => ep.ProjectID == project.ID);
+                    if (projectEmployee != null)
+                    {
+                        employeeName = projectEmployee.Employee.FullName ?? "No Employee Assigned";
+                    }
+
                     var projectDTO = new ProjectDTO(
+                        project.ID,
+                        project.ProjectType.Name,
+                        project.StartDate,
+                        project.EndDate,
+                        employeeName,
+                        project.ProjectManagerID,
+                        project.ProjectManager.FullName ?? "No Manager Assigned",
+                        project.Comment,
+                        project.ProjectStatus.StatusType.ToString()
+                    );
 
-                        projectEmpl.ProjectID,
-                        projectEmpl.Project.ProjectType.Name,
-                        projectEmpl.Project.StartDate,
-                        projectEmpl.Project.EndDate,
-                        projectEmpl.Employee.FullName ?? String.Empty,
-                        projectEmpl.EmployeeID,
-                        projectEmpl.Project.ProjectManager.FullName ?? String.Empty,
-                        projectEmpl.Project.Comment,
-                        projectEmpl.Project.ProjectStatus.StatusType.ToString()
-
-                        );
                     projectDTOs.Add(projectDTO);
                 }
             }

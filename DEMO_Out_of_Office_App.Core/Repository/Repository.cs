@@ -24,7 +24,18 @@ namespace DEMOOutOfOfficeApp.Core.Repository
             return data;
         }
 
-        public async Task SaveLeaveRequestData(LeaveRequest leaveRequest)
+		public async Task SaveData<T>(T data) where T : class, IEntityId
+		{
+            var existingData = await _appDbContext.Set<T>().FindAsync(data.ID);
+
+            if (existingData == null)
+            {
+                await _appDbContext.Set<T>().AddAsync(data);
+                await _appDbContext.SaveChangesAsync();
+            }        
+        }
+
+		public async Task SaveLeaveRequestData(LeaveRequest leaveRequest)
         {
             if (leaveRequest != null)
             {
@@ -150,9 +161,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
         public async Task<IEnumerable<ApprovalRequest>> GetEmpAprovalRequestsAsync()
         {
-
-
-
             var approvalRequests = await _appDbContext.ApprovalRequests
                 .Include(ars => ars.ApprovalRequestStatus)
                 .ToListAsync();
@@ -181,8 +189,6 @@ namespace DEMOOutOfOfficeApp.Core.Repository
 
             return projects;
         }
-
-
 
         public async Task SaveListOfObjectsToDatabase<T>(IEnumerable<T> objectList) where T : class , IEntityId 
         {

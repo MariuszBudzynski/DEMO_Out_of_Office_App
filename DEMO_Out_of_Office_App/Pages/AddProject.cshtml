@@ -40,7 +40,7 @@
         <tr>
             <th>Project Manager</th>
             <td>
-                <select asp-for="Project.EmployeeId" class="form-control" required>
+                <select asp-for="ProjectManagerId" class="form-control" required>
                     <option value="">Select Project Manager</option>
                     @foreach (var manager in Model.ProjectManagers)
                     {
