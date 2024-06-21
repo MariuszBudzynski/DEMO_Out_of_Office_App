@@ -300,7 +300,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeID")

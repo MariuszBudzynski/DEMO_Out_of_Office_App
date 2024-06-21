@@ -167,7 +167,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     AbsenceReasonID = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StatusType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -294,7 +294,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     StatusID = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    ApproverID = table.Column<int>(type: "int", nullable: false)
+                    ApproverID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -130,6 +130,16 @@ namespace DEMOOutOfOfficeApp.Pages
             return aprovalRequestDTO;
         }
 
+        private async Task UpdateOutOfOficeBallanceForEmployee(ApprovalRequest aprovalRequest)
+        {
+            var employeeData = (await _dataLoaderHelper.LoadEmpoloyeeAsync(aprovalRequest.EmployeeId));
+        }
 
+        private async Task<int> DaysToSubstract(ApprovalRequest aprovalRequest)
+        {
+            var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr=>lr.ID == aprovalRequest.ID);
+             int days = (leaveRequest.EndDate - leaveRequest.StartDate).Days;
+            return days;
+        }
     }
 }

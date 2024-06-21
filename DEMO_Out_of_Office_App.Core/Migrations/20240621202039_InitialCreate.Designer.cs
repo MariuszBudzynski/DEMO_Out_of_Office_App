@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240621173339_InitialCreate")]
+    [Migration("20240621202039_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -72,7 +72,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("ApproverID")
+                    b.Property<int?>("ApproverID")
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
@@ -303,7 +303,6 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeID")
@@ -803,8 +802,7 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasOne("DEMOOutOfOfficeApp.Core.Entities.User", "Aprover")
                         .WithMany()
                         .HasForeignKey("ApproverID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Employee", null)
                         .WithMany("ApprovalRequests")

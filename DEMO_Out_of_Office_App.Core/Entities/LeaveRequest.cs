@@ -19,14 +19,13 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         [ForeignKey("AbsenceReason")]
         public int AbsenceReasonID { get; set; }
 
-        [Required]
-        [DataType(DataType.Date)]
+        [Required(ErrorMessage = "Start date is required.")]
         public DateTime StartDate { get; set; }
-        [DataType(DataType.Date)]
-        [Required]
-        public DateTime EndDate { get; set; }
 
-        public string Comment { get; set; }
+        [Required]
+        [Compare(nameof(StartDate), ErrorMessage = "End date must be greater than start date.")]
+        public DateTime EndDate { get; set; }
+        public string? Comment { get; set; }
 
         [Required]
         [ForeignKey("LeaveRequestsStatus")]

@@ -45,7 +45,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
             AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
 
-            LeaveRequest = new LeaveRequest() { EmployeeID = id, StatusType = LeaveRequestsStatusType.New, StartDate = DateTime.Now, EndDate = DateTime.Now };
+            LeaveRequest = new LeaveRequest() { EmployeeID = id, StatusType = LeaveRequestsStatusType.New, StartDate = DateTime.Now, EndDate = DateTime.Now,Comment=" "};
 
             FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
 
@@ -53,7 +53,7 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-
+            LeaveRequest.Comment = LeaveRequest.Comment == null ? " " : LeaveRequest.Comment;
             LeaveRequest.StatusType = LeaveRequestsStatusType.New;
 
             await _saveLeaveRequestDataUseCase.ExecuteAsync(LeaveRequest);
@@ -79,7 +79,7 @@ namespace DEMOOutOfOfficeApp.Pages
                 {
                     LeaveRequestID = LeaveRequest.ID,
                     StatusID = 1,
-                    Comment = LeaveRequest.Comment,
+                    Comment = LeaveRequest.Comment ?? " ",
                     EmployeeId = id
                 };
 

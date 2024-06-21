@@ -8,3 +8,21 @@
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
 <partial name="_LeaveRequestForm" model="@Model"></partial>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $('#leaveRequestForm').submit(function () {
+            var startDate = new Date($('#LeaveRequest_StartDate').val());
+            var endDate = new Date($('#LeaveRequest_EndDate').val());
+
+
+            if (endDate <= startDate) {
+                alert('End date must be greater than start date.');
+                return false; // Prevent form submission
+            }
+
+            return true; // Allow form submission
+        });
+    </script>
+}
