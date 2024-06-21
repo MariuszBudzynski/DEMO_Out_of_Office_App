@@ -20,20 +20,20 @@
         <tbody>
             <tr>
                 <td>
-                    <select asp-for="ApprovalRequest.id" class="form-control">
+                    @* <select asp-for="ApprovalRequest.id" class="form-control">
                         @foreach (var employee in Model.Employees)
                         {
                             <option value="@employee.ID">@employee.FullName</option>
                         }
-                    </select>
+                    </select> *@
                 </td>
                 <td>
-                    <select asp-for="ApprovalRequest.LeaveRequestID" class="form-control">
+                   @*  <select asp-for="ApprovalRequest.LeaveRequestID" class="form-control">
                         @foreach (var leaveRequest in Model.LeaveRequests)
                         {
                             <option value="@leaveRequest.ID">@leaveRequest.ID</option>
                         }
-                    </select>
+                    </select> *@
                 </td>
                 <td>
                     @* <select asp-for="ApprovalRequest.Status" class="form-control">

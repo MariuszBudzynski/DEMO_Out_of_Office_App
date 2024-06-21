@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEMOOutOfOfficeApp.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240621092601_EntityDateChange")]
-    partial class EntityDateChange
+    [Migration("20240621140044_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,14 +72,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("ApprovalRequestID")
+                    b.Property<int>("ApproverID")
                         .HasColumnType("int");
-
-                    b.Property<bool>("ApprovedHr")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ApprovedPm")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -88,19 +82,18 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HrManagerId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("LeaveRequestID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PmManagerId")
-                        .HasColumnType("int");
+                    b.Property<bool>("RequestAproved")
+                        .HasColumnType("bit");
 
                     b.Property<int>("StatusID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ApproverID");
 
                     b.HasIndex("EmployeeId");
 
@@ -109,6 +102,68 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                     b.HasIndex("StatusID");
 
                     b.ToTable("ApprovalRequests");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            ApproverID = 5,
+                            Comment = "Initial approval request",
+                            EmployeeId = 1,
+                            LeaveRequestID = 1,
+                            RequestAproved = false,
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            ApproverID = 1,
+                            Comment = "Approved by HR",
+                            EmployeeId = 2,
+                            LeaveRequestID = 2,
+                            RequestAproved = true,
+                            StatusID = 2
+                        },
+                        new
+                        {
+                            ID = 3,
+                            ApproverID = 3,
+                            Comment = "Rejected by PM",
+                            EmployeeId = 3,
+                            LeaveRequestID = 3,
+                            RequestAproved = false,
+                            StatusID = 3
+                        },
+                        new
+                        {
+                            ID = 4,
+                            ApproverID = 5,
+                            Comment = "Initial approval request",
+                            EmployeeId = 4,
+                            LeaveRequestID = 4,
+                            RequestAproved = false,
+                            StatusID = 1
+                        },
+                        new
+                        {
+                            ID = 5,
+                            ApproverID = 1,
+                            Comment = "Approved by HR",
+                            EmployeeId = 5,
+                            LeaveRequestID = 1,
+                            RequestAproved = true,
+                            StatusID = 2
+                        },
+                        new
+                        {
+                            ID = 6,
+                            ApproverID = 3,
+                            Comment = "Rejected by PM",
+                            EmployeeId = 6,
+                            LeaveRequestID = 2,
+                            RequestAproved = false,
+                            StatusID = 3
+                        });
                 });
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequestStatus", b =>
@@ -852,6 +907,12 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
 
             modelBuilder.Entity("DEMOOutOfOfficeApp.Core.Entities.ApprovalRequest", b =>
                 {
+                    b.HasOne("DEMOOutOfOfficeApp.Core.Entities.User", "Aprover")
+                        .WithMany()
+                        .HasForeignKey("ApproverID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("DEMOOutOfOfficeApp.Core.Entities.Employee", null)
                         .WithMany("ApprovalRequests")
                         .HasForeignKey("EmployeeId")
@@ -869,6 +930,8 @@ namespace DEMOOutOfOfficeApp.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("ApprovalRequestStatus");
+
+                    b.Navigation("Aprover");
 
                     b.Navigation("LeaveRequest");
                 });

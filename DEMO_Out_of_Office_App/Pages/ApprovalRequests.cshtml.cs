@@ -1,3 +1,4 @@
+using DEMOOutOfOfficeApp.Common.Interfaces;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.DTOS;
@@ -30,9 +31,9 @@ namespace DEMOOutOfOfficeApp.Pages
             ApprovalRequests = await FetchApprovalRequestsAsync();
         }
 
-        public IActionResult OnPostOpen()
+        public IActionResult OnPostOpen(int aprovalId)
         {
-            return RedirectToPage("OpenApprovalRequest");
+            return RedirectToPage("OpenApprovalRequest", new { id = aprovalId });
         }
 
         private async Task<List<AprovalRequestDTO>> FetchApprovalRequestsAsync()
@@ -45,19 +46,15 @@ namespace DEMOOutOfOfficeApp.Pages
 
             foreach (var request in approvalRequests)
             {
-                var HrUser = users.FirstOrDefault(u => u.EmployeeID == request.HrManagerId);
-                var PmUser = users.FirstOrDefault(u => u.EmployeeID == request.PmManagerId);
 
 
                 var AprovalRequessDTO = new AprovalRequestDTO(
                     request.ID,
-                    request.LeaveRequestID ??0,
-                    HrUser.FullName,
-                    PmUser.FullName,
+                    request.LeaveRequestID ?? 0,
                     request.ApprovalRequestStatus.Description,
                     request.Comment,
-                    request.ApprovedHr,
-                    request.ApprovedPm
+                    request.ApproverID,
+                    request.RequestAproved
                     );
 
                 AprovalRequestsDTO.Add(AprovalRequessDTO);

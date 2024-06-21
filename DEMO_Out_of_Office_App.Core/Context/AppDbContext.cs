@@ -62,6 +62,13 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 .HasForeignKey(pe => pe.EmployeeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<ApprovalRequest>()
+            .HasOne(ar => ar.Aprover)
+            .WithMany()
+            .HasForeignKey(ar => ar.ApproverID)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
             // Seed data for roles
             modelBuilder.Entity<Role>().HasData(
                 new Role { ID = 1, UserRole = UserRole.Employee, UserRoleDescription = UserRole.Employee.ToString(), DescriptionOfMainTasks = "Creates a leave request" },
@@ -172,6 +179,18 @@ namespace DEMOOutOfOfficeApp.Core.Context
                 new ProjectEmployee { ID = 9, ProjectID = 5, EmployeeID = 5 },
                 new ProjectEmployee { ID = 10, ProjectID = 5, EmployeeID = 6 }
             );
+
+            // Seed data for approval requests
+            modelBuilder.Entity<ApprovalRequest>().HasData(
+                new ApprovalRequest { ID = 1, LeaveRequestID = 1, StatusID = 1, Comment = "Initial approval request", EmployeeId = 1, ApproverID = 5, RequestAproved = false },
+                new ApprovalRequest { ID = 2, LeaveRequestID = 2, StatusID = 2, Comment = "Approved by HR", EmployeeId = 2, ApproverID = 1, RequestAproved = true },
+                new ApprovalRequest { ID = 3, LeaveRequestID = 3, StatusID = 3, Comment = "Rejected by PM", EmployeeId = 3, ApproverID = 3, RequestAproved = false },
+                new ApprovalRequest { ID = 4, LeaveRequestID = 4, StatusID = 1, Comment = "Initial approval request", EmployeeId = 4, ApproverID = 5, RequestAproved = false },
+                new ApprovalRequest { ID = 5, LeaveRequestID = 1, StatusID = 2, Comment = "Approved by HR", EmployeeId = 5, ApproverID = 1, RequestAproved = true },
+                new ApprovalRequest { ID = 6, LeaveRequestID = 2, StatusID = 3, Comment = "Rejected by PM", EmployeeId = 6, ApproverID = 3, RequestAproved = false }
+            );
+
+
         }
 
         private string GetMd5Hash(string input)

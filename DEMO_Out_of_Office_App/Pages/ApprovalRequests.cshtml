@@ -9,8 +9,6 @@
 <table id="aprovalltable" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>HR Approver</th>
-            <th>PM Approver</th>
             <td>Leave Request ID</td>
             <th>Status</th>
             <th>Comment</th>
@@ -21,32 +19,18 @@
         @foreach (var request in Model.ApprovalRequests)
         {
             <tr>
-                <td>@request.HrManager</td>
-                <td>@request.PmManager</td>
                 <td>@request.LeaveRequestID</td>
                 <td>@request.Status</td>
                 <td>@request.Comment</td>
                 <td>
-                    @* <a class="btn btn-primary" asp-page="/ApprovalRequests/Details" asp-route-id="@request.ID">Open</a>
-                    <form method="post" asp-page-handler="Approve" asp-route-id="@request.ID" class="d-inline">
-                        <button type="submit" class="btn btn-success">Approve</button>
+                    <form method="post" asp-page-handler="Open">
+                        <button type="submit" value="@request.id" name="aprovalId" class="btn btn-info">Open Request</button>
                     </form>
-                    <form method="post" asp-page-handler="Reject" asp-route-id="@request.ID" class="d-inline">
-                        <button type="submit" class="btn btn-danger">Reject</button>
-                    </form> *@
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@* change this to form if needed when preparing the code behid *@
-<form method="post" asp-page-handler="Open">
-    <button type="submit" name="Open" class="btn btn-info">Open Request</button>
-</form>
-@* <div class="mb-3">
-    <a class="btn btn-primary" asp-page="/ApprovalRequests/Create">Open a Request</a>
-</div> *@
 
 @section Scripts {
     <script type="text/javascript">

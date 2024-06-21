@@ -73,8 +73,6 @@ namespace DEMOOutOfOfficeApp.Pages
 
             var projectManagerIds = employeeProjects.Select(ep => ep.Project.ProjectManagerID).Distinct().ToList();
 
-            var employeeHRApproverId = (await _dataLoaderHelper.LoadEmpoloyeeAsync(id)).PeoplePartnerID;
-
             foreach (var pm in projectManagerIds)
             {
                 var approvalRequest = new ApprovalRequest()
@@ -82,11 +80,7 @@ namespace DEMOOutOfOfficeApp.Pages
                     LeaveRequestID = LeaveRequest.ID,
                     StatusID = 1,
                     Comment = LeaveRequest.Comment,
-                    EmployeeId = id,
-                    HrManagerId = employeeHRApproverId,
-                    PmManagerId = pm,
-                    ApprovedHr = false,
-                    ApprovedPm = false
+                    EmployeeId = id
                 };
 
                 approvalList.Add(approvalRequest);
