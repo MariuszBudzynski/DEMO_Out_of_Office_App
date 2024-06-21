@@ -12,27 +12,53 @@
         <tr>
             <th>Project Type</th>
             <td>
-                <select asp-for="Project.ProjectName" class="form-control" required>
-                    @foreach (var project in Model.ProjectTypes)
-                    {
-                        <option value="@project.ID">@project.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="Project.ProjectName" class="text-danger"></span>
+                @if (User.IsInRole("ProjectManager"))
+                {
+                    <select asp-for="Project.ProjectName" class="form-control" required>
+                        @foreach (var project in Model.ProjectTypes)
+                        {
+                            <option value="@project.ID">@project.Name</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    <input asp-for="Project.ProjectName" class="form-control" readonly />
+                }
             </td>
         </tr>
         <tr>
             <th>Start Date</th>
                 <td>
-                <input asp-for="Project.StartDate" type="date" class="form-control" required />
-                <span asp-validation-for="Project.StartDate" class="text-danger"></span>
+
+                @if (User.IsInRole("ProjectManager"))
+                {
+                    <input asp-for="Project.StartDate" type="date" class="form-control" required />
+                    <span asp-validation-for="Project.StartDate" class="text-danger"></span>
+                }
+                else
+                {
+                    <input asp-for="Project.StartDate" type="date" class="form-control" readonly />
+                }
+
+                    
+               
                 </td>
         </tr>
         <tr>
             <th>End Date</th>
             <td>
-                <input asp-for="Project.EndDate" type="date" class="form-control" />
-                <span asp-validation-for="Project.EndDate" class="text-danger"></span>
+
+                @if (User.IsInRole("ProjectManager"))
+                {
+                    <input asp-for="Project.EndDate" type="date" class="form-control" />
+                    <span asp-validation-for="Project.EndDate" class="text-danger"></span>
+                }
+                else
+                {
+                    <input asp-for="Project.EndDate" type="date" class="form-control" readonly/>
+                }
+                
             </td>
         </tr>
         <tr>
@@ -45,11 +71,20 @@
         </tr>
 
         <tr>
-  
             <th>Comment</th>
             <td>
-                <input asp-for="Project.Comment" class="form-control" required/>
-                <span asp-validation-for="Project.Comment" class="text-danger"></span>
+
+                @if (User.IsInRole("ProjectManager"))
+                {
+                    <input asp-for="Project.Comment" class="form-control" required />
+                    <span asp-validation-for="Project.Comment" class="text-danger"></span>
+
+                }
+                else
+                {
+                    <input asp-for="Project.Comment" class="form-control" readonly />               
+                }
+
             </td>
 
         </tr>
@@ -58,13 +93,18 @@
         
             <th>ProjectStatus</th>
             <td>
-                <input asp-for="Project.ProjectStatus" class="form-control" required readonly />
+                <input asp-for="Project.ProjectStatus" class="form-control" readonly />
                 <span asp-validation-for="Project.ProjectStatus" class="text-danger"></span>
             </td>
         </tr>
     </table>
     
     <a asp-page="/Projects" class="btn btn-secondary">Back</a>
-    <input type="hidden" name="projectId" value="@Model.Project.Id" />
-    <button type="submit" class="btn btn-secondary btn-warning">Deactivate</button>
+
+    @if (User.IsInRole("ProjectManager"))
+    {
+        <input type="hidden" name="projectId" value="@Model.Project.Id" />
+        <button type="submit" class="btn btn-secondary btn-warning">Deactivate</button>
+
+    }
 </form>

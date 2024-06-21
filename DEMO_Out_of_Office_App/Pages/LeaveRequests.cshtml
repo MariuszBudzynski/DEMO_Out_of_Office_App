@@ -36,20 +36,28 @@
                         <input type="hidden" name="id" value="@leaveRequest.EmployeeId" />
                         <button type="submit" class="btn btn-info btn-sm equal-width-btn">Open</button>
                     </form>
-                    <form asp-page-handler="EditLeaveRequest" method="post">
-                        <input type="hidden" name="id" value="@leaveRequest.EmployeeId" />
-                        <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
-                    </form>
+
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <form asp-page-handler="EditLeaveRequest" method="post">
+                            <input type="hidden" name="id" value="@leaveRequest.EmployeeId" />
+                            <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
+                        </form>
+                    }                  
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<form asp-page-handler="AddLeaveRequest" method="post">
-    <input type="hidden" name="id" value="@Model.EmployeeId" />
-    <button type="submit" class="btn btn-success btn-sm">Add Leave Request</button>
-</form>
+
+    @if (User.IsInRole("Employee"))
+    {
+        <form asp-page-handler="AddLeaveRequest" method="post">
+            <input type="hidden" name="id" value="@Model.EmployeeId" />
+            <button type="submit" class="btn btn-success btn-sm">Add Leave Request</button>
+        </form>
+    }
 
 @section Scripts {
     <script type="text/javascript">

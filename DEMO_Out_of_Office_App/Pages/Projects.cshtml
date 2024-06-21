@@ -51,7 +51,10 @@
     </tbody>
 </table>
 
-<a asp-page="/AddProject" class="btn btn-success">AddProject</a>
+@if (User.IsInRole("ProjectManager"))
+{
+    <a asp-page="/AddProject" class="btn btn-success">AddProject</a>
+}
 
 @section Scripts {
     <script type="text/javascript">

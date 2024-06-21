@@ -42,14 +42,31 @@
                         }
                     </td>
                     <td>
-                        <form method="post" asp-page-handler="Deactivate">
+                        @if (User.IsInRole("HRManager"))
+                        {
+
+                            <form method="post" asp-page-handler="Deactivate">
                                 <input type="hidden" name="employeeID" value="@employee.ID" />
-                        <button type="submit" class="btn btn-warning btn-sm equal-width-btn">Deactivate</button>
-                        </form>
+                                <button type="submit" class="btn btn-warning btn-sm equal-width-btn">Deactivate</button>
+                            </form>
+                        }
+
+                    @if (User.IsInRole("HRManager"))
+                    {
+
                         <form method="post" asp-page-handler="Edit">
                             <input type="hidden" name="employeeID" value="@employee.ID" />
                             <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Edit</button>
                         </form>
+
+                    }
+                    else
+                    {
+                        <form method="post" asp-page-handler="Edit">
+                            <input type="hidden" name="employeeID" value="@employee.ID" />
+                            <button type="submit" class="btn btn-primary btn-sm equal-width-btn">Open</button>
+                        </form>
+                    }
                     </td>
                 </tr>
             }
@@ -57,9 +74,13 @@
     </table>
 
 
-<form method="post" asp-page-handler="Add">
-    <button type="submit" name="Add" class="btn btn-success">Add Employee</button>
-</form>
+    @if (User.IsInRole("HRManager"))
+    {
+        <form method="post" asp-page-handler="Add">
+            <button type="submit" name="Add" class="btn btn-success">Add Employee</button>
+        </form>
+
+    }
 
 @section Scripts {
     <script type="text/javascript">

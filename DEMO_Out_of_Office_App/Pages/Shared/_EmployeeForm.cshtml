@@ -11,86 +11,159 @@
         <tr>
             <td><label for="FullName">Full Name</label></td>
             <td>
-                <input type="text" id="FullName" name="Employee.FullName" class="form-control" asp-for="Employee.FullName" required />
-                <span asp-validation-for="Employee.FullName" class="text-danger"></span>
+
+                @if (User.IsInRole("HRManager"))
+                {
+                    <input type="text" id="FullName" name="Employee.FullName" class="form-control" asp-for="Employee.FullName" required />
+                    <span asp-validation-for="Employee.FullName" class="text-danger"></span>
+
+                }
+                else
+                {
+                    <input type="text" id="FullName" name="Employee.FullName" class="form-control" asp-for="Employee.FullName" readonly />
+                }
+
+              
             </td>
         </tr>
 
         <tr>
             <td><label for="Subdivision">Subdivision</label></td>
             <td>
-                <select id="Subdivision" name="Employee.SubdivisionID" class="form-control" asp-for="Employee.SubdivisionID" required>
-                    <option value="">Select Subdivision</option>
-                    @foreach (var option in Model.Subdivisions)
-                    {
-                        <option value="@option.ID">@option.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="Employee.SubdivisionID" class="text-danger"></span>
+
+                @if (User.IsInRole("HRManager"))
+                {
+
+                    <select id="Subdivision" name="Employee.SubdivisionID" class="form-control" asp-for="Employee.SubdivisionID" required>
+                        <option value="">Select Subdivision</option>
+                        @foreach (var option in Model.Subdivisions)
+                        {
+                            <option value="@option.ID">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Employee.SubdivisionID" class="text-danger"></span>
+                }
+                else
+                {
+                    <input type="text" class="form-control" value="@Model.Subdivisions.FirstOrDefault(s => s.ID == Model.Employee.SubdivisionID)?.Name" readonly />
+                }
+
+
+
+                
             </td>
         </tr>
 
         <tr>
             <td><label for="Position">Position</label></td>
             <td>
-                <select id="Position" name="Employee.PositionID" class="form-control" asp-for="Employee.PositionID" required>
-                    <option value="">Select Position</option>
-                    @foreach (var option in Model.Roles)
-                    {
-                        <option value="@option.ID">@option.UserRoleDescription</option>
-                    }
-                </select>
-                <span asp-validation-for="Employee.PositionID" class="text-danger"></span>
+
+                @if (User.IsInRole("HRManager"))
+                {
+
+                    <select id="Position" name="Employee.PositionID" class="form-control" asp-for="Employee.PositionID" required>
+                        <option value="">Select Position</option>
+                        @foreach (var option in Model.Roles)
+                        {
+                            <option value="@option.ID">@option.UserRoleDescription</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Employee.PositionID" class="text-danger"></span>
+
+                }
+                else
+                {
+                    <input type="text" class="form-control" value="@Model.Roles.FirstOrDefault(r => r.ID == Model.Employee.PositionID)?.UserRoleDescription" readonly />
+                }
+
+
             </td>
         </tr>
 
         <tr>
             <td><label for="Status">Status</label></td>
             <td>
-                <select id="Status" name="Employee.StatusID" class="form-control" asp-for="Employee.StatusID" required>
-                    <option value="">Select Status</option>
-                    @foreach (var option in Model.Statuses)
-                    {
-                        <option value="@option.ID">@option.StatusDescription</option>
-                    }
-                </select>
-                <span asp-validation-for="Employee.StatusID" class="text-danger"></span>
+
+                @if (User.IsInRole("HRManager"))
+                {
+                    <select id="Status" name="Employee.StatusID" class="form-control" asp-for="Employee.StatusID" required>
+                        <option value="">Select Status</option>
+                        @foreach (var option in Model.Statuses)
+                        {
+                            <option value="@option.ID">@option.StatusDescription</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Employee.StatusID" class="text-danger"></span>
+
+                }
+                else
+                {
+                    <input type="text" class="form-control" value="@Model.Statuses.FirstOrDefault(s => s.ID == Model.Employee.StatusID)?.StatusDescription" readonly />
+                }
+                
             </td>
         </tr>
 
         <tr>
             <td><label for="PeoplePartner">People Partner</label></td>
             <td>
-                <select id="PeoplePartner" name="Employee.PeoplePartnerID" class="form-control" asp-for="Employee.PeoplePartnerID" required>
-                    <option value="">Select People Partner</option>
-                    @foreach (var option in Model.PeoplePartner)
-                    {
-                        <option value="@option.Id">@option.FullName</option>
-                    }
-                </select>
-                <span asp-validation-for="Employee.PeoplePartnerID" class="text-danger"></span>
+
+                @if (User.IsInRole("HRManager"))
+                {
+                    <select id="PeoplePartner" name="Employee.PeoplePartnerID" class="form-control" asp-for="Employee.PeoplePartnerID" required>
+                        <option value="">Select People Partner</option>
+                        @foreach (var option in Model.PeoplePartner)
+                        {
+                            <option value="@option.Id">@option.FullName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Employee.PeoplePartnerID" class="text-danger"></span>
+
+                }
+                else
+                {
+                    <input type="text" class="form-control" value="@Model.PeoplePartner.FirstOrDefault(p => p.Id == Model.Employee.PeoplePartnerID)?.FullName" readonly />
+                }
+                
             </td>
         </tr>
 
         <tr>
             <td><label for="OutOfOfficeBalance">Out-of-Office Balance</label></td>
             <td>
-                <input type="number" id="OutOfOfficeBalance" name="Employee.OutOfOfficeBalance" class="form-control" asp-for="Employee.OutOfOfficeBalance" required />
-                <span asp-validation-for="Employee.OutOfOfficeBalance" class="text-danger"></span>
+
+                @if (User.IsInRole("HRManager"))
+                {
+                    <input type="number" id="OutOfOfficeBalance" name="Employee.OutOfOfficeBalance" class="form-control" asp-for="Employee.OutOfOfficeBalance" required />
+                    <span asp-validation-for="Employee.OutOfOfficeBalance" class="text-danger"></span>
+                }
+                else
+                {
+                    <input type="number" id="OutOfOfficeBalance" name="Employee.OutOfOfficeBalance" class="form-control" asp-for="Employee.OutOfOfficeBalance" readonly />
+                }
             </td>
         </tr>
 
-        <tr>
-            <td><label for="Photo">Photo</label></td>
-            <td>
-                <input type="file" id="Photo" name="Photo" class="form-control-file" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
-            </td>
-        </tr>
+        @if (User.IsInRole("HRManager"))
+        {
+
+            <tr>
+                <td><label for="Photo">Photo</label></td>
+                <td>
+                    <input type="file" id="Photo" name="Photo" class="form-control-file" />
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </td>
+            </tr>
+
+        }
+
     </table>
 
     <div class="form-group mt-3">
-        <button type="submit" class="btn btn-success">Save</button>
+        @if (User.IsInRole("HRManager"))
+        {
+            <button type="submit" class="btn btn-success">Save</button>
+        }
         <a asp-page="/Employees" class="btn btn-secondary">Back</a>
     </div>
 </form>

@@ -1,9 +1,16 @@
 ﻿@page
 @using DEMOOutOfOfficeApp.Pages
 @model EditEmployeeModel
-@{
+
+@if (User.IsInRole("HRManager"))
+{
 	ViewData["Title"] = "Edit Employee";
 }
+else
+{
+	ViewData["Title"] = "Employee";
+}
+
 
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
