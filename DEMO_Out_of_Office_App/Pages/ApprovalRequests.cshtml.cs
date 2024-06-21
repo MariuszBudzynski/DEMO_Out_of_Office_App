@@ -53,8 +53,7 @@ namespace DEMOOutOfOfficeApp.Pages
                     request.LeaveRequestID ?? 0,
                     request.ApprovalRequestStatus.Description,
                     request.Comment,
-                    request.ApproverID,
-                    request.RequestAproved
+                    request.ApproverID
                     );
 
                 AprovalRequestsDTO.Add(AprovalRequessDTO);

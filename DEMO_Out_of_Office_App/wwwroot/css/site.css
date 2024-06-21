@@ -24,3 +24,11 @@ body {
 .equal-width-btn {
     width: 100%;
 }
+
+.btn {
+    margin-bottom: 10px;
+}
+
+.dt-body-right {
+    text-align: right;
+}

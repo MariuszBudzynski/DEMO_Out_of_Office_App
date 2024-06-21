@@ -21,7 +21,6 @@ namespace DEMOOutOfOfficeApp.Core.Entities
         [Required]
         [ForeignKey("Aprover")]
         public int ApproverID { get; set; }
-        public bool RequestAproved { get; set; }
 
         public virtual LeaveRequest LeaveRequest { get; set; }
         public virtual ApprovalRequestStatus ApprovalRequestStatus { get; set; }

@@ -182,12 +182,12 @@ namespace DEMOOutOfOfficeApp.Core.Context
 
             // Seed data for approval requests
             modelBuilder.Entity<ApprovalRequest>().HasData(
-                new ApprovalRequest { ID = 1, LeaveRequestID = 1, StatusID = 1, Comment = "Initial approval request", EmployeeId = 1, ApproverID = 5, RequestAproved = false },
-                new ApprovalRequest { ID = 2, LeaveRequestID = 2, StatusID = 2, Comment = "Approved by HR", EmployeeId = 2, ApproverID = 1, RequestAproved = true },
-                new ApprovalRequest { ID = 3, LeaveRequestID = 3, StatusID = 3, Comment = "Rejected by PM", EmployeeId = 3, ApproverID = 3, RequestAproved = false },
-                new ApprovalRequest { ID = 4, LeaveRequestID = 4, StatusID = 1, Comment = "Initial approval request", EmployeeId = 4, ApproverID = 5, RequestAproved = false },
-                new ApprovalRequest { ID = 5, LeaveRequestID = 1, StatusID = 2, Comment = "Approved by HR", EmployeeId = 5, ApproverID = 1, RequestAproved = true },
-                new ApprovalRequest { ID = 6, LeaveRequestID = 2, StatusID = 3, Comment = "Rejected by PM", EmployeeId = 6, ApproverID = 3, RequestAproved = false }
+                new ApprovalRequest { ID = 1, LeaveRequestID = 1, StatusID = 1, Comment = "Initial approval request", EmployeeId = 1, ApproverID = 5 },
+                new ApprovalRequest { ID = 2, LeaveRequestID = 2, StatusID = 2, Comment = "Approved by HR", EmployeeId = 2, ApproverID = 1 },
+                new ApprovalRequest { ID = 3, LeaveRequestID = 3, StatusID = 3, Comment = "Rejected by PM", EmployeeId = 3, ApproverID = 3 },
+                new ApprovalRequest { ID = 4, LeaveRequestID = 4, StatusID = 1, Comment = "Initial approval request", EmployeeId = 4, ApproverID = 5 },
+                new ApprovalRequest { ID = 5, LeaveRequestID = 1, StatusID = 2, Comment = "Approved by HR", EmployeeId = 5, ApproverID = 1 },
+                new ApprovalRequest { ID = 6, LeaveRequestID = 2, StatusID = 3, Comment = "Rejected by PM", EmployeeId = 6, ApproverID = 3 }
             );
 
 

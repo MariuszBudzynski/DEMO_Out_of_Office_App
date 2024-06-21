@@ -100,7 +100,6 @@ namespace DEMOOutOfOfficeApp.Pages
                 aprovalRequest.ApprovalRequestStatus.Description,
                 aprovalRequest.Comment,
                 aprovalRequest.ApproverID,
-                aprovalRequest.RequestAproved,
                 aprovalRequest.Aprover.FullName
 
              );

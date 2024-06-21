@@ -6,36 +6,38 @@
 
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
-<table id="aprovalltable" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <td>Leave Request ID</td>
-            <th>Status</th>
-            <th>Comment</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var request in Model.ApprovalRequests)
-        {
+<div class="table-responsive">
+    <table id="approvalTable" class="table table-bordered table-striped">
+        <thead>
             <tr>
-                <td>@request.LeaveRequestID</td>
-                <td>@request.Status</td>
-                <td>@request.Comment</td>
-                <td>
-                    <form method="post" asp-page-handler="Open">
-                        <button type="submit" value="@request.id" name="aprovalId" class="btn btn-info">Open Request</button>
-                    </form>
-                </td>
+                <th>Leave Request ID</th>
+                <th>Status</th>
+                <th>Comment</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var request in Model.ApprovalRequests)
+            {
+                <tr>
+                    <td>@request.LeaveRequestID</td>
+                    <td>@request.Status</td>
+                    <td>@request.Comment</td>
+                    <td>
+                        <form method="post" asp-page-handler="Open">
+                            <button type="submit" value="@request.id" name="aprovalId" class="btn btn-info">Open Request</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @section Scripts {
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#aprovalltable').DataTable();
+            $('#approvalTable').DataTable();
         });
     </script>
 }
