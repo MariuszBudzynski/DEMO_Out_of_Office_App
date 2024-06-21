@@ -1,3 +1,4 @@
+using DEMOOutOfOfficeApp.Common.Enums;
 using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using DEMOOutOfOfficeApp.DTOS;
@@ -21,6 +22,12 @@ namespace DEMOOutOfOfficeApp.Pages
         [BindProperty(SupportsGet = true)]
         public int ProjectTypeID { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public List<User> ProjectManagers { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int ProjectManagerId { get; set; }
+
         public OpenProjectModel(IDataLoaderHelper dataLoaderHelper,
                                 IUpdateProjectDataUseCase updateProjectDataUseCase
             )
@@ -34,6 +41,7 @@ namespace DEMOOutOfOfficeApp.Pages
         {
             Project = (await _dataLoaderHelper.LoadProjectsDTOAsync()).FirstOrDefault(p => p.Id == id);
             ProjectTypes = (await _dataLoaderHelper.LoadProjectTypesAsync()).ToList();
+            ProjectManagers = (await _dataLoaderHelper.LoadAllUsersAsync()).Where(pm => pm.RoleID == (int)UserRole.ProjectManager).ToList();
         }
 
         public async Task<IActionResult> OnPostHandleForm(string submitType, int projectId)
@@ -52,42 +60,17 @@ namespace DEMOOutOfOfficeApp.Pages
             return RedirectToPage("/Projects");
         }
 
-
-
-
-        //public async Task<IActionResult> OnPostDeactivateProject(int projectId)
-        //{
-        //    var projectToDeactivate = await _dataLoaderHelper.LoadProjectByIDAsync(projectId);
-
-        //    projectToDeactivate.StatusID = 2;
-
-        //    await _updateProjectDataUseCase.ExecuteAsync(projectToDeactivate);
-
-
-        //    return RedirectToPage("/Projects");
-        //}
-
-
-        //public async Task<IActionResult> OnPostSaveProject(int projectId)
-        //{
-        //    await CreateAndUpdateProject(projectId);
-        //    return RedirectToPage("/Projects");
-        //}
-
         private async Task CreateAndUpdateProject(int projectId)
         {
-            //Project = (await _dataLoaderHelper.LoadProjectsDTOAsync()).FirstOrDefault(p => p.Id == projectId);
-            var pmId = (await _dataLoaderHelper.LoadAllUsersAsync()).FirstOrDefault(u => u.FullName == Project.Projectmanager).ID;
-
             var project = new Project()
             {
                 ID = projectId,
                 ProjectTypeID = ProjectTypeID,
                 StartDate = Project.StartDate,
                 EndDate = Project.EndDate,
-                ProjectManagerID = pmId,
+                ProjectManagerID = ProjectManagerId,
                 Comment = Project.Comment,
-                StatusID = 1
+                //StatusID = Project.ProjectStatus
             };
 
             await _updateProjectDataUseCase.ExecuteAsync(project);

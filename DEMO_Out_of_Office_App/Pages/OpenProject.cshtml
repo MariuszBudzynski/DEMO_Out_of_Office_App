@@ -14,9 +14,7 @@ else
 <h1 style="text-align: center">@ViewData["Title"]</h1>
 
 <form id="employeeForm" method="post" enctype="multipart/form-data" asp-page-handler="HandleForm">
-  
-   @*  <input type="hidden" name="projectId" value="@Model.Project.Id" /> *@
-
+ 
     <table class="table table-bordered">
         <tr>
             <th>Project Type</th>
@@ -74,8 +72,22 @@ else
             
             <th>Project Manager</th>
             <td>
-                <input asp-for="Project.Projectmanager" class="form-control" required readonly />
-                <span asp-validation-for="Project.Projectmanager" class="text-danger"></span>
+
+                @if (User.IsInRole("ProjectManager"))
+                {
+                    <select asp-for="ProjectManagerId" class="form-control" required>
+                        @foreach (var manager in Model.ProjectManagers)
+                        {
+                            <option value="@manager.EmployeeID">@manager.FullName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Project.EmployeeId" class="text-danger"></span>
+                }
+                else
+                {
+                    <input asp-for="Project.Projectmanager" class="form-control" required readonly />
+                    <span asp-validation-for="Project.Projectmanager" class="text-danger"></span>
+                }
             </td>
         </tr>
 
@@ -118,14 +130,5 @@ else
 
     }
 </form>
-
-@* @if (User.IsInRole("ProjectManager"))
-{
-    <form id="editProject" method="post" asp-page-handler="SaveProject">
-        <input type="hidden" name="projectId" value="@Model.Project.Id" />
-        <button type="submit" class="btn btn-success">Save</button>
-    </form>
-}
- *@
 
 
