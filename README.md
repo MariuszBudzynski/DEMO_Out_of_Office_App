@@ -1,7 +1,10 @@
 ## Application written as a demonstration Task.
 
 ### Sample Screenshots
--insert here-
+![Alt text]([URL](https://github.com/MariuszBudzynski/DEMO_Out_of_Office_App/blob/master/2024-06-22%20141332.png?raw=true))
+![Alt text]([URL](https://github.com/MariuszBudzynski/DEMO_Out_of_Office_App/blob/master/2024-06-22%20141431.png?raw=true))
+![Alt text]([URL](https://github.com/MariuszBudzynski/DEMO_Out_of_Office_App/blob/master/2024-06-22%20141556.png?raw=true))
+![Alt text](![image](https://github.com/MariuszBudzynski/DEMO_Out_of_Office_App/assets/99798039/59b4ecc3-0689-45a3-817c-6c5cf205cb62))
 
 ### Database Schema
 -insert here-
