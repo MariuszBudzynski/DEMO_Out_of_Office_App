@@ -28,8 +28,9 @@
 
 ### How to Use
 1. Clone this repository.
-2. Use the following command in the package manager console to properly apply the migrations: Update-Database -Project DEMOOutOfOfficeApp.Core -StartupProject DEMOOutOfOfficeApp -Context AppDbContext
-3. The application has some test data and requires logging in. The users prepared for testing are:
+2. Use the following command in the package manager console to properly apply the migrations:
+   Update-Database -Project DEMOOutOfOfficeApp.Core -StartupProject DEMOOutOfOfficeApp -Context AppDbContext
+4. The application has some test data and requires logging in. The users prepared for testing are:
 
 Username: john.doe  
 Password: password1  
