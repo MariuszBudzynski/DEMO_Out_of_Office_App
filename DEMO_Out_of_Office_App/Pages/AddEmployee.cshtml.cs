@@ -1,74 +1,85 @@
-using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.Repository;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.UseCases;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using DEMOOutOfOfficeApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
-    public class AddEmployeeModel : PageModel , IEmployeeFormModel
+    public class AddEmployeeModel : PageModel, IEmployeeFormModel
     {
-		private readonly IDataLoaderHelper _dataLoaderHelper;
-		private readonly ISaveSingleEmployeeUseCase _saveSingleEmployeeUseCase;
-        private IEnumerable<User> usersHRManagerROle;
+        private readonly IDataLoaderHelper _dataLoaderHelper;
+        private readonly ISaveSingleEmployeeUseCase _saveSingleEmployeeUseCase;
+        private IEnumerable<User> usersHRManagerRole;
 
         [BindProperty]
         public Employee Employee { get; set; }
 
         [BindProperty]
         public IFormFile Photo { get; set; }
+
         public int ID { get; set; }
         public List<Subdivision> Subdivisions { get; set; } = new List<Subdivision>();
         public List<EmployeeStatus> Statuses { get; set; } = new List<EmployeeStatus>();
         public List<PeoplePartnerDTO> PeoplePartner { get; set; } = new List<PeoplePartnerDTO>();
-		public List<Role> Roles { get; set; } = new List<Role>();
+        public List<Role> Roles { get; set; } = new List<Role>();
 
-		public AddEmployeeModel(IDataLoaderHelper dataLoaderHelper,ISaveSingleEmployeeUseCase saveSingleEmployeeUseCase)
+        public AddEmployeeModel(IDataLoaderHelper dataLoaderHelper, ISaveSingleEmployeeUseCase saveSingleEmployeeUseCase)
         {
-			_dataLoaderHelper = dataLoaderHelper;
-			_saveSingleEmployeeUseCase = saveSingleEmployeeUseCase;
-		}
+            _dataLoaderHelper = dataLoaderHelper;
+            _saveSingleEmployeeUseCase = saveSingleEmployeeUseCase;
+        }
+
         public async Task OnGet()
         {
-			Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
-			Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
-            PeoplePartner = (await _dataLoaderHelper.GetListOfPeoplePartner()).ToList();
-            Roles = (await _dataLoaderHelper.LoadRolesAsync()).ToList();
-
+            try
+            {
+                Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
+                Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
+                PeoplePartner = (await GetListOfPeoplePartner()).ToList();
+                Roles = (await _dataLoaderHelper.LoadRolesAsync()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred in OnGet method.");
+                throw;
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-
-            if (Photo != null && Photo.Length > 0)
+            try
             {
-                using (var memoryStream = new System.IO.MemoryStream())
+                if (Photo != null && Photo.Length > 0)
                 {
-                    await Photo.CopyToAsync(memoryStream);
-                    Employee.Photo = memoryStream.ToArray();
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await Photo.CopyToAsync(memoryStream);
+                        Employee.Photo = memoryStream.ToArray();
+                    }
                 }
-            }
-            await _saveSingleEmployeeUseCase.ExecuteAsync(Employee);
 
-            return RedirectToPage("/Employees");
+                await _saveSingleEmployeeUseCase.ExecuteAsync(Employee);
+
+                return RedirectToPage("/Employees");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred in OnPostAsync method.");
+                throw;
+            }
         }
 
         private async Task<List<PeoplePartnerDTO>> GetListOfPeoplePartner()
         {
-            usersHRManagerROle = (await _dataLoaderHelper.LoadAllUsersAsync()).ToList().Where(e => e.RoleID == (int)UserRole.HRManager);
+            try
+            {
+                usersHRManagerRole = (await _dataLoaderHelper.LoadAllUsersAsync()).Where(e => e.RoleID == (int)UserRole.HRManager).ToList();
 
-            return usersHRManagerROle.Select(e => new PeoplePartnerDTO(
-                e.ID,
-                e.FullName
+                return usersHRManagerRole.Select(e => new PeoplePartnerDTO(
+                    e.ID,
+                    e.FullName
                 )).ToList();
-
-
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred in GetListOfPeoplePartner method.");
+                throw;
+            }
         }
     }
 }

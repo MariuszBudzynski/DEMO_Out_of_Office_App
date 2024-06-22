@@ -1,13 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DEMOOutOfOfficeApp.Core.UseCases
+﻿namespace DEMOOutOfOfficeApp.Core.UseCases
 {
     public class GetAllRolesUseCase : IGetAllRolesUseCase
     {
@@ -20,7 +11,15 @@ namespace DEMOOutOfOfficeApp.Core.UseCases
 
         public async Task<IEnumerable<Role>> ExecuteAsync()
         {
-            return await _repository.GetData<Role>();
+            try
+            {
+                return await _repository.GetData<Role>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while executing GetAllRolesUseCase");
+                throw;
+            }
         }
     }
 }

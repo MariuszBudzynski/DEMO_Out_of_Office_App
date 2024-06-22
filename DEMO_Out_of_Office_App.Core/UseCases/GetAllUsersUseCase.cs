@@ -1,9 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-
-namespace DEMOOutOfOfficeApp.Core.UseCases
+﻿namespace DEMOOutOfOfficeApp.Core.UseCases
 {
     public class GetAllUsersUseCase : IGetAllUsersUseCase
     {
@@ -16,7 +11,16 @@ namespace DEMOOutOfOfficeApp.Core.UseCases
 
         public async Task<IEnumerable<User>> ExecuteAsync() 
         {
-            return await _repository.GetUsersAsync();
+            try
+            {
+                return await _repository.GetUsersAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while executing GetAllUsersUseCase");
+                throw;
+            }
+
         }
     }
 }

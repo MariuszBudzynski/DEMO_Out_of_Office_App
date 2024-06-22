@@ -1,11 +1,3 @@
-using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     public class EmployeeProjectModel : PageModel
@@ -27,29 +19,54 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task OnGet(int id)
         {
-            await GetProjectEmployeeDTO(id);
+            try
+            {
+                await GetProjectEmployeeDTO(id);
 
-            Projectts = (await _dataLoaderHelper.LoadAsllProjectsAsync()).ToList();
+                Projectts = (await _dataLoaderHelper.LoadAsllProjectsAsync()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while handling GET request in EmployeeProjectModel.");
+                throw;
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var rojectEmployee = CreateProjectEmployee(ProjectEmployeeDTO);
+            try
+            {
+                var rojectEmployee = CreateProjectEmployee(ProjectEmployeeDTO);
 
-           await AddProjectEmployee(rojectEmployee);
+                await AddProjectEmployee(rojectEmployee);
 
-            return RedirectToPage("/Employees"); 
+                return RedirectToPage("/Employees");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while handling POST request in EmployeeProjectModel.");
+                throw;
+            }
         }
 
         private async Task GetProjectEmployeeDTO(int id)
         {
-            var employeeProjects = (await _dataLoaderHelper.LoadEmployeeProjects()).FirstOrDefault(ep=> ep.EmployeeID == id);
+           
+            try
+            {
+                var employeeProjects = (await _dataLoaderHelper.LoadEmployeeProjects()).FirstOrDefault(ep => ep.EmployeeID == id);
 
-            var projects = await _dataLoaderHelper.LoadProjectByIDAsync(employeeProjects.ProjectID);
+                var projects = await _dataLoaderHelper.LoadProjectByIDAsync(employeeProjects.ProjectID);
 
-            var employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(employeeProjects.EmployeeID);
+                var employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(employeeProjects.EmployeeID);
 
-            ProjectEmployeeDTO = CreateEmployeeDTO(employeeProjects, projects, employee);
+                ProjectEmployeeDTO = CreateEmployeeDTO(employeeProjects, projects, employee);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while getting ProjectEmployeeDTO in EmployeeProjectModel.");
+                throw;
+            }
         }
 
         private ProjectEmployeeDTO CreateEmployeeDTO(ProjectEmployee projectEmployee , Project project , Employee employee)
@@ -60,7 +77,15 @@ namespace DEMOOutOfOfficeApp.Pages
 
         private async Task AddProjectEmployee(ProjectEmployee projectEmployee)
         {
-            await _saveOrUpdateProjectEmployeeUseCase.ExecuteAsync(projectEmployee);
+            try
+            {
+                await _saveOrUpdateProjectEmployeeUseCase.ExecuteAsync(projectEmployee);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while adding ProjectEmployee in EmployeeProjectModel.");
+                throw;
+            }
         }
 
         private ProjectEmployee CreateProjectEmployee(ProjectEmployeeDTO projectEmployeeDTO)

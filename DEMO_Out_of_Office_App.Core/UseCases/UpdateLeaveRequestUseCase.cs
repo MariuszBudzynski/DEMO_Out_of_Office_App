@@ -1,13 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DEMOOutOfOfficeApp.Core.UseCases
+﻿namespace DEMOOutOfOfficeApp.Core.UseCases
 {
     public class UpdateLeaveRequestUseCase : IUpdateLeaveRequestUseCase
     {
@@ -20,7 +11,16 @@ namespace DEMOOutOfOfficeApp.Core.UseCases
 
         public async Task ExecureAsync(LeaveRequest leaveRequest)
         {
-            await _repository.UpdateLeaveRequest(leaveRequest);
+
+            try
+            {
+                await _repository.UpdateLeaveRequest(leaveRequest);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while executing UpdateLeaveRequestUseCase");
+                throw;
+            }
         }
     }
 }

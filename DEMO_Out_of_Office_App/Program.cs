@@ -1,6 +1,3 @@
-using DEMOOutOfOfficeApp;
-using Serilog;
-
 var builder = WebApplication.CreateBuilder(args);
 
 ServicesRegistration.RegisterServices(builder.Services, builder.Configuration);

@@ -1,13 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DEMOOutOfOfficeApp.Core.UseCases
+﻿namespace DEMOOutOfOfficeApp.Core.UseCases
 {
     public class UpdateAprovalRequestUseCase : IUpdateAprovalRequestUseCase
     {
@@ -20,7 +11,16 @@ namespace DEMOOutOfOfficeApp.Core.UseCases
 
         public async Task ExecuteAsync(ApprovalRequest approvalRequest)
         {
-            await _repository.UpdateApprovalRequest(approvalRequest);
+
+            try
+            {
+                await _repository.UpdateApprovalRequest(approvalRequest);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while executing UpdateAprovalRequestUseCase");
+                throw;
+            }
         }
     }
 }

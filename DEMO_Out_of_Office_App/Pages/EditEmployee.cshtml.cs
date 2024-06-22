@@ -1,16 +1,3 @@
-using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using DEMOOutOfOfficeApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
-using System.Net.Sockets;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     public class EditEmployeeModel : PageModel , IEmployeeFormModel
@@ -41,39 +28,62 @@ namespace DEMOOutOfOfficeApp.Pages
 		}
 		public async Task<IActionResult> OnGetAsync(int id)
 		{
-			Employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(id);
-			Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
-			Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
-			PeoplePartner = (await _dataLoaderHelper.GetListOfPeoplePartner()).ToList();
-			Roles = (await _dataLoaderHelper.LoadRolesAsync()).ToList();
-            return Page();
-		}
+            try
+            {
+                Employee = await _dataLoaderHelper.LoadEmpoloyeeAsync(id);
+                Subdivisions = (await _dataLoaderHelper.LoadSubdivisionsAsync()).ToList();
+                Statuses = (await _dataLoaderHelper.LoadStatusesAsync()).ToList();
+                PeoplePartner = (await _dataLoaderHelper.GetListOfPeoplePartner()).ToList();
+                Roles = (await _dataLoaderHelper.LoadRolesAsync()).ToList();
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while handling GET request in EditEmployeeModel.");
+                throw;
+            }
+        }
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-
-			if (Photo != null && Photo.Length > 0)
+			try
 			{
-				using (var memoryStream = new System.IO.MemoryStream())
-				{
-					await Photo.CopyToAsync(memoryStream);
-					Employee.Photo = memoryStream.ToArray();
-				}
-			}
-			
-			await _updateEmployeeUse.ExecuteAsync(Employee);
+                if (Photo != null && Photo.Length > 0)
+                {
+                    using (var memoryStream = new System.IO.MemoryStream())
+                    {
+                        await Photo.CopyToAsync(memoryStream);
+                        Employee.Photo = memoryStream.ToArray();
+                    }
+                }
 
-			return RedirectToPage("/Employees");
+                await _updateEmployeeUse.ExecuteAsync(Employee);
+
+                return RedirectToPage("/Employees");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while handling POST request in EditEmployeeModel.");
+                throw;
+            }
+
         }
         private async Task<List<PeoplePartnerDTO>> GetListOfPeoplePartner()
-        {
-            usersHRManagerROle = (await _dataLoaderHelper.LoadAllUsersAsync()).ToList().Where(e => e.RoleID == (int)UserRole.HRManager);
+        {   
+            try
+            {
+                usersHRManagerROle = (await _dataLoaderHelper.LoadAllUsersAsync()).ToList().Where(e => e.RoleID == (int)UserRole.HRManager);
 
-			return usersHRManagerROle.Select(e => new PeoplePartnerDTO(
-				e.ID,
-				e.FullName
-				)).ToList();
-
+                return usersHRManagerROle.Select(e => new PeoplePartnerDTO(
+                    e.ID,
+                    e.FullName
+                    )).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while retrieving list of People Partners in EditEmployeeModel.");
+                throw;
+            }
 
         }
 

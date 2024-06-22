@@ -1,13 +1,3 @@
-using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using DEMOOutOfOfficeApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     public class OpenApprovalRequestModel : PageModel
@@ -41,77 +31,128 @@ namespace DEMOOutOfOfficeApp.Pages
         public async Task OnGetAsync(int id)
         {
             AprovalRequestID = id;
-            ApprovalRequest = await CreateAprovalResultAsync(id);
+
+            try
+            {
+                ApprovalRequest = await CreateAprovalResultAsync(id);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while loading approval request details for ID {AprovalRequestID}.", id);
+                throw;
+            }
 
         }
 
         public async Task<IActionResult> OnPostApproveAsync()
-        {
-            var aprovalRequest = await LoadApprovalRequestByIdAsync(AprovalRequestID);
+        {     
 
-           await  UpdateApprovalRequestAsync(aprovalRequest);
+            try
+            {
+                var aprovalRequest = await LoadApprovalRequestByIdAsync(AprovalRequestID);
 
-            AprovalType = String.Empty;
+                await UpdateApprovalRequestAsync(aprovalRequest);
 
-           await UpdateOutOfOfficeBallanceForEmployee(aprovalRequest);
+                AprovalType = String.Empty;
 
-            var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == aprovalRequest.LeaveRequestID);
+                await UpdateOutOfOfficeBallanceForEmployee(aprovalRequest);
 
-            leaveRequest.StatusType = LeaveRequestsStatusType.Approved;
+                var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == aprovalRequest.LeaveRequestID);
 
-            await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
+                leaveRequest.StatusType = LeaveRequestsStatusType.Approved;
 
-            return RedirectToPage("/ApprovalRequests");
+                await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
+
+                return RedirectToPage("/ApprovalRequests");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while approving approval request ID {AprovalRequestID}.", AprovalRequestID);
+                // Handle or rethrow the exception as needed.
+                throw;
+            }
+
         }
 
         public async Task<IActionResult> OnPostRejectAsync()
         {
-            var aprovalRequest = await LoadApprovalRequestByIdAsync(AprovalRequestID);
+            
 
-            await UpdateApprovalRequestAsync(aprovalRequest);
+            try
+            {
+                var aprovalRequest = await LoadApprovalRequestByIdAsync(AprovalRequestID);
 
-            AprovalType = String.Empty;
+                await UpdateApprovalRequestAsync(aprovalRequest);
 
-            var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == aprovalRequest.LeaveRequestID);
+                AprovalType = String.Empty;
 
-            leaveRequest.StatusType = LeaveRequestsStatusType.Rejected;
+                var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == aprovalRequest.LeaveRequestID);
 
-            await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
+                leaveRequest.StatusType = LeaveRequestsStatusType.Rejected;
 
-            return RedirectToPage("/ApprovalRequests");
+                await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
+
+                return RedirectToPage("/ApprovalRequests");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while rejecting approval request ID {ApprovalRequestId}.", AprovalRequestID);
+                throw;
+            }
         }
 
     
         private async Task<ApprovalRequest> LoadApprovalRequestByIdAsync(int id)
         {
-            return await _dataLoaderHelper.LoadAprovalRequestAsync(id);
+            try
+            {
+                return await _dataLoaderHelper.LoadAprovalRequestAsync(id);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while loading approval request by ID {id}.", id);
+                throw;
+            }
         }
 
         private async Task UpdateApprovalRequestAsync(ApprovalRequest approvalRequest)
         {
-            var employeeIdInt = 0;
-
-            var claims = HttpContext.User.Claims.ToList();
-
-            var employeeIdClaim = claims.FirstOrDefault(c => c.Type == "EmployeeID");
-
-            if (employeeIdClaim != null)
+           
+            try
             {
-                string employeeId = employeeIdClaim.Value;
-                employeeIdInt = int.Parse(employeeId);
-                approvalRequest.ApproverID = employeeIdInt;
+
+                var employeeIdInt = 0;
+
+                var claims = HttpContext.User.Claims.ToList();
+
+                var employeeIdClaim = claims.FirstOrDefault(c => c.Type == "EmployeeID");
+
+                if (employeeIdClaim != null)
+                {
+                    string employeeId = employeeIdClaim.Value;
+                    employeeIdInt = int.Parse(employeeId);
+                    approvalRequest.ApproverID = employeeIdInt;
+                }
+                else
+                {
+                    approvalRequest.ApproverID = 0;
+                }
+
+                var fullAproverName = (await _dataLoaderHelper.LoadAllUsersAsync()).FirstOrDefault(u => u.EmployeeID == employeeIdInt).FullName;
+
+                approvalRequest.StatusID = (int)GetApprovalStatusType(AprovalType);
+                approvalRequest.Comment = ApprovalRequest.Comment;
+
+                await _updateAprovalRequestUseCase.ExecuteAsync(approvalRequest);
             }
-            else
+            catch(Exception ex)
             {
-                approvalRequest.ApproverID = 0; 
+                Log.Error(ex, "An error occurred while updating approval request {approvalRequest}.", approvalRequest.ID);
+                // Handle or rethrow the exception as needed.
+                throw;
             }
 
-            var fullAproverName = (await _dataLoaderHelper.LoadAllUsersAsync()).FirstOrDefault(u=> u.EmployeeID == employeeIdInt).FullName;
 
-            approvalRequest.StatusID = (int)GetApprovalStatusType(AprovalType);
-            approvalRequest.Comment = ApprovalRequest.Comment;
-
-            await _updateAprovalRequestUseCase.ExecuteAsync(approvalRequest);
         }
 
         private ApprovalRequestStatusType GetApprovalStatusType(string approvalType)
@@ -129,44 +170,71 @@ namespace DEMOOutOfOfficeApp.Pages
 
         private async Task<AprovalRequestDTO> CreateAprovalResultAsync(int id)
         {
+            try
+            {
+                var aprovalRequest = await LoadApprovalRequestByIdAsync(id);
 
-            var aprovalRequest = await LoadApprovalRequestByIdAsync(id);
+                var absenceReason = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).FirstOrDefault(ar => ar.ID == aprovalRequest.LeaveRequestID);
 
-            var absenceReason = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).FirstOrDefault(ar=> ar.ID == aprovalRequest.LeaveRequestID);
+                var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == aprovalRequest.LeaveRequestID);
 
-            var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr=> lr.ID == aprovalRequest.LeaveRequestID);
+                var aprovalRequestDTO = new AprovalRequestDTO(
 
-            var aprovalRequestDTO = new AprovalRequestDTO(
+                    aprovalRequest.ID,
+                    aprovalRequest.ApprovalRequestStatus.Description,
+                    leaveRequest.Comment,
+                    0,
+                    leaveRequest.ID,
+                    absenceReason.Name,
+                    leaveRequest.Comment
+                 );
 
-                aprovalRequest.ID,
-                aprovalRequest.ApprovalRequestStatus.Description,
-                leaveRequest.Comment,
-                0,
-                leaveRequest.ID,
-                absenceReason.Name,
-                leaveRequest.Comment
-             );
-
-            return aprovalRequestDTO;
+                return aprovalRequestDTO;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while creating approval request DTO for ID {ApprovalRequestId}.", id);
+                // Handle or rethrow the exception as needed.
+                throw;
+            }
         }
 
 
         private async Task UpdateOutOfOfficeBallanceForEmployee(ApprovalRequest approvalRequest)
         {
-            var employeeData = await _dataLoaderHelper.LoadEmpoloyeeAsync(approvalRequest.EmployeeId);
+           
 
-            employeeData.OutOfOfficeBalance -= await DaysToSubstract(approvalRequest);
+            try
+            {
+                var employeeData = await _dataLoaderHelper.LoadEmpoloyeeAsync(approvalRequest.EmployeeId);
 
-            await _updateEmployeeUseCase.ExecuteAsync(employeeData);
+                employeeData.OutOfOfficeBalance -= await DaysToSubstract(approvalRequest);
+
+                await _updateEmployeeUseCase.ExecuteAsync(employeeData);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while updating out-of-office balance for employee ID {EmployeeId}.", approvalRequest.EmployeeId);
+                throw;
+            }
         }
 
 
         private async Task<int> DaysToSubstract(ApprovalRequest aprovalRequest)
         {
-            var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr=>lr.ID == aprovalRequest.ID);
+            try
+            {
+                var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == aprovalRequest.ID);
 
-             int days = (leaveRequest.EndDate - leaveRequest.StartDate).Days < 0 ? 0 : (leaveRequest.EndDate - leaveRequest.StartDate).Days;
-            return days;
+                int days = (leaveRequest.EndDate - leaveRequest.StartDate).Days < 0 ? 0 : (leaveRequest.EndDate - leaveRequest.StartDate).Days;
+                return days;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while calculating days to subtract for approval request ID {ApprovalRequestId}.", aprovalRequest.ID);
+                // Handle or rethrow the exception as needed.
+                throw;
+            }
         }
     }
 }

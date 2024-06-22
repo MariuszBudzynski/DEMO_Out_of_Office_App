@@ -1,4 +1,5 @@
 ﻿using DEMOOutOfOfficeApp.Common.Interfaces;
+using DEMOOutOfOfficeApp.Core.Entities;
 using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
 using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
 using System;
@@ -20,7 +21,15 @@ namespace DEMOOutOfOfficeApp.Core.UseCases
 
         public async Task ExecuteAsync<T>(T data) where T : class, IEntityId
         {
-            await _repository.SaveData<T>(data);
+            try
+            {
+                await _repository.SaveData<T>(data);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while executing SaveDataUseCase");
+                throw;
+            }
         }
     }
 }

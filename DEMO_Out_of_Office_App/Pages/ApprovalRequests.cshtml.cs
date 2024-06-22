@@ -1,13 +1,3 @@
-using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Data;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     [Authorize(Policy = "HRPMAdminPolicy")]
@@ -28,46 +18,53 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task OnGetAsync()
         {
-            ApprovalRequests = await FetchApprovalRequestsAsync();
+            try
+            {
+                ApprovalRequests = await FetchApprovalRequestsAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred in OnGetAsync method.");
+                throw;
+            }
         }
 
         public IActionResult OnPostOpen(int aprovalId)
-        {
-            return RedirectToPage("OpenApprovalRequest", new { id = aprovalId });
+        {    
+                return RedirectToPage("OpenApprovalRequest", new { id = aprovalId });
         }
 
         private async Task<List<AprovalRequestDTO>> FetchApprovalRequestsAsync()
         {
             List<AprovalRequestDTO> AprovalRequestsDTO = new();
 
-            var approvalRequests = await _getAprovalRequestsUseCase.ExecuteAsync();
-
-           
-          
-            foreach (var request in approvalRequests)
+            try
             {
-                var absenceReason = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).FirstOrDefault(ar => ar.ID == request.LeaveRequestID);
+                var approvalRequests = await _getAprovalRequestsUseCase.ExecuteAsync();
 
-                var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == request.LeaveRequestID);
+                foreach (var request in approvalRequests)
+                {
+                    var absenceReason = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).FirstOrDefault(ar => ar.ID == request.LeaveRequestID);
+                    var leaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == request.LeaveRequestID);
 
-
-                var AprovalRequessDTO = new AprovalRequestDTO(
-                request.ID,
-                request.ApprovalRequestStatus.Description,
-                request.Comment,
-                request.ApproverID ?? 0,
-                request.LeaveRequestID ?? 0
-
+                    var AprovalRequessDTO = new AprovalRequestDTO(
+                        request.ID,
+                        request.ApprovalRequestStatus.Description,
+                        request.Comment,
+                        request.ApproverID ?? 0,
+                        request.LeaveRequestID ?? 0
                     );
 
-                AprovalRequestsDTO.Add(AprovalRequessDTO);
-
+                    AprovalRequestsDTO.Add(AprovalRequessDTO);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred in FetchApprovalRequestsAsync method.");
+                throw;
             }
 
             return AprovalRequestsDTO;
-
-
         }
-
     }
 }

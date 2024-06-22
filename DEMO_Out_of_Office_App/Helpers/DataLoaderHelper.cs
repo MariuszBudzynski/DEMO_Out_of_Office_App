@@ -1,13 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using System.Linq;
-
-namespace DEMOOutOfOfficeApp.Helpers
+﻿namespace DEMOOutOfOfficeApp.Helpers
 {
     public class DataLoaderHelper : IDataLoaderHelper
     {
@@ -45,178 +36,332 @@ namespace DEMOOutOfOfficeApp.Helpers
 
         public async Task<Project> LoadProjectByIDAsync(int projectID)
         {
-            return (await _getDataByIdUseCase.ExecuteAsync<Project>(projectID));
+            try
+            {
+                return (await _getDataByIdUseCase.ExecuteAsync<Project>(projectID));
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadAbsenceReasonAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable< Project>> LoadAsllProjectsAsync()
         {
-            return await _getDataUseCase.ExecuteAsync<Project>();
+            
+            try
+            {
+                return await _getDataUseCase.ExecuteAsync<Project>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadAsllProjectsAsync");
+                throw;
+            }
         }
 
         public async Task<ApprovalRequest> LoadAprovalRequestAsync(int id)
         {
-            return (await _getAprovalRequestsByIdUseCase.ExecuteAsync(id));
+
+            try
+            {
+                return (await _getAprovalRequestsByIdUseCase.ExecuteAsync(id));
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadAprovalRequestAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Subdivision>> LoadSubdivisionsAsync()
         {
-            return (await _getAllSubdivisionsUseCase.ExecuteAsync()).ToList();
+            try
+            {
+                return (await _getAllSubdivisionsUseCase.ExecuteAsync()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadSubdivisionsAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<ProjectType>> LoadProjectTypesAsync()
         {
-            return (await _getDataUseCase.ExecuteAsync<ProjectType>()).ToList();
+            try
+            {
+                return (await _getDataUseCase.ExecuteAsync<ProjectType>()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadProjectTypesAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Employee>> LoadAllEmployeesAsync()
         {
-            return (await _getDataUseCase.ExecuteAsync<Employee>()).ToList();
+            try
+            {
+                return (await _getDataUseCase.ExecuteAsync<Employee>()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadAllEmployeesAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<User>> LoadAllUsersAsync()
         {
-            return (await _getDataUseCase.ExecuteAsync<User>()).ToList();
+            try
+            {
+                return (await _getDataUseCase.ExecuteAsync<User>()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadAllUsersAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<LeaveRequest>> LoadAllLeaveRequestAsync()
         {
-            return (await _getDataUseCase.ExecuteAsync<LeaveRequest>()).ToList();
+            try
+            {
+                return (await _getDataUseCase.ExecuteAsync<LeaveRequest>()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadAllLeaveRequestAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Role>> LoadRolesAsync()
         {
-            return (await _getAllRolesUse.ExecuteAsync()).ToList();
+            try
+            {
+                return (await _getAllRolesUse.ExecuteAsync()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadRolesAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<EmployeeStatus>> LoadStatusesAsync()
         {
-            return (await _getAllStatusesUseCase.ExecuteAsync()).ToList();
+            try
+            {
+                return (await _getAllStatusesUseCase.ExecuteAsync()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadStatusesAsync");
+                throw;
+            }
         }
 
         public async Task<Employee> LoadEmpoloyeeAsync(int id)
         {
-            return await _getDataByIdUseCase.ExecuteAsync<Employee>(id);
+            try
+            {
+                return await _getDataByIdUseCase.ExecuteAsync<Employee>(id);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadEmpoloyeeAsync for id {EmployeeId}", id);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<ProjectEmployee>> LoadEmployeeProjects()
         {
-
-            return await _getEmployeeProjectsUseCase.ExecuteAsync();
+            try
+            {
+                return await _getEmployeeProjectsUseCase.ExecuteAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadEmployeeProjects");
+                throw;
+            }
         }
+
 
         public async Task<string> LoadLeaveRequestStatusAsync(int id)
         {
-            var leaveRequest = await _getDataByIdUseCase.ExecuteAsync<LeaveRequest>(id);
-            return leaveRequest?.StatusType.ToString();
+            try
+            {
+                var leaveRequest = await _getDataByIdUseCase.ExecuteAsync<LeaveRequest>(id);
+                return leaveRequest?.StatusType.ToString();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadLeaveRequestStatusAsync for LeaveRequest ID {LeaveRequestId}", id);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Project>> LoadEmpoloyeeProjects(int employeeId)
         {
-            var projects = await _getProjectsUseCase.ExecuteAsync();
-
-            if (employeeId != 0)
+            try
             {
-                return projects = projects.Where(p => p.ProjectManagerID == employeeId).ToList();
-            }
+                var projects = await _getProjectsUseCase.ExecuteAsync();
 
-            return projects;
+                if (employeeId != 0)
+                {
+                    projects = projects.Where(p => p.ProjectManagerID == employeeId).ToList();
+                }
+
+                return projects;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadEmpoloyeeProjectsAsync for Employee ID {EmployeeId}", employeeId);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<AbsenceReason>> LoadAbsenceReasonAsync()
         {
-            return await _getDataUseCase.ExecuteAsync<AbsenceReason>();
+            try
+            {
+                return await _getDataUseCase.ExecuteAsync<AbsenceReason>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadAbsenceReasonAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<ProjectDTO>> LoadProjectsDTOAsync()
         {
-            List<ProjectDTO> projectDTOs = new List<ProjectDTO>();
-
-            var employeeprojects = await _getEmployeeProjectsUseCase.ExecuteAsync();
-            var projects = await _getProjectsUseCase.ExecuteAsync();
-
-            if (projects != null)
+            try
             {
-                foreach (var project in projects)
+                List<ProjectDTO> projectDTOs = new List<ProjectDTO>();
+
+                var employeeprojects = await _getEmployeeProjectsUseCase.ExecuteAsync();
+                var projects = await _getProjectsUseCase.ExecuteAsync();
+
+                if (projects != null)
                 {
-                    string employeeName = "No Employee Assigned";
-
-                    // Sprawdź, czy projekt ma przypisanego pracownika
-                    var projectEmployee = employeeprojects.FirstOrDefault(ep => ep.ProjectID == project.ID);
-                    if (projectEmployee != null)
+                    foreach (var project in projects)
                     {
-                        employeeName = projectEmployee.Employee.FullName ?? "No Employee Assigned";
+                        string employeeName = "No Employee Assigned";
+
+                        var projectEmployee = employeeprojects.FirstOrDefault(ep => ep.ProjectID == project.ID);
+                        if (projectEmployee != null)
+                        {
+                            employeeName = projectEmployee.Employee.FullName ?? "No Employee Assigned";
+                        }
+
+                        var projectDTO = new ProjectDTO(
+                            project.ID,
+                            project.ProjectType.Name,
+                            project.StartDate,
+                            project.EndDate,
+                            employeeName,
+                            project.ProjectManagerID,
+                            project.ProjectManager.FullName ?? "No Manager Assigned",
+                            project.Comment,
+                            project.ProjectStatus.StatusType.ToString()
+                        );
+
+                        projectDTOs.Add(projectDTO);
                     }
-
-                    var projectDTO = new ProjectDTO(
-                        project.ID,
-                        project.ProjectType.Name,
-                        project.StartDate,
-                        project.EndDate,
-                        employeeName,
-                        project.ProjectManagerID,
-                        project.ProjectManager.FullName ?? "No Manager Assigned",
-                        project.Comment,
-                        project.ProjectStatus.StatusType.ToString()
-                    );
-
-                    projectDTOs.Add(projectDTO);
                 }
-            }
 
-            return projectDTOs;
+                return projectDTOs;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadProjectsDTOAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<LeaveRequestDTO>> LoadLeaveRequestsDTOAsync(int employeeId)
         {
-            var leaveRequests = await _getLeaveRequestsUseCase.ExecuteAsync();
-
-            if (employeeId != 0)
+            try
             {
-                leaveRequests = leaveRequests.Where(p => p.EmployeeID == employeeId).ToList();
+                var leaveRequests = await _getLeaveRequestsUseCase.ExecuteAsync();
+
+                if (employeeId != 0)
+                {
+                    leaveRequests = leaveRequests.Where(p => p.EmployeeID == employeeId).ToList();
+                }
+
+                var leaveRequestsDTO = leaveRequests.Select(e => new LeaveRequestDTO(
+                    e.ID,
+                    e.Employee.PeoplePartnerID,
+                    e.Employee.FullName,
+                    e.AbsenceReason.Name,
+                    e.StartDate,
+                    e.EndDate,
+                    e.Comment,
+                    e.LeaveRequestsStatus.Description
+                )).ToList();
+
+                return leaveRequestsDTO;
             }
-
-            var projectsDTO = leaveRequests.Select(e => new LeaveRequestDTO(
-                e.ID,
-                e.Employee.PeoplePartnerID,
-                e.Employee.FullName,
-                e.AbsenceReason.Name,
-                e.StartDate,
-                e.EndDate,
-                e.Comment,
-                e.LeaveRequestsStatus.Description
-            )).ToList();
-
-            return projectsDTO;
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadLeaveRequestsDTOAsync for Employee ID {EmployeeId}", employeeId);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<LeaveRequestDTO>> LoadLeaveRequestsDTOAsync()
         {
-            var projects = await _getLeaveRequestsUseCase.ExecuteAsync();
+            try
+            {
+                var leaveRequests = await _getLeaveRequestsUseCase.ExecuteAsync();
 
+                var leaveRequestsDTO = leaveRequests.Select(e => new LeaveRequestDTO(
+                    e.ID,
+                    e.Employee.PeoplePartnerID,
+                    e.Employee.FullName,
+                    e.AbsenceReason.Name,
+                    e.StartDate,
+                    e.EndDate,
+                    e.Comment,
+                    e.LeaveRequestsStatus.Description
+                )).ToList();
 
-            var projectsDTO = projects.Select(e => new LeaveRequestDTO(
-                e.ID,
-                e.Employee.PeoplePartnerID,
-                e.Employee.FullName,
-                e.AbsenceReason.Name,
-                e.StartDate,
-                e.EndDate,
-                e.Comment,
-                e.LeaveRequestsStatus.Description
-            )).ToList();
-
-            return projectsDTO;
+                return leaveRequestsDTO;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in LoadLeaveRequestsDTOAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<PeoplePartnerDTO>> GetListOfPeoplePartner()
         {
-            var usersHRManagerROle = (await LoadAllUsersAsync()).ToList().Where(e => e.RoleID == (int)UserRole.HRManager);
+            try
+            {
+                var usersHRManagerRole = (await LoadAllUsersAsync()).Where(e => e.RoleID == (int)UserRole.HRManager).ToList();
 
-            return usersHRManagerROle.Select(e => new PeoplePartnerDTO(
-                e.ID,
-                e.FullName
-                ));
+                var peoplePartnersDTO = usersHRManagerRole.Select(e => new PeoplePartnerDTO(
+                    e.ID,
+                    e.FullName
+                )).ToList();
 
+                return peoplePartnersDTO;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in GetListOfPeoplePartner");
+                throw;
+            }
         }
+
     }
 }

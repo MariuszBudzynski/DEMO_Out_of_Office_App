@@ -1,68 +1,79 @@
-using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using DEMOOutOfOfficeApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace DEMOOutOfOfficeApp.Pages
-{   
+{
     public class OpenLeaveRequestModel : PageModel
     {
         private int _id;
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly IGetDataByIdUseCase _getDataByIdUseCase;
         private readonly IUpdateLeaveRequestUseCase _updateLeaveRequestUseCase;
-        private readonly IUpdateAprovalRequestUseCase _updateAprovalRequestUseCase;
+        private readonly IUpdateAprovalRequestUseCase _updateApprovalRequestUseCase;
 
         public LeaveRequestDTO? LeaveRequestDTO { get; set; }
+
         public OpenLeaveRequestModel(IDataLoaderHelper dataLoaderHelper,
                                     IGetDataByIdUseCase getDataByIdUseCase,
                                     IUpdateLeaveRequestUseCase updateLeaveRequestUseCase,
-                                    IUpdateAprovalRequestUseCase updateAprovalRequestUseCase)
+                                    IUpdateAprovalRequestUseCase updateApprovalRequestUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _getDataByIdUseCase = getDataByIdUseCase;
             _updateLeaveRequestUseCase = updateLeaveRequestUseCase;
-            _updateAprovalRequestUseCase = updateAprovalRequestUseCase;
+            _updateApprovalRequestUseCase = updateApprovalRequestUseCase;
         }
+
         public async Task OnGet(int id)
         {
             _id = id;
-            await LoadLeaveRequest();
+            try
+            {
+                await LoadLeaveRequest();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while loading leave request details for ID {LeaveRequestId}.", id);
+                throw;
+            }
         }
 
         public async Task<IActionResult> OnPostCancelAsync(int id)
         {
-
-            var leaveRequest = await _getDataByIdUseCase.ExecuteAsync<LeaveRequest>(id);
-
-            var approvalRequest = await _getDataByIdUseCase.ExecuteAsync<ApprovalRequest>(id);
-
-            if (leaveRequest == null)
+            try
             {
-                return NotFound();
+                var leaveRequest = await _getDataByIdUseCase.ExecuteAsync<LeaveRequest>(id);
+                var approvalRequest = await _getDataByIdUseCase.ExecuteAsync<ApprovalRequest>(id);
+
+                if (leaveRequest == null || approvalRequest == null)
+                {
+                    return NotFound();
+                }
+
+                leaveRequest.StatusType = LeaveRequestsStatusType.Cancelled;
+                approvalRequest.StatusID = (int)ApprovalRequestStatusType.Cancelled;
+
+                await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
+                await _updateApprovalRequestUseCase.ExecuteAsync(approvalRequest);
+
+                return RedirectToPage("LeaveRequests");
             }
-
-            leaveRequest.StatusType = LeaveRequestsStatusType.Cancelled;
-            approvalRequest.StatusID = (int)ApprovalRequestStatusType.Cancelled;
-
-            await _updateLeaveRequestUseCase.ExecureAsync(leaveRequest);
-            await _updateAprovalRequestUseCase.ExecuteAsync(approvalRequest);
-
-            return RedirectToPage("LeaveRequests");
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while processing cancellation for leave request ID {LeaveRequestId}.", id);
+                throw;
+            }
         }
 
         public async Task LoadLeaveRequest()
         {
-            var leaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync()).FirstOrDefault(e=>e.EmployeeId ==_id);
-            LeaveRequestDTO = leaveRequests;
-
+            try
+            {
+                var leaveRequest = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync()).FirstOrDefault(e => e.EmployeeId == _id);
+                LeaveRequestDTO = leaveRequest;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while loading leave request details for employee ID {_id}.", _id);
+                throw;
+            }
         }
-
     }
 }

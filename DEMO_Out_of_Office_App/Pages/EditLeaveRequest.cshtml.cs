@@ -1,14 +1,3 @@
-using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using DEMOOutOfOfficeApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     public class EditLeaveRequestModel : PageModel , ILeaveRequestFormModel
@@ -37,20 +26,36 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task OnGet(int id)
         {
-            LeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == id);
-            AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
-            FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
-            Status = await _dataLoaderHelper.LoadLeaveRequestStatusAsync(id);
+            try
+            {
+                LeaveRequest = (await _dataLoaderHelper.LoadAllLeaveRequestAsync()).FirstOrDefault(lr => lr.ID == id);
+                AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
+                FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
+                Status = await _dataLoaderHelper.LoadLeaveRequestStatusAsync(id);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while handling GET request in EditLeaveRequestModel.");
+                throw;
+            }
 
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            LeaveRequest.StatusType = LeaveRequestsStatusType.New;
+            try
+            {
+                LeaveRequest.StatusType = LeaveRequestsStatusType.New;
 
-            await _updateLeaveRequestUseCase.ExecureAsync(LeaveRequest);
+                await _updateLeaveRequestUseCase.ExecureAsync(LeaveRequest);
 
-            return RedirectToPage("LeaveRequests");
+                return RedirectToPage("LeaveRequests");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while handling POST request in EditLeaveRequestModel.");
+                throw;
+            }
         }
     }
 }

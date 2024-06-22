@@ -1,11 +1,3 @@
-using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     public class OpenProjectModel : PageModel
@@ -17,7 +9,7 @@ namespace DEMOOutOfOfficeApp.Pages
         public ProjectDTO Project { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public List<ProjectType> ProjectTypes { get; set; } = new ();
+        public List<ProjectType> ProjectTypes { get; set; } = new();
 
         [BindProperty(SupportsGet = true)]
         public int ProjectTypeID { get; set; }
@@ -29,52 +21,72 @@ namespace DEMOOutOfOfficeApp.Pages
         public int ProjectManagerId { get; set; }
 
         public OpenProjectModel(IDataLoaderHelper dataLoaderHelper,
-                                IUpdateProjectDataUseCase updateProjectDataUseCase
-            )
+                                IUpdateProjectDataUseCase updateProjectDataUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _updateProjectDataUseCase = updateProjectDataUseCase;
         }
 
-
         public async Task OnGetAsync(int id)
         {
-            Project = (await _dataLoaderHelper.LoadProjectsDTOAsync()).FirstOrDefault(p => p.Id == id);
-            ProjectTypes = (await _dataLoaderHelper.LoadProjectTypesAsync()).ToList();
-            ProjectManagers = (await _dataLoaderHelper.LoadAllUsersAsync()).Where(pm => pm.RoleID == (int)UserRole.ProjectManager).ToList();
+            try
+            {
+                Project = (await _dataLoaderHelper.LoadProjectsDTOAsync()).FirstOrDefault(p => p.Id == id);
+                ProjectTypes = (await _dataLoaderHelper.LoadProjectTypesAsync()).ToList();
+                ProjectManagers = (await _dataLoaderHelper.LoadAllUsersAsync()).Where(pm => pm.RoleID == (int)UserRole.ProjectManager).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while loading project details for project ID {ProjectId}.", id);
+                throw;
+            }
         }
 
         public async Task<IActionResult> OnPostHandleForm(string submitType, int projectId)
         {
-            if (submitType == "Deactivate")
+            try
             {
-                var projectToDeactivate = await _dataLoaderHelper.LoadProjectByIDAsync(projectId);
-                projectToDeactivate.StatusID = 2;
-                await _updateProjectDataUseCase.ExecuteAsync(projectToDeactivate);
-            }
-            else if (submitType == "Save")
-            {
-                await CreateAndUpdateProject(projectId);
-            }
+                if (submitType == "Deactivate")
+                {
+                    var projectToDeactivate = await _dataLoaderHelper.LoadProjectByIDAsync(projectId);
+                    projectToDeactivate.StatusID = 2;
+                    await _updateProjectDataUseCase.ExecuteAsync(projectToDeactivate);
+                }
+                else if (submitType == "Save")
+                {
+                    await CreateAndUpdateProject(projectId);
+                }
 
-            return RedirectToPage("/Projects");
+                return RedirectToPage("/Projects");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while handling form submission for project ID {ProjectId}.", projectId);
+                throw;
+            }
         }
 
         private async Task CreateAndUpdateProject(int projectId)
         {
-            var project = new Project()
+            try
             {
-                ID = projectId,
-                ProjectTypeID = ProjectTypeID,
-                StartDate = Project.StartDate,
-                EndDate = Project.EndDate,
-                ProjectManagerID = ProjectManagerId,
-                Comment = Project.Comment,
-                //StatusID = Project.ProjectStatus
-            };
+                var project = new Project()
+                {
+                    ID = projectId,
+                    ProjectTypeID = ProjectTypeID,
+                    StartDate = Project.StartDate,
+                    EndDate = Project.EndDate,
+                    ProjectManagerID = ProjectManagerId,
+                    Comment = Project.Comment,
+                };
 
-            await _updateProjectDataUseCase.ExecuteAsync(project);
+                await _updateProjectDataUseCase.ExecuteAsync(project);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while creating or updating project with ID {ProjectId}.", projectId);
+                throw;
+            }
         }
-
     }
 }

@@ -1,13 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DEMOOutOfOfficeApp.Core.UseCases
+﻿namespace DEMOOutOfOfficeApp.Core.UseCases
 {
     public class GetDataUseCase : IGetDataUseCase
     {
@@ -20,7 +11,16 @@ namespace DEMOOutOfOfficeApp.Core.UseCases
 
         public async Task<IEnumerable<T>> ExecuteAsync<T>() where T : class, IEntityId
         {
-            return await _repository.GetData<T>();
+            try
+            {
+                return await _repository.GetData<T>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while executing GetDataUseCase");
+                throw;
+            }
+
         }
     }
 }

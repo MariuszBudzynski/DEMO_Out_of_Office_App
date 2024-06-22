@@ -1,24 +1,9 @@
-using Azure.Core;
-using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.UseCases;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using DEMOOutOfOfficeApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     public class AddLeaveRequestModel : PageModel, ILeaveRequestFormModel
     {
         private readonly IDataLoaderHelper _dataLoaderHelper;
         private readonly ISaveLeaveRequestDataUseCase _saveLeaveRequestDataUseCase;
-        private readonly IGetEmployeeProjectsUseCase _getEmployeeProjectsUseCase;
         private readonly ISaveListOfObjectsToDatabaseUseCase _saveListOfObjectsToDatabaseUseCase;
 
         [BindProperty(SupportsGet = true)]
@@ -29,65 +14,86 @@ namespace DEMOOutOfOfficeApp.Pages
         public string FullName { get; set; }
         public string Status { get; set; }
         public ApprovalRequest ApprovalRequest { get; set; }
-        public List<ApprovalRequest> ApprovalsRequest { get; set; } = new();
+        public List<ApprovalRequest> ApprovalsRequest { get; set; } = new List<ApprovalRequest>();
 
         public AddLeaveRequestModel(IDataLoaderHelper dataLoaderHelper,
                                     ISaveLeaveRequestDataUseCase saveLeaveRequestDataUseCase,
-                                    ISaveListOfObjectsToDatabaseUseCase saveListOfObjectsToDatabaseUseCase
-                                   )
+                                    ISaveListOfObjectsToDatabaseUseCase saveListOfObjectsToDatabaseUseCase)
         {
             _dataLoaderHelper = dataLoaderHelper;
             _saveLeaveRequestDataUseCase = saveLeaveRequestDataUseCase;
             _saveListOfObjectsToDatabaseUseCase = saveListOfObjectsToDatabaseUseCase;
         }
+
         public async Task OnGet(int id)
         {
+            try
+            {
+                AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
 
-            AbsenceReasons = (await _dataLoaderHelper.LoadAbsenceReasonAsync()).ToList();
+                LeaveRequest = new LeaveRequest() { EmployeeID = id, StatusType = LeaveRequestsStatusType.New, StartDate = DateTime.Now, EndDate = DateTime.Now, Comment = " " };
 
-            LeaveRequest = new LeaveRequest() { EmployeeID = id, StatusType = LeaveRequestsStatusType.New, StartDate = DateTime.Now, EndDate = DateTime.Now,Comment=" "};
-
-            FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id).FullName;
-
+                FullName = (await _dataLoaderHelper.LoadAllEmployeesAsync()).FirstOrDefault(e => e.ID == id)?.FullName;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred in OnGet method.");
+                throw;
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            LeaveRequest.Comment = LeaveRequest.Comment == null ? " " : LeaveRequest.Comment;
-            LeaveRequest.StatusType = LeaveRequestsStatusType.New;
+            try
+            {
+                LeaveRequest.Comment = LeaveRequest.Comment ?? " ";
+                LeaveRequest.StatusType = LeaveRequestsStatusType.New;
 
-            await _saveLeaveRequestDataUseCase.ExecuteAsync(LeaveRequest);
+                await _saveLeaveRequestDataUseCase.ExecuteAsync(LeaveRequest);
 
-            ApprovalsRequest = await CreateNewApprovalRequestList(LeaveRequest.ID);
+                ApprovalsRequest = await CreateNewApprovalRequestList(LeaveRequest.ID);
 
-            await _saveListOfObjectsToDatabaseUseCase.ExecuteAsync(ApprovalsRequest);
+                await _saveListOfObjectsToDatabaseUseCase.ExecuteAsync(ApprovalsRequest);
 
-            return RedirectToPage("/LeaveRequests");
+                return RedirectToPage("/LeaveRequests");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred in OnPostAsync method.");
+                throw;
+            }
         }
 
         private async Task<List<ApprovalRequest>> CreateNewApprovalRequestList(int id)
         {
-            var approvalList = new List<ApprovalRequest>();
-
-            var employeeProjects = (await _dataLoaderHelper.LoadEmployeeProjects()).Where(pe => pe.EmployeeID == id).ToList();
-
-            var projectManagerIds = employeeProjects.Select(ep => ep.Project.ProjectManagerID).Distinct().ToList();
-
-            foreach (var pm in projectManagerIds)
+            try
             {
-                var approvalRequest = new ApprovalRequest()
+                var approvalList = new List<ApprovalRequest>();
+
+                var employeeProjects = (await _dataLoaderHelper.LoadEmployeeProjects()).Where(pe => pe.EmployeeID == id).ToList();
+
+                var projectManagerIds = employeeProjects.Select(ep => ep.Project.ProjectManagerID).Distinct().ToList();
+
+                foreach (var pm in projectManagerIds)
                 {
-                    LeaveRequestID = LeaveRequest.ID,
-                    StatusID = 1,
-                    Comment = LeaveRequest.Comment ?? " ",
-                    EmployeeId = id
-                };
+                    var approvalRequest = new ApprovalRequest()
+                    {
+                        LeaveRequestID = LeaveRequest.ID,
+                        StatusID = 1,
+                        Comment = LeaveRequest.Comment ?? " ",
+                        EmployeeId = id
+                    };
 
-                approvalList.Add(approvalRequest);
+                    approvalList.Add(approvalRequest);
+                }
+
+                return approvalList;
             }
-
-            return approvalList;
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred in CreateNewApprovalRequestList method.");
+                throw;
+            }
         }
-
     }
 }

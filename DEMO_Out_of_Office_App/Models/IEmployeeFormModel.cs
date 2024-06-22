@@ -1,12 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-
-namespace DEMOOutOfOfficeApp.Models
+﻿namespace DEMOOutOfOfficeApp.Models
 {
-	public interface IEmployeeFormModel
+    public interface IEmployeeFormModel
 	{
         public int ID { get; set; }
         public Employee Employee { get; set; }

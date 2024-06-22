@@ -1,13 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DEMOOutOfOfficeApp.Core.UseCases
+﻿namespace DEMOOutOfOfficeApp.Core.UseCases
 {
     public class SaveListOfObjectsToDatabaseUseCase : ISaveListOfObjectsToDatabaseUseCase
     {
@@ -20,7 +11,16 @@ namespace DEMOOutOfOfficeApp.Core.UseCases
 
         public async Task ExecuteAsync<T>(IEnumerable<T> objectList) where T : class, IEntityId
         {
-            await _repository.SaveListOfObjectsToDatabase(objectList);
+
+            try
+            {
+                await _repository.SaveListOfObjectsToDatabase(objectList);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while executing SaveListOfObjectsToDatabaseUseCase");
+                throw;
+            }           
         }
     }
 }

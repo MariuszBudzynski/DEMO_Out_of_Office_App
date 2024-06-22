@@ -1,15 +1,3 @@
-using DEMOOutOfOfficeApp.Common.Enums;
-using DEMOOutOfOfficeApp.Core.Context;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.DTOS;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     [Authorize(Policy = "HRPMAdminPolicy")]
@@ -36,20 +24,36 @@ namespace DEMOOutOfOfficeApp.Pages
         }
         public async Task OnGetAsync()
         {
-            Employees = await FetchEmployeesAsync();
+            try
+            {
+                Employees = await FetchEmployeesAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while fetching employees.");
+                throw;
+            }
         }
 
         public async Task<IActionResult> OnPostDeactivateAsync(int employeeID)
         {
-            var employee = await _getDataByIdUseCase.ExecuteAsync<Employee>(employeeID);
-            if (employee != null)
+            try
             {
-                employee.StatusID = (int)Status.Inactive;
-                await _updateEmployeeUseCase.ExecuteAsync(employee);
-            }
+                var employee = await _getDataByIdUseCase.ExecuteAsync<Employee>(employeeID);
+                if (employee != null)
+                {
+                    employee.StatusID = (int)Status.Inactive;
+                    await _updateEmployeeUseCase.ExecuteAsync(employee);
+                }
 
-            Employees = await FetchEmployeesAsync();
-            return RedirectToPage();
+                Employees = await FetchEmployeesAsync();
+                return RedirectToPage();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while deactivating employee.");
+                throw;
+            }
         }
 
         public IActionResult OnPostAdd()
@@ -69,59 +73,80 @@ namespace DEMOOutOfOfficeApp.Pages
 
         private async Task<List<EmployeeDTO>> FetchEmployeesAsync()
         {
-            var employees = await _getAllEmployeesUseCase.ExecuteAsync();
-
-            usersHRManagerROle = (await _getAllUsersUseCase.ExecuteAsync()).ToList().Where(e=>e.RoleID == (int)UserRole.HRManager);
-
-
-            foreach (var employee in employees)
+            try
             {
-                var peoplePartner = await GetPeoplePartner(employee.PeoplePartnerID);
+                var employees = await _getAllEmployeesUseCase.ExecuteAsync();
 
-                var employeeDTO = new EmployeeDTO(
-                    employee.ID,
-                    employee.FullName,
-                    employee.Subdivision.Name,
-                    employee.Position.UserRoleDescription,
-                    employee.Status.StatusDescription,
-                    peoplePartner,
-                    employee.OutOfOfficeBalance,
-                    employee.Photo,
-                    employee.Position.ID
-                );
+                usersHRManagerROle = (await _getAllUsersUseCase.ExecuteAsync()).ToList().Where(e => e.RoleID == (int)UserRole.HRManager);
 
-                Employees.Add(employeeDTO);
+
+                foreach (var employee in employees)
+                {
+                    var peoplePartner = await GetPeoplePartner(employee.PeoplePartnerID);
+
+                    var employeeDTO = new EmployeeDTO(
+                        employee.ID,
+                        employee.FullName,
+                        employee.Subdivision.Name,
+                        employee.Position.UserRoleDescription,
+                        employee.Status.StatusDescription,
+                        peoplePartner,
+                        employee.OutOfOfficeBalance,
+                        employee.Photo,
+                        employee.Position.ID
+                    );
+
+                    Employees.Add(employeeDTO);
+                }
+
+                return Employees;
             }
-
-            return Employees;
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while fetching employees.");
+                throw;
+            }
 
         }
 
         private async Task<string> GetPeoplePartner(int peoplePartnerId)
         {
-            var data = await _getDataByIdUseCase.ExecuteAsync<User>(peoplePartnerId);
-
-            return data.FullName;
+            try
+            {
+                var data = await _getDataByIdUseCase.ExecuteAsync<User>(peoplePartnerId);
+                return data.FullName;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while fetching people partner.");
+                throw;
+            }
         }
 
 		private async Task<Employee> ConvertToEmployee(EmployeeDTO employeeDTO)
         {
-            var subdivision = await _getDataByIdUseCase.ExecuteAsync<Subdivision>(employeeDTO.ID);
-            var status = await _getDataByIdUseCase.ExecuteAsync<EmployeeStatus>(employeeDTO.ID);
-            var role = await _getDataByIdUseCase.ExecuteAsync<Role>(employeeDTO.ID);
-
-
-
-            return new Employee
+            try
             {
-                ID = employeeDTO.ID,
-                FullName = employeeDTO.FullName,
-                SubdivisionID = subdivision.ID,
-                PositionID = employeeDTO.rolePositionId,
-                StatusID = status.ID,
-                PeoplePartnerID = role.ID,
-                OutOfOfficeBalance = employeeDTO.OutOfOfficeBalance
-            };
+                var subdivision = await _getDataByIdUseCase.ExecuteAsync<Subdivision>(employeeDTO.ID);
+                var status = await _getDataByIdUseCase.ExecuteAsync<EmployeeStatus>(employeeDTO.ID);
+                var role = await _getDataByIdUseCase.ExecuteAsync<Role>(employeeDTO.ID);
+
+                return new Employee
+                {
+                    ID = employeeDTO.ID,
+                    FullName = employeeDTO.FullName,
+                    SubdivisionID = subdivision.ID,
+                    PositionID = employeeDTO.rolePositionId,
+                    StatusID = status.ID,
+                    PeoplePartnerID = role.ID,
+                    OutOfOfficeBalance = employeeDTO.OutOfOfficeBalance
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while converting to employee.");
+                throw;
+            }
         }
 
     }

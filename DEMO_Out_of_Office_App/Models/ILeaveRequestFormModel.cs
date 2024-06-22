@@ -1,7 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Core.Entities;
-using Microsoft.AspNetCore.Mvc;
-
-namespace DEMOOutOfOfficeApp.Models
+﻿namespace DEMOOutOfOfficeApp.Models
 {
     public interface ILeaveRequestFormModel
     {

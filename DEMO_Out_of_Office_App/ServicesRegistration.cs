@@ -1,13 +1,4 @@
-﻿using DEMOOutOfOfficeApp.Core.Context;
-using Microsoft.EntityFrameworkCore;
-using DEMOOutOfOfficeApp.Core.Repository.Interfaces;
-using DEMOOutOfOfficeApp.Core.Repository;
-using DEMOOutOfOfficeApp.Core.UseCases;
-using DEMOOutOfOfficeApp.Core.UseCases.Interfaces;
-using DEMOOutOfOfficeApp.Helpers;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-
-namespace DEMOOutOfOfficeApp
+﻿namespace DEMOOutOfOfficeApp
 {
     public static class ServicesRegistration
 	{

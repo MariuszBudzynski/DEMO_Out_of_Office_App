@@ -1,13 +1,3 @@
-using DEMOOutOfOfficeApp.Common.Interfaces;
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     [Authorize(Policy = "EmployeeHRPMAdminPolicy")]
@@ -26,22 +16,38 @@ namespace DEMOOutOfOfficeApp.Pages
         }
         public async Task OnGetAsync()
         {
-            int employeeId = GetEmployeeIdFromClaims();
-            EmployeeId = employeeId;
-            LeaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync(employeeId)).ToList();
+            try
+            {
+                int employeeId = GetEmployeeIdFromClaims();
+                EmployeeId = employeeId;
+                LeaveRequests = (await _dataLoaderHelper.LoadLeaveRequestsDTOAsync(employeeId)).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while loading leave requests.");
+                throw;
+            }
         }
 
         private int GetEmployeeIdFromClaims()
         {
-            var employeeIdClaim = User.FindFirstValue("EmployeeID");
-            var userRoleClaim = User.FindFirstValue(ClaimTypes.Role);
-
-            if (userRoleClaim == "Employee" && int.TryParse(employeeIdClaim, out int employeeId))
+            try
             {
-                return employeeId;
-            }
+                var employeeIdClaim = User.FindFirstValue("EmployeeID");
+                var userRoleClaim = User.FindFirstValue(ClaimTypes.Role);
 
-            return 0;
+                if (userRoleClaim == "Employee" && int.TryParse(employeeIdClaim, out int employeeId))
+                {
+                    return employeeId;
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while getting employee ID from claims.");
+                throw;
+            }
         }
 
         public IActionResult OnPostOpenLeaveRequest(int id)

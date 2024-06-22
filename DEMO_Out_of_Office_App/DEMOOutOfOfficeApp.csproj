@@ -24,8 +24,4 @@
     <ProjectReference Include="..\DEMO_Out_of_Office_App.Core\DEMOOutOfOfficeApp.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Loger\" />
-  </ItemGroup>
-
 </Project>

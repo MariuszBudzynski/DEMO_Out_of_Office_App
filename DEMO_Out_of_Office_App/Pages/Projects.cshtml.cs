@@ -1,11 +1,3 @@
-using DEMOOutOfOfficeApp.Core.Entities;
-using DEMOOutOfOfficeApp.DTOS;
-using DEMOOutOfOfficeApp.Helpers.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
-
 namespace DEMOOutOfOfficeApp.Pages
 {
     [Authorize(Policy = "EmployeeHRPMAdminPolicy")]
@@ -23,35 +15,58 @@ namespace DEMOOutOfOfficeApp.Pages
 
         public async Task OnGetAsync()
         {
-            int employeeId = GetEmployeeIdFromClaims();
-
-            if (employeeId == 0)
+            try
             {
-                Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).ToList();
-            }
-            else
-            {
-                Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).Where(ep=>ep.EmployeeId == employeeId).ToList();
-            }
+                int employeeId = GetEmployeeIdFromClaims();
 
+                if (employeeId == 0)
+                {
+                    Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).ToList();
+                }
+                else
+                {
+                    Projects = (await _dataLoaderHelper.LoadProjectsDTOAsync()).Where(ep => ep.EmployeeId == employeeId).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while loading projects.");
+                throw;
+            }
         }
 
         public IActionResult OnPostOpenProject(int projectID)
         {
-            return RedirectToPage("/OpenProject", new { id = projectID });
+            try
+            {
+                return RedirectToPage("/OpenProject", new { id = projectID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while redirecting to OpenProject.");
+                throw;
+            }
         }
 
         private int GetEmployeeIdFromClaims()
         {
-            var employeeIdClaim = User.FindFirstValue("EmployeeID");
-            var userRoleClaim = User.FindFirstValue(ClaimTypes.Role);
-
-            if (userRoleClaim == "Employee" && int.TryParse(employeeIdClaim, out int employeeId))
+            try
             {
-                return employeeId;
-            }
+                var employeeIdClaim = User.FindFirstValue("EmployeeID");
+                var userRoleClaim = User.FindFirstValue(ClaimTypes.Role);
 
-            return 0;
+                if (userRoleClaim == "Employee" && int.TryParse(employeeIdClaim, out int employeeId))
+                {
+                    return employeeId;
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while extracting EmployeeID from claims.");
+                throw;
+            }
         }
     }
 }
