@@ -35,7 +35,26 @@ namespace DEMOOutOfOfficeApp.Core.Repository
             }        
         }
 
-		public async Task SaveLeaveRequestData(LeaveRequest leaveRequest)
+        public async Task SaveOrUpdateProjectEmployee(ProjectEmployee projectEmployee)
+        {
+            var existingData = await _appDbContext.ProjectEmployee.FindAsync(projectEmployee.ID);
+
+            if (existingData == null)
+            {
+                await _appDbContext.ProjectEmployee.AddAsync(projectEmployee);
+            }
+            else
+            {
+               
+                existingData.EmployeeID = projectEmployee.EmployeeID;
+                existingData.EmployeeID = projectEmployee.EmployeeID;
+                
+            }
+
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task SaveLeaveRequestData(LeaveRequest leaveRequest)
         {
             if (leaveRequest != null)
             {

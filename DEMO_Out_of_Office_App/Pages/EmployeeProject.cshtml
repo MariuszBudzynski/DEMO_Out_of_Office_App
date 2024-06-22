@@ -1,0 +1,36 @@
+﻿@page
+@model DEMOOutOfOfficeApp.Pages.EmployeeProjectModel
+@{
+	ViewData["Title"] = "Employee project";
+}
+
+<h1 style="text-align: center">@ViewData["Title"]</h1>
+
+<form id="employeeproject" method="post">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th style="width: 20%">Full Name</th>
+                <input type="hidden" asp-for="ProjectEmployeeDTO.EmployeeId" />
+                <td>@Model.ProjectEmployeeDTO.EmployeeName</td>
+            </tr>
+            <tr>
+                <th>Project</th>
+                <td>
+                    <select asp-for="ProjectEmployeeDTO.ProjectId" class="form-control" required>
+                        @foreach (var project in Model.Projectts)
+                        {
+                        <option value="@project.ID">@project.Comment</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ProjectEmployeeDTO" class="text-danger"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-page="/Employees" class="btn btn-secondary">Back</a>
+    </div>
+</form>

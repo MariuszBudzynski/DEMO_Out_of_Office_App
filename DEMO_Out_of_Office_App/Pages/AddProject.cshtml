@@ -26,14 +26,14 @@
         <tr>
             <th>Start Date</th>
             <td>
-                <input asp-for="Project.StartDate" type="date" class="form-control" required />
+                <input asp-for="Project.StartDate" type="date" class="form-control" id="Project_StartDate" required />
                 <span asp-validation-for="Project.StartDate" class="text-danger"></span>
             </td>
         </tr>
         <tr>
             <th>End Date</th>
             <td>
-                <input asp-for="Project.EndDate" type="date" class="form-control" required />
+                <input asp-for="Project.EndDate" type="date" class="form-control" id="Project_EndDate" required />
                 <span asp-validation-for="Project.EndDate" class="text-danger"></span>
             </td>
         </tr>
@@ -69,3 +69,21 @@
      <a asp-page="/Projects" class="btn btn-secondary">Back</a>
     <button type="submit" class="btn btn-secondary btn-success">Save project</button>
 </form>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $('#projectForm').submit(function () {
+            var startDate = new Date($('#Project_StartDate').val());
+            var endDate = new Date($('#Project_EndDate').val());
+
+
+            if (endDate <= startDate) {
+                alert('End date must be greater than start date.');
+                return false; // Prevent form submission
+            }
+
+            return true; // Allow form submission
+        });
+    </script>
+}

@@ -62,6 +62,11 @@ namespace DEMOOutOfOfficeApp.Pages
 			return RedirectToPage("/EditEmployee", new { id = employeeID });
 		}
 
+        public IActionResult OnPostAddToProject(int employeeID)
+        {
+            return RedirectToPage("/EmployeeProject", new { id = employeeID });
+        }
+
         private async Task<List<EmployeeDTO>> FetchEmployeesAsync()
         {
             var employees = await _getAllEmployeesUseCase.ExecuteAsync();

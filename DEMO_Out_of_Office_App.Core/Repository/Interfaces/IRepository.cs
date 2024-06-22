@@ -22,6 +22,7 @@ namespace DEMOOutOfOfficeApp.Core.Repository.Interfaces
         Task UpdateProjectData(Project project);
         Task SaveData<T>(T data) where T : class, IEntityId;
         Task<ApprovalRequest> GetAprovalRequestsByIdAsync(int id);
+        Task SaveOrUpdateProjectEmployee(ProjectEmployee projectEmployee);
 
     }
 }

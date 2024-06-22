@@ -23,5 +23,6 @@ namespace DEMOOutOfOfficeApp.Helpers.Interfaces
         Task<IEnumerable<ProjectType>> LoadProjectTypesAsync();
         Task<Project> LoadProjectByIDAsync(int projectID);
         Task<ApprovalRequest> LoadAprovalRequestAsync(int id);
+        Task<IEnumerable<Project>> LoadAsllProjectsAsync();
     }
 }

@@ -11,6 +11,7 @@
 <table id="projectstable" class="display">
     <thead>
         <tr>
+            <th>Leave Request ID</th>
             <th>Employee</th>
             <th>Absence Reason</th>
             <th>Start Date</th>
@@ -24,6 +25,7 @@
         @foreach (var leaveRequest in Model.LeaveRequests)
         {
             <tr>
+                <td>@leaveRequest.EmployeeId</td>
                 <td>@leaveRequest.EmployeeName</td>
                 <td>@leaveRequest.AbsenceReason</td>
                 <td>@leaveRequest.StartDate.ToString("yyyy-MM-dd")</td>

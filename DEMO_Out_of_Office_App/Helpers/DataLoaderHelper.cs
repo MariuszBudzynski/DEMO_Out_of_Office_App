@@ -48,6 +48,11 @@ namespace DEMOOutOfOfficeApp.Helpers
             return (await _getDataByIdUseCase.ExecuteAsync<Project>(projectID));
         }
 
+        public async Task<IEnumerable< Project>> LoadAsllProjectsAsync()
+        {
+            return await _getDataUseCase.ExecuteAsync<Project>();
+        }
+
         public async Task<ApprovalRequest> LoadAprovalRequestAsync(int id)
         {
             return (await _getAprovalRequestsByIdUseCase.ExecuteAsync(id));
@@ -163,14 +168,14 @@ namespace DEMOOutOfOfficeApp.Helpers
 
         public async Task<IEnumerable<LeaveRequestDTO>> LoadLeaveRequestsDTOAsync(int employeeId)
         {
-            var projects = await _getLeaveRequestsUseCase.ExecuteAsync();
+            var leaveRequests = await _getLeaveRequestsUseCase.ExecuteAsync();
 
             if (employeeId != 0)
             {
-                projects = projects.Where(p => p.EmployeeID == employeeId).ToList();
+                leaveRequests = leaveRequests.Where(p => p.EmployeeID == employeeId).ToList();
             }
 
-            var projectsDTO = projects.Select(e => new LeaveRequestDTO(
+            var projectsDTO = leaveRequests.Select(e => new LeaveRequestDTO(
                 e.ID,
                 e.Employee.PeoplePartnerID,
                 e.Employee.FullName,
