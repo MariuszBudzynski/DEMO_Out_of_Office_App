@@ -2,12 +2,12 @@
 
 ### Sample Screenshots
 ![Alt text](https://raw.githubusercontent.com/MariuszBudzynski/DEMO_Out_of_Office_App/master/2024-06-22%20141332.png)
-![Alt text](2024-06-22 141431.png)
-![Alt text](2024-06-22 141556.png)
-![Alt text](2024-06-22 141633.png)
+![Alt text](https://raw.githubusercontent.com/MariuszBudzynski/DEMO_Out_of_Office_App/master/2024-06-22%20141633.png)
+![Alt text](https://raw.githubusercontent.com/MariuszBudzynski/DEMO_Out_of_Office_App/master/2024-06-22%20141556.png)
+![Alt text](https://raw.githubusercontent.com/MariuszBudzynski/DEMO_Out_of_Office_App/master/2024-06-22%20141431.png)
 
 ### Database Schema
--insert here-
+![Alt text](https://raw.githubusercontent.com/MariuszBudzynski/DEMO_Out_of_Office_App/master/DBDiagram.jpg)
 
 ### Technologies used:
 - C#
