@@ -37,16 +37,12 @@
                     <input asp-for="AprovalRequestID" type="hidden" />
                     <button asp-page-handler="Approve" type="submit" class="btn btn-success btn-block" name="AprovalType" value="Approve">Approve</button>
                     <button asp-page-handler="Reject" type="submit" class="btn btn-warning btn-block" name="AprovalType" value="Reject">Reject</button>
-
+                    <a asp-page="/ApprovalRequests">
+                        <button type="button" class="btn btn-secondary btn-block">Back</button>
+                    </a>
                 </td>
             </tr>
         </tbody>
     </table>
 </form>
 
-
- 
-
-<a asp-page="/ApprovalRequests" class="btn btn-secondary">
-    <button type="button" class="btn btn-sm btn-secondary btn-block">Back</button>
-</a>
