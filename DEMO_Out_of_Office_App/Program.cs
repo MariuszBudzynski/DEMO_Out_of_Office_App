@@ -1,10 +1,19 @@
 using DEMOOutOfOfficeApp;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 ServicesRegistration.RegisterServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -29,4 +38,16 @@ app.MapGet("/", async context => {
     await Task.CompletedTask;
 });
 
-app.Run();
+try
+{
+    Log.Information("Starting up the host");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

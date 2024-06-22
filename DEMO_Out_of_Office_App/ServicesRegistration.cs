@@ -14,7 +14,9 @@ namespace DEMOOutOfOfficeApp
 		public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
 		{
 
+
 			services.AddRazorPages();
+
 
 			services.AddRazorPages(options =>
 			{
