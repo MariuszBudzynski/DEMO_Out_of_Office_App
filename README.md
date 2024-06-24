@@ -23,6 +23,7 @@
 - XUnit Tests
 - MOQ
 - Serilog
+- Code first approach
 - Clean Architecture
 - DTOs
 
